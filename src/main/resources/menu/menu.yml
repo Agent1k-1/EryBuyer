@@ -1,0 +1,88 @@
+name: "&o&6Скупщик"
+size: 54
+panels:
+  - material: PURPLE_STAINED_GLASS_PANE
+    name: "&fПусто"
+    lore:
+      - ""
+    slots:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 16
+      - 17
+      - 26
+      - 35
+      - 44
+  - material: BLACK_STAINED_GLASS_PANE
+    name: "&fПусто"
+    lore:
+      - ""
+    slots:
+      - 18
+      - 27
+      - 36
+      - 37
+      - 43
+      - 45
+      - 46
+      - 47
+      - 48
+      - 50
+      - 51
+      - 52
+knops-settings:
+  1:
+    name: "&fВыход"
+    lore:
+      - "&fНажмите для выхода"
+    slot: 53
+    material: BARRIER
+    action:
+      - "[sound] BLOCK_ENDER_CHEST_CLOSE"
+      - "[close]"
+  2:
+    name: "&7Скупщик"
+    lore:
+      - "%autobuyer_status%"
+    slot: 49
+    material: BOOK
+    action:
+      - "[command] autobuyer"
+
+menu-settings:
+  1:
+    name: "&fРесурсы с шахты"
+    lore:
+      - "&fНажмите для перехода"
+    slot: 21
+    material: DIAMOND
+    action:
+      - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
+      - "[openmenu] mine"
+  2:
+    name: "&fФермерство"
+    lore:
+      - "&fНажмите для перехода"
+    slot: 23
+    material: WHEAT
+    action:
+      - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
+      - "[openmenu] farm"
+  3:
+    name: "&fРазное"
+    lore:
+      - "&fНажмите для перехода"
+    slot: 31
+    material: BLAZE_ROD
+    action:
+      - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
+      - "[openmenu] ast"

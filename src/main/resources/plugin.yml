@@ -1,0 +1,4 @@
+name: EryBuyer
+version: '${project.version}'
+main: com.erydevs.EryBuyer
+api-version: '1.16'
