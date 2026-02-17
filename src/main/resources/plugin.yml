@@ -1,19 +1,4 @@
 name: EryBuyer
-version: '1.5'
+version: '${project.version}'
 main: com.erydevs.EryBuyer
 api-version: '1.16'
-depend: [Vault]
-softdepend:
-  - PlaceholderAPI
-commands:
-  buyer:
-    description: "Открыть скупщика"
-    aliases:
-      - seller
-  autobuyer:
-  level:
-permission:
-  talebuyer.open:
-    default: op
-  talebuyer.autobuyer:
-    default: op
