@@ -30,7 +30,7 @@ public class AutoBuyerCommand implements CommandExecutor {
 
         this.plugin.getAutoBuyerManager().toggleAutobuyer(p);
         boolean enabled = this.plugin.getAutoBuyerManager().isAutobuyerEnabled(p);
-        String path = enabled ? "message.autosell-on" : "message.autosell-off";
+        String path = enabled ? "message.auto-buyer-on" : "message.auto-buyer-off";
         String raw = this.plugin.getConfigManager().getConfig().getString(path);
         p.sendMessage(BuyerPlaceholder.apply(raw, p));
         return true;

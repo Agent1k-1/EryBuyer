@@ -1,5 +1,5 @@
 name: EryBuyer
-version: '1.5'
+version: '1.4.2C'
 main: com.erydevs.EryBuyer
 api-version: '1.16'
 depend: [Vault]

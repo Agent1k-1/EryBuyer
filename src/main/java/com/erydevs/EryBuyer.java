@@ -80,11 +80,17 @@ public class EryBuyer extends JavaPlugin {
     }
 
     private void printStartupMessage() {
+        Bukkit.getConsoleSender().sendMessage(ChatColor.BLUE + "\n" +
+                "███████╗██████╗░██╗░░░██╗██████╗░██╗░░░██╗██╗░░░██╗███████╗██████╗░\n" +
+                "██╔════╝██╔══██╗╚██╗░██╔╝██╔══██╗██║░░░██║╚██╗░██╔╝██╔════╝██╔══██╗\n" +
+                "█████╗░░██████╔╝░╚████╔╝░██████╦╝██║░░░██║░╚████╔╝░█████╗░░██████╔╝\n" +
+                "██╔══╝░░██╔══██╗░░╚██╔╝░░██╔══██╗██║░░░██║░░╚██╔╝░░██╔══╝░░██╔══██╗\n" +
+                "███████╗██║░░██║░░░██║░░░██████╦╝╚██████╔╝░░░██║░░░███████╗██║░░██║\n" +
+                "╚══════╝╚═╝░░╚═╝░░░╚═╝░░░╚═════╝░░╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚═╝");
+        Bukkit.getConsoleSender().sendMessage();
         Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Плагин: " + ChatColor.GREEN + "включен");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Версия: " + ChatColor.YELLOW + getDescription().getVersion());
-        Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Автор: " + ChatColor.AQUA + "EryDev");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Telegram: " + ChatColor.LIGHT_PURPLE + "@erydevs");
-        Bukkit.getConsoleSender().sendMessage("");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Версия плагина: " + ChatColor.YELLOW + getDescription().getVersion());
+        Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Ядро: " + ChatColor.YELLOW + Bukkit.getVersion());
     }
 
     public void onDisable() {
@@ -95,10 +101,17 @@ public class EryBuyer extends JavaPlugin {
     }
 
     private void printShutdownMessage() {
+        Bukkit.getConsoleSender().sendMessage(ChatColor.BLUE + "\n" +
+                "███████╗██████╗░██╗░░░██╗██████╗░██╗░░░██╗██╗░░░██╗███████╗██████╗░\n" +
+                "██╔════╝██╔══██╗╚██╗░██╔╝██╔══██╗██║░░░██║╚██╗░██╔╝██╔════╝██╔══██╗\n" +
+                "█████╗░░██████╔╝░╚████╔╝░██████╦╝██║░░░██║░╚████╔╝░█████╗░░██████╔╝\n" +
+                "██╔══╝░░██╔══██╗░░╚██╔╝░░██╔══██╗██║░░░██║░░╚██╔╝░░██╔══╝░░██╔══██╗\n" +
+                "███████╗██║░░██║░░░██║░░░██████╦╝╚██████╔╝░░░██║░░░███████╗██║░░██║\n" +
+                "╚══════╝╚═╝░░╚═╝░░░╚═╝░░░╚═════╝░░╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚═╝");
+        Bukkit.getConsoleSender().sendMessage();
         Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Плагин: " + ChatColor.RED + "выключен");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Версия: " + ChatColor.YELLOW + getDescription().getVersion());
-        Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Автор: " + ChatColor.AQUA + "EryDev");
-        Bukkit.getConsoleSender().sendMessage("");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Версия плагина: " + ChatColor.YELLOW + getDescription().getVersion());
+        Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Ядро: " + ChatColor.YELLOW + Bukkit.getVersion());
     }
 
     public static EryBuyer getInstance() {

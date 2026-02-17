@@ -42,9 +42,10 @@ public class AutoBuyerManager {
     public void setAutobuyer(Player player, boolean enabled) {
         UUID id = player.getUniqueId();
         autobuyers.put(id, enabled);
+        boolean bossbarEnabled = plugin.getConfigManager().getConfig().getBoolean("bossbar-settings.bossbar", true);
         if (enabled) {
             lastSellTime.put(id, System.currentTimeMillis());
-            if (plugin.getBossBarManager() != null) plugin.getBossBarManager().createBossBar(player);
+            if (bossbarEnabled && plugin.getBossBarManager() != null) plugin.getBossBarManager().createBossBar(player);
         } else {
             lastSellTime.remove(id);
             if (plugin.getBossBarManager() != null) plugin.getBossBarManager().removeBossBar(player);
@@ -101,7 +102,7 @@ public class AutoBuyerManager {
     }
 
     private long getAutobueyerDelay() {
-        long configValue = plugin.getConfigManager().getConfig().getLong("autobuyer-bossbar.autobuyer-time", 40);
+        long configValue = plugin.getConfigManager().getConfig().getLong("bossbar-settings.autobuyer-time", 40);
         return configValue * 50;
     }
 
@@ -113,7 +114,7 @@ public class AutoBuyerManager {
         if (econ != null) econ.depositPlayer(p, total);
         plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), total);
         checkAndUpdateLevel(p);
-        String msg = plugin.getConfigManager().getConfig().getString("message.autosell");
+        String msg = plugin.getConfigManager().getConfig().getString("message.auto-buyer");
         p.sendMessage(BuyerPlaceholder.apply(msg, p, entry, amount));
         playSound(p);
     }
@@ -128,7 +129,7 @@ public class AutoBuyerManager {
             msg = msg.replace("%new_level%", String.valueOf(newLevel));
             p.sendMessage(com.erydevs.utils.HexUtils.colorize(msg));
             try {
-                Sound s = Sound.valueOf(plugin.getConfigManager().getConfig().getString("autobuyer-sound"));
+                Sound s = Sound.valueOf(plugin.getConfigManager().getConfig().getString("sound.autobuyer-sound"));
                 p.playSound(p.getLocation(), s, 1.0f, 1.0f);
             } catch (Exception ignored) {}
         }
@@ -136,7 +137,7 @@ public class AutoBuyerManager {
 
     private void playSound(Player p) {
         try {
-            Sound s = Sound.valueOf(plugin.getConfigManager().getConfig().getString("autobuyer-sound"));
+            Sound s = Sound.valueOf(plugin.getConfigManager().getConfig().getString("sound.autobuyer-sound"));
             p.playSound(p.getLocation(), s, 1.0f, 1.0f);
         } catch (Exception ignored) {}
     }

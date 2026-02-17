@@ -109,7 +109,7 @@ public class InventoryListener implements Listener {
         if (econ != null) econ.depositPlayer(p, total);
         plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), total);
         checkAndUpdateLevel(p);
-        String raw = plugin.getConfigManager().getConfig().getString("message.yast-buyer");
+        String raw = plugin.getConfigManager().getConfig().getString("message.successfully-buyer");
         raw = raw.replace("%prince%", String.format("%.2f", total));
         p.sendMessage(BuyerPlaceholder.apply(raw, p, entry, sold));
     }
@@ -133,21 +133,21 @@ public class InventoryListener implements Listener {
         if (econ != null) econ.depositPlayer(p, totalPrice);
         plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), totalPrice);
         checkAndUpdateLevel(p);
-        String raw = plugin.getConfigManager().getConfig().getString("message.yast-buyer");
+        String raw = plugin.getConfigManager().getConfig().getString("message.successfully-buyer");
         raw = raw.replace("%prince%", String.format("%.2f", totalPrice));
         p.sendMessage(BuyerPlaceholder.apply(raw, p, entry, amount));
     }
 
     private void playMenuOpenSound(Player player) {
         try {
-            Sound s = Sound.valueOf(plugin.getConfigManager().getConfig().getString("sound_open_menu"));
+            Sound s = Sound.valueOf(plugin.getConfigManager().getConfig().getString("sound.sound_open_menu"));
             player.playSound(player.getLocation(), s, 1.0f, 1.0f);
         } catch (Exception ignored) {}
     }
 
     private void playNoItemSound(Player player) {
         try {
-            Sound s = Sound.valueOf(plugin.getConfigManager().getConfig().getString("no-item-sound"));
+            Sound s = Sound.valueOf(plugin.getConfigManager().getConfig().getString("sound.no-item-sound"));
             player.playSound(player.getLocation(), s, 1.0f, 1.0f);
         } catch (Exception ignored) {}
     }
@@ -162,7 +162,7 @@ public class InventoryListener implements Listener {
             msg = msg.replace("%new_level%", String.valueOf(newLevel));
             p.sendMessage(com.erydevs.utils.HexUtils.colorize(msg));
             try {
-                Sound s = Sound.valueOf(plugin.getConfigManager().getConfig().getString("autobuyer-sound"));
+                Sound s = Sound.valueOf(plugin.getConfigManager().getConfig().getString("sound.autobuyer-sound"));
                 p.playSound(p.getLocation(), s, 1.0f, 1.0f);
             } catch (Exception ignored) {}
         }
