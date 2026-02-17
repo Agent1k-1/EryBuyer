@@ -1,14 +1,15 @@
-# EryBuyer
-# версия: 1.16-1.21+
-# Зависимости:
+# Описание плагина
+# поддерживаемые версии
+# 1.16-1.21+
+# Зависимости
 # Vault, PlaceholderAPI
 # актионы
 # [close] - закрытие меню
 # [openmenu] - открытие меню
 # [command] - выполнение команд
-# [sound] - звуки
+# [sound] произведение звуков
 # Плагин разработан студией EryDev
-message: # сообщения плагина
+message:
   no-item: "&fУ вас нет предмета &a%item_name%"
   successfully-buyer: "&fВы успешно продали &a%item_name% &fза &#4A90E2%prince%"
   auto-buyer: "&fВы продали скупщику &#FFFFFF%item_sell% &f штук баланс &a%balance%"
@@ -25,18 +26,18 @@ message: # сообщения плагина
 placeholder:
   enable-autobuyer: "&#00BFFF✓ Включен"
   disable-autobuyer: "&#FF6B6B✗ Выключен"
-sound: # звуки
+sound:
   sound_open_menu: BLOCK_CHEST_OPEN
   no-item-sound: ENTITY_VILLAGER_NO
   autobuyer-sound: BLOCK_NOTE_BLOCK_XYLOPHONE
 
-bossbar-settings: # боссбар
+bossbar-settings:
   bossbar: true
   text: "&fУ вас &aвключён &cавто-скупщик"
   color: RED
-  autobuyer-time: 40 # адержка автоскупщика в тиках
+  autobuyer-time: 40
 
-levels: # уровни
+levels:
   1:
     multiplier: 0.0
     required-money: 0.0
@@ -53,7 +54,7 @@ levels: # уровни
     multiplier: 0.5
     required-money: 50000.0
 
-register-menu: # регистрация
+register-menu:
   - "menu/menu.yml"
   - "menu/mine.yml"
   - "menu/farm.yml"
