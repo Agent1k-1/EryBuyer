@@ -5,7 +5,7 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import com.erydevs.EryBuyer;
-import com.erydevs.placeholders.BuyerPlaceholder;
+import com.erydevs.placeholders.PlaceholderAPIHook;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -23,7 +23,7 @@ public class BossBarManager {
         UUID id = player.getUniqueId();
         if (bossbars.containsKey(id)) return;
         String raw = plugin.getConfigManager().getConfig().getString("bossbar-settings.text", "&fУ вас включён &cавто-скупщик");
-        String text = BuyerPlaceholder.apply(raw, player);
+        String text = PlaceholderAPIHook.apply(raw, player);
         BarColor color = BarColor.RED;
         try {
             String c = plugin.getConfigManager().getConfig().getString("bossbar-settings.color", "RED");

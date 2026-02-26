@@ -9,7 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.erydevs.EryBuyer;
 import com.erydevs.utils.HexUtils;
 import com.erydevs.gui.Entry;
-import com.erydevs.placeholders.BuyerPlaceholder;
+import com.erydevs.placeholders.PlaceholderAPIHook;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,11 +24,11 @@ public class ItemStackFactory {
         ItemStack is = new ItemStack(entry.material);
         ItemMeta im = is.getItemMeta();
         if (im != null) {
-            String displayName = BuyerPlaceholder.apply(entry.name, player);
+            String displayName = PlaceholderAPIHook.apply(entry.name, player, entry, 1);
             im.setDisplayName(displayName);
             List<String> lore = entry.lore == null ? Collections.emptyList() : entry.lore;
             List<String> processedLore = lore.stream()
-                    .map(line -> BuyerPlaceholder.apply(line, player))
+                    .map(line -> PlaceholderAPIHook.apply(line, player, entry, 1))
                     .collect(Collectors.toList());
             im.setLore(processedLore);
             is.setItemMeta(im);
@@ -58,8 +58,9 @@ public class ItemStackFactory {
         return exit;
     }
 
-    public ItemStack createAutobuyerItem(FileConfiguration cfg, Player player) {
-        String materialStr = cfg.getString("knops-settings.2.material");
+    public ItemStack createAutobuyerItem(FileConfiguration cfg, String knopId, Player player) {
+        String path = "knops-settings." + knopId;
+        String materialStr = cfg.getString(path + ".material");
         Material material = Material.LIME_CONCRETE;
 
         if (materialStr != null && !materialStr.isEmpty()) {
@@ -72,12 +73,28 @@ public class ItemStackFactory {
         ItemStack autobuyer = new ItemStack(material);
         ItemMeta am = autobuyer.getItemMeta();
         if (am != null) {
-            String displayName = cfg.getString("knops-settings.2.name");
+            String displayName = cfg.getString(path + ".name");
             am.setDisplayName(HexUtils.colorize(displayName));
-            String status = plugin.getAutoBuyerManager().isAutobuyerEnabled(player) ?
-                    plugin.getConfigManager().getConfig().getString("placeholder.enable-autobuyer"):
-                    plugin.getConfigManager().getConfig().getString("placeholder.disable-autobuyer");
-            am.setLore(Arrays.asList(HexUtils.colorize(status)));
+            
+            List<String> lore = cfg.getStringList(path + ".lore");
+            if (lore == null) {
+                lore = new ArrayList<>();
+            }
+            
+            List<String> processedLore = new ArrayList<>();
+            for (String line : lore) {
+                String processed = PlaceholderAPIHook.apply(line, player);
+                processedLore.add(processed);
+            }
+            
+            if (processedLore.isEmpty()) {
+                String status = plugin.getAutoBuyerManager().isAutobuyerEnabled(player) ?
+                        plugin.getConfigManager().getConfig().getString("placeholder.enable-autobuyer"):
+                        plugin.getConfigManager().getConfig().getString("placeholder.disable-autobuyer");
+                processedLore.add(HexUtils.colorize(status));
+            }
+            
+            am.setLore(processedLore);
             autobuyer.setItemMeta(am);
         }
         return autobuyer;

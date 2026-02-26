@@ -1,17 +1,13 @@
-name: "&o&6Скупщик"
+name: "&c▪ &#0000FFСкупщик"
 size: 54
 panels:
-  - material: PURPLE_STAINED_GLASS_PANE
-    name: "&fПусто"
+  - material: BLUE_STAINED_GLASS_PANE
+    name: "&fТут что-то будет.."
     lore:
       - ""
     slots:
-      - 0
       - 1
       - 2
-      - 3
-      - 4
-      - 5
       - 6
       - 7
       - 8
@@ -19,49 +15,54 @@ panels:
       - 10
       - 16
       - 17
-      - 26
-      - 35
-      - 44
-  - material: BLACK_STAINED_GLASS_PANE
-    name: "&fПусто"
-    lore:
-      - ""
-    slots:
       - 18
+      - 26
       - 27
+      - 35
       - 36
       - 37
       - 43
+      - 44
       - 45
       - 46
       - 47
-      - 48
-      - 50
       - 51
       - 52
 knops-settings:
   1:
-    name: "&fВыход"
+    name: "&c▪ &#00FF00Выход"
     lore:
+      - ""
       - "&fНажмите для выхода"
+      - ""
     slot: 53
-    material: BARRIER
+    material: SPECTRAL_ARROW
     action:
       - "[sound] BLOCK_ENDER_CHEST_CLOSE"
       - "[close]"
   2:
-    name: "&7Скупщик"
+    name: "&c▪ &#FF0000Авто-скупщик"
     lore:
-      - "%autobuyer_status%"
+      - ""
+      - "&FСтатус: %autobuyer_status%"
     slot: 49
-    material: BOOK
+    material: CLOCK
     action:
       - "[command] autobuyer"
-
+  3:
+    name: "&fВаша статистика уровней"
+    lore:
+      - ""
+      - "&fОбщая сумма продаж %buyer_total_earned%"
+      - "&fТекущий уровень %buyer_current_level%"
+      - "&fДо следующего уровня %buyer_required_amount%"
+    slot: 0
+    material: BOOK
 menu-settings:
   1:
     name: "&fРесурсы с шахты"
     lore:
+      - ""
       - "&fНажмите для перехода"
     slot: 21
     material: DIAMOND
@@ -71,6 +72,7 @@ menu-settings:
   2:
     name: "&fФермерство"
     lore:
+      - ""
       - "&fНажмите для перехода"
     slot: 23
     material: WHEAT
@@ -78,11 +80,12 @@ menu-settings:
       - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
       - "[openmenu] farm"
   3:
-    name: "&fРазное"
+    name: "&fЛут с мобов"
     lore:
+      - ""
       - "&fНажмите для перехода"
     slot: 31
-    material: BLAZE_ROD
+    material: GUNPOWDER
     action:
       - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
-      - "[openmenu] ast"
+      - "[openmenu] mobs"

@@ -42,12 +42,21 @@ public class BuyerGUI {
         itemStackFactory.addPanels(inv, cfg, size);
         addItems(inv, cfg, title, size, player);
 
-        int exitSlot = cfg.getInt("knops-settings.1.slot");
-        if (exitSlot < size) inv.setItem(exitSlot, itemStackFactory.createExitItem(cfg));
+        if (cfg.contains("knops-settings.1.slot")) {
+            int exitSlot = cfg.getInt("knops-settings.1.slot");
+            if (exitSlot >= 0 && exitSlot < size) {
+                inv.setItem(exitSlot, itemStackFactory.createExitItem(cfg));
+            }
+        }
 
         if (menuName.equals("menu")) {
-            int autobuyerSlot = cfg.getInt("knops-settings.2.slot");
-            if (autobuyerSlot < size) inv.setItem(autobuyerSlot, itemStackFactory.createAutobuyerItem(cfg, player));
+            String autobuyerId = findAutobuyerKnopId(cfg);
+            if (autobuyerId != null && cfg.contains("knops-settings." + autobuyerId + ".slot")) {
+                int autobuyerSlot = cfg.getInt("knops-settings." + autobuyerId + ".slot");
+                if (autobuyerSlot >= 0 && autobuyerSlot < size) {
+                    inv.setItem(autobuyerSlot, itemStackFactory.createAutobuyerItem(cfg, autobuyerId, player));
+                }
+            }
         }
 
         return inv;
@@ -71,7 +80,7 @@ public class BuyerGUI {
         for (String key : cfg.getConfigurationSection("item-settings").getKeys(false)) {
             String path = "item-settings." + key;
             org.bukkit.Material m = org.bukkit.Material.matchMaterial(cfg.getString(path + ".material"));
-            int slot = cfg.getInt(path + ".slot", -1);
+            int slot = cfg.getInt(path + ".slot");
             if (m != null && slot >= 0) {
                 Entry e = new Entry(key, m, cfg.getString(path + ".name"),
                         cfg.getStringList(path + ".lore"), cfg.getDouble(path + ".prince-x1"),
@@ -97,8 +106,11 @@ public class BuyerGUI {
     }
 
     private void loadMenuOrKnopsItem(FileConfiguration cfg, Map<Integer, Entry> entries, Map<Integer, List<String>> actions, String path, String id) {
+        if (!cfg.contains(path + ".slot")) return;
+        
         int slot = cfg.getInt(path + ".slot");
         if (slot < 0) return;
+        
         org.bukkit.Material m = org.bukkit.Material.matchMaterial(cfg.getString(path + ".material"));
         if (m != null) {
             Entry e = new Entry(id, m, cfg.getString(path + ".name"), cfg.getStringList(path + ".lore"), 0.0, 0.0, slot);
@@ -137,12 +149,22 @@ public class BuyerGUI {
         return out;
     }
 
-    public int getExitSlot(String title) {
-        return exitSlotByTitle.getOrDefault(title, 53);
+    public int getExitSlot(String title, FileConfiguration cfg) {
+        if (cfg.contains("knops-settings.1.slot")) {
+            return cfg.getInt("knops-settings.1.slot");
+        }
+        return -1;
     }
 
-    public int getAutobuyerSlot(String title) {
-        return autobuyerSlotByTitle.getOrDefault(title, 49);
+    public int getAutobuyerSlot(String title, FileConfiguration cfg) {
+        String autobuyerId = findAutobuyerKnopId(cfg);
+        if (autobuyerId != null) {
+            String path = "knops-settings." + autobuyerId + ".slot";
+            if (cfg.contains(path)) {
+                return cfg.getInt(path);
+            }
+        }
+        return -1;
     }
 
     public List<String> getActions(String title, int slot) {
@@ -152,5 +174,21 @@ public class BuyerGUI {
 
     public String getMenuNameByTitle(String title) {
         return menuNameByTitle.getOrDefault(title, "menu");
+    }
+
+    private String findAutobuyerKnopId(FileConfiguration cfg) {
+        if (!cfg.isConfigurationSection("knops-settings")) return null;
+        for (String key : cfg.getConfigurationSection("knops-settings").getKeys(false)) {
+            String path = "knops-settings." + key;
+            List<String> actions = cfg.getStringList(path + ".action");
+            if (actions != null) {
+                for (String action : actions) {
+                    if (action != null && action.contains("[command] autobuyer")) {
+                        return key;
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

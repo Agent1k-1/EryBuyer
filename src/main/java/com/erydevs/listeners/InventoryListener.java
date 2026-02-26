@@ -3,7 +3,7 @@ package com.erydevs.listeners;
 import com.erydevs.EryBuyer;
 import com.erydevs.gui.Entry;
 import com.erydevs.gui.BuyerSite;
-import com.erydevs.placeholders.BuyerPlaceholder;
+import com.erydevs.placeholders.PlaceholderAPIHook;
 import com.erydevs.gui.action.ActionMenu;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Sound;
@@ -38,18 +38,23 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        if (slot == plugin.getBuyerGUI().getExitSlot(title)) {
+        com.erydevs.config.Configuration confMgr = plugin.getConfigManager();
+        String menuName = plugin.getBuyerGUI().getMenuNameByTitle(title);
+        org.bukkit.configuration.file.FileConfiguration menuCfg = confMgr.getMenuConfig(menuName);
+        
+        int exitSlot = plugin.getBuyerGUI().getExitSlot(title, menuCfg);
+        if (exitSlot >= 0 && slot == exitSlot) {
             p.closeInventory();
             return;
         }
 
-        if (slot == plugin.getBuyerGUI().getAutobuyerSlot(title)) {
+        int autobuyerSlot = plugin.getBuyerGUI().getAutobuyerSlot(title, menuCfg);
+        if (autobuyerSlot >= 0 && slot == autobuyerSlot) {
             plugin.getAutoBuyerManager().toggleAutobuyer(p);
             boolean enabled = plugin.getAutoBuyerManager().isAutobuyerEnabled(p);
             String path = enabled ? "message.auto-buyer-on" : "message.auto-buyer-off";
             String raw = plugin.getConfigManager().getConfig().getString(path, enabled ? "&7Автоскупщик &aвключён" : "&7Автоскупщик &cвыключен");
-            p.sendMessage(BuyerPlaceholder.apply(raw, p));
-            String menuName = plugin.getBuyerGUI().getMenuNameByTitle(title);
+            p.sendMessage(PlaceholderAPIHook.apply(raw, p));
             p.openInventory(plugin.getBuyerGUI().createInventory(p, menuName));
             playMenuOpenSound(p);
             return;
@@ -72,7 +77,7 @@ public class InventoryListener implements Listener {
             }
             if (totalCount == 0) {
                 String msg = plugin.getConfigManager().getConfig().getString("message.no-item");
-                p.sendMessage(BuyerPlaceholder.apply(msg, p, entry, 64));
+                p.sendMessage(PlaceholderAPIHook.apply(msg, p, entry, 64));
                 playNoItemSound(p);
                 return;
             }
@@ -100,18 +105,20 @@ public class InventoryListener implements Listener {
         }
         if (sold == 0) {
             String msg = plugin.getConfigManager().getConfig().getString("message.no-item");
-            p.sendMessage(BuyerPlaceholder.apply(msg, p, entry, want));
+            p.sendMessage(PlaceholderAPIHook.apply(msg, p, entry, want));
             playNoItemSound(p);
             return;
         }
-        double total = unitPrice * sold;
+        com.erydevs.levels.PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(p.getUniqueId());
+        double multiplier = 1.0 + plugin.getLevelConfig().getMultiplierByLevel(playerLevel.getCurrentLevel());
+        double total = unitPrice * sold * multiplier;
         Economy econ = plugin.getEconomyManager().getEconomy();
         if (econ != null) econ.depositPlayer(p, total);
         plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), total);
         checkAndUpdateLevel(p);
         String raw = plugin.getConfigManager().getConfig().getString("message.successfully-buyer");
         raw = raw.replace("%prince%", String.format("%.2f", total));
-        p.sendMessage(BuyerPlaceholder.apply(raw, p, entry, sold));
+        p.sendMessage(PlaceholderAPIHook.apply(raw, p, entry, sold));
     }
 
     private void removeExactAmountAndPay(Player p, Entry entry, int amount, double totalPrice) {
@@ -129,13 +136,16 @@ public class InventoryListener implements Listener {
             }
             needed -= can;
         }
+        com.erydevs.levels.PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(p.getUniqueId());
+        double multiplier = 1.0 + plugin.getLevelConfig().getMultiplierByLevel(playerLevel.getCurrentLevel());
+        double finalPrice = totalPrice * multiplier;
         Economy econ = plugin.getEconomyManager().getEconomy();
-        if (econ != null) econ.depositPlayer(p, totalPrice);
-        plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), totalPrice);
+        if (econ != null) econ.depositPlayer(p, finalPrice);
+        plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), finalPrice);
         checkAndUpdateLevel(p);
         String raw = plugin.getConfigManager().getConfig().getString("message.successfully-buyer");
-        raw = raw.replace("%prince%", String.format("%.2f", totalPrice));
-        p.sendMessage(BuyerPlaceholder.apply(raw, p, entry, amount));
+        raw = raw.replace("%prince%", String.format("%.2f", finalPrice));
+        p.sendMessage(PlaceholderAPIHook.apply(raw, p, entry, amount));
     }
 
     private void playMenuOpenSound(Player player) {

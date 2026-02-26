@@ -5,7 +5,6 @@ com\erydevs\utils\HexUtils.class
 com\erydevs\data\DataBase.class
 com\erydevs\commands\BuyerCommand.class
 com\erydevs\listeners\PlayerInventoryListener.class
-com\erydevs\placeholders\BuyerPlaceholder.class
 com\erydevs\autobuyer\AutoBuyerManager.class
 com\erydevs\levels\LevelConfig.class
 com\erydevs\gui\BuyerSite$ClickType.class
@@ -20,6 +19,7 @@ com\erydevs\commands\LevelCommand.class
 com\erydevs\commands\AutoBuyerCommand.class
 com\erydevs\gui\menu\MenuLoader.class
 com\erydevs\listeners\InventoryListener.class
+com\erydevs\placeholders\PlaceholderAPIHook.class
 com\erydevs\levels\PlayerLevel.class
 com\erydevs\gui\BuyerGUI.class
 com\erydevs\economy\EconomyManager.class

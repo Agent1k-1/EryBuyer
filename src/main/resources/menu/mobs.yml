@@ -1,0 +1,117 @@
+name: "&c▪ &#0000FFЛут с мобов"
+size: 54
+panels:
+  - material: BLUE_STAINED_GLASS_PANE
+    name: "&fТут что-то будет.."
+    lore:
+      - ""
+    slots:
+      - 0
+      - 1
+      - 2
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 16
+      - 17
+      - 18
+      - 26
+      - 27
+      - 35
+      - 36
+      - 37
+      - 43
+      - 44
+      - 45
+      - 46
+      - 47
+      - 51
+      - 52
+      - 53
+knops-settings:
+  1:
+    name: "&4Выход"
+    lore:
+      - ""
+      - "&fНажмите для выхода"
+      - ""
+    slot: 53
+    material: SPECTRAL_ARROW
+    action:
+      - "[sound] BLOCK_ENDER_CHEST_CLOSE"
+      - "[openmenu] menu"
+item-settings:
+  1:
+    name: "&fПорох"
+    lore:
+      - "&o&fЦена за &o&6x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &o&6x64: &o&c%prince-x64% &o&7ПКМ"
+    material: GUNPOWDER
+    slot: 20
+    prince-x1: 0.75
+    prince-x64: 48
+  2:
+    name: "&fОгненный стержень"
+    lore:
+      - "&o&fЦена за &o&6x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &o&6x64: &o&c%prince-x64% &o&7ПКМ"
+    material: BLAZE_ROD
+    slot: 21
+    prince-x1: 8
+    prince-x64: 512
+  3:
+    name: "&fКость"
+    lore:
+      - "&o&fЦена за &o&6x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &o&6x64: &o&c%prince-x64% &o&7ПКМ"
+    material: BONE
+    slot: 22
+    prince-x1: 0.4
+    prince-x64: 25
+  4:
+    name: "&fНить"
+    lore:
+      - "&o&fЦена за &o&6x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &o&6x64: &o&c%prince-x64% &o&7ПКМ"
+    material: STRING
+    slot: 23
+    prince-x1: 0.3
+    prince-x64: 20
+  5:
+    name: "&fЭндер-Жемчуг"
+    lore:
+      - "&o&fЦена за &o&6x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &o&6x64: &o&c%prince-x64% &o&7ПКМ"
+    material: ENDER_PEARL
+    slot: 24
+    prince-x1: 2.5
+    prince-x64: 160
+  6:
+    name: "&fМаринованный Паучий Глаз"
+    lore:
+      - "&o&fЦена за &o&6x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &o&6x64: &o&c%prince-x64% &o&7ПКМ"
+    material: FERMENTED_SPIDER_EYE
+    slot: 29
+    prince-x1: 1.8
+    prince-x64: 115
+  7:
+    name: "&fСветокаменная Пыль"
+    lore:
+      - "&o&fЦена за &o&6x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &o&6x64: &o&c%prince-x64% &o&7ПКМ"
+    material: GLOWSTONE_DUST
+    slot: 30
+    prince-x1: 0.8
+    prince-x64: 50
+  8:
+    name: "&fСгусток магмы"
+    lore:
+      - "&o&fЦена за &o&6x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &o&6x64: &o&c%prince-x64% &o&7ПКМ"
+    material: MAGMA_CREAM
+    slot: 31
+    prince-x1: 2.8
+    prince-x64: 180

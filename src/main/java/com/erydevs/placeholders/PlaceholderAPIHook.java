@@ -13,11 +13,11 @@ import org.bukkit.ChatColor;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.jetbrains.annotations.NotNull;
 
-public class BuyerPlaceholder extends PlaceholderExpansion {
+public class PlaceholderAPIHook extends PlaceholderExpansion {
 
     private final EryBuyer plugin;
 
-    public BuyerPlaceholder(EryBuyer plugin) {
+    public PlaceholderAPIHook(EryBuyer plugin) {
         this.plugin = plugin;
     }
 

@@ -1,7 +1,7 @@
 package com.erydevs.commands;
 
 import com.erydevs.EryBuyer;
-import com.erydevs.placeholders.BuyerPlaceholder;
+import com.erydevs.placeholders.PlaceholderAPIHook;
 import com.erydevs.utils.HexUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,7 +22,7 @@ public class AutoBuyerCommand implements CommandExecutor {
 
         Player p = (Player) sender;
 
-        if (!p.hasPermission("talebuyer.autobuyer")) {
+        if (!p.hasPermission("erybuyer.autobuyer")) {
             String msg = plugin.getConfigManager().getConfig().getString("message.no-permission");
             p.sendMessage(HexUtils.colorize(msg));
             return true;
@@ -32,7 +32,7 @@ public class AutoBuyerCommand implements CommandExecutor {
         boolean enabled = this.plugin.getAutoBuyerManager().isAutobuyerEnabled(p);
         String path = enabled ? "message.auto-buyer-on" : "message.auto-buyer-off";
         String raw = this.plugin.getConfigManager().getConfig().getString(path);
-        p.sendMessage(BuyerPlaceholder.apply(raw, p));
+        p.sendMessage(PlaceholderAPIHook.apply(raw, p));
         return true;
     }
 }

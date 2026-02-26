@@ -2,7 +2,7 @@ package com.erydevs.listeners;
 
 import com.erydevs.EryBuyer;
 import com.erydevs.gui.Entry;
-import com.erydevs.placeholders.BuyerPlaceholder;
+import com.erydevs.placeholders.PlaceholderAPIHook;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -43,7 +43,7 @@ public class PlayerInventoryListener implements Listener {
                 Economy econ = plugin.getEconomyManager().getEconomy();
                 if (econ != null) econ.depositPlayer(p, total);
                 String msg = plugin.getConfigManager().getConfig().getString("message.auto-buyer", "&7Вы продали скупщику %item_sell% &o&6штук &7ваш баланс &o&6%balance%");
-                p.sendMessage(BuyerPlaceholder.apply(msg, p, entry, amount));
+                p.sendMessage(PlaceholderAPIHook.apply(msg, p, entry, amount));
                 playAutobuyerSound(p);
             }
         }

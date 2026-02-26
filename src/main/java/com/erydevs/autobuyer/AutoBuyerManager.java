@@ -2,7 +2,7 @@ package com.erydevs.autobuyer;
 
 import com.erydevs.EryBuyer;
 import com.erydevs.gui.Entry;
-import com.erydevs.placeholders.BuyerPlaceholder;
+import com.erydevs.placeholders.PlaceholderAPIHook;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -115,7 +115,7 @@ public class AutoBuyerManager {
         plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), total);
         checkAndUpdateLevel(p);
         String msg = plugin.getConfigManager().getConfig().getString("message.auto-buyer");
-        p.sendMessage(BuyerPlaceholder.apply(msg, p, entry, amount));
+        p.sendMessage(PlaceholderAPIHook.apply(msg, p, entry, amount));
         playSound(p);
     }
 

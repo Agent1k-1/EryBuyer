@@ -1,47 +1,44 @@
-name: "&fРесурсы с шахты"
+name: "&c▪ &#0000FFРесурсы с шахты"
 size: 54
 panels:
-  material: PURPLE_STAINED_GLASS_PANE
-  name: "&fПусто"
-  lore:
-    - ""
-slots:
-  - 0
-  - 1
-  - 2
-  - 3
-  - 4
-  - 5
-  - 6
-  - 7
-  - 8
-  - 9
-  - 10
-  - 16
-  - 17
-  - 26
-  - 35
-  - 44
-  - 18
-  - 27
-  - 36
-  - 37
-  - 43
-  - 45
-  - 46
-  - 47
-  - 48
-  - 49
-  - 50
-  - 51
-  - 52
+  - material: BLUE_STAINED_GLASS_PANE
+    name: "&fТут что-то будет.."
+    lore:
+      - ""
+    slots:
+      - 0
+      - 1
+      - 2
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 16
+      - 17
+      - 18
+      - 26
+      - 27
+      - 35
+      - 36
+      - 37
+      - 43
+      - 44
+      - 45
+      - 46
+      - 47
+      - 51
+      - 52
+      - 53
 knops-settings:
   1:
-    name: "&fНазад"
+    name: "&4Выход"
     lore:
+      - ""
       - "&fНажмите для выхода"
+      - ""
     slot: 53
-    material: BARRIER
+    material: SPECTRAL_ARROW
     action:
       - "[sound] BLOCK_ENDER_CHEST_CLOSE"
       - "[openmenu] menu"
@@ -49,53 +46,53 @@ item-settings:
   1:
     name: "&bАлмаз"
     lore:
-      - "&o&fЦена за &o&6x1: &o&c100 &o&7ЛКМ"
-      - "&o&fЦена за &o&6x64: &o&c6400 &o&7ПКМ"
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
     material: DIAMOND
     slot: 20
-    prince-x1: 100
-    prince-x64: 6400
+    prince-x1: 100.00
+    prince-x64: 6400.00
   2:
     name: "&aИзумруд"
     lore:
-      - "&o&fЦена за &o&6x1: &o&c125 &o&7ЛКМ"
-      - "&o&fЦена за &o&6x64: &o&c8000 &o&7ПКМ"
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
     material: EMERALD
     slot: 21
-    prince-x1: 125
-    prince-x64: 8000
+    prince-x1: 125.00
+    prince-x64: 8000.00
   3:
     name: "&fНезеритовый слиток"
     lore:
-      - "&o&fЦена за &o&6x1: &o&c500 &o&7ЛКМ"
-      - "&o&fЦена за &o&6x64: &o&c32000 &o&7ПКМ"
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
     material: NETHERITE_INGOT
     slot: 22
-    prince-x1: 500
-    prince-x64: 32000
+    prince-x1: 500.00
+    prince-x64: 32000.00
   4:
     name: "&fЗолотой слиток"
     lore:
-      - "&o&fЦена за &o&6x1: &o&c10 &o&7ЛКМ"
-      - "&o&fЦена за &o&6x64: &o&c640 &o&7ПКМ"
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
     material: GOLD_INGOT
     slot: 23
-    prince-x1: 10
-    prince-x64: 640
+    prince-x1: 10.00
+    prince-x64: 640.00
   5:
     name: "&fЖелезный слиток"
     lore:
-      - "&o&fЦена за &o&6x1: &o&c5 &o&7ЛКМ"
-      - "&o&fЦена за &o&6x64: &o&c320 &o&7ПКМ"
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
     material: IRON_INGOT
     slot: 24
-    prince-x1: 5
-    prince-x64: 320
+    prince-x1: 5.00
+    prince-x64: 320.00
   25:
     name: "&fУголь"
     lore:
-      - "&o&fЦена за &o&6x1: &o&c0.15 &o&7ЛКМ"
-      - "&o&fЦена за &o&6x64: &o&c9.6 &o&7ПКМ"
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
     material: COAL
     slot: 30
     prince-x1: 0.15
@@ -103,18 +100,18 @@ item-settings:
   26:
     name: "&9Лазурит"
     lore:
-      - "&o&fЦена за &o&6x1: &o&c0.5 &o&7ЛКМ"
-      - "&o&fЦена за &o&6x64: &o&c32 &o&7ПКМ"
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
     material: LAPIS_LAZULI
     slot: 31
     prince-x1: 0.5
-    prince-x64: 32
+    prince-x64: 32.00
   27:
     name: "&4Редстоун"
     lore:
-      - "&o&fЦена за &o&6x1: &o&c0.5 &o&7ЛКМ"
-      - "&o&fЦена за &o&6x64: &o&c32 &o&7ПКМ"
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
     material: REDSTONE
     slot: 32
     prince-x1: 0.5
-    prince-x64: 32
+    prince-x64: 32.00

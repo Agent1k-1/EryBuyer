@@ -24,7 +24,7 @@ public class BuyerCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if (!player.hasPermission("talebuyer.open")) {
+        if (!player.hasPermission("erybuyer.open")) {
             String msg = plugin.getConfigManager().getConfig().getString("message.no-permission");
             player.sendMessage(HexUtils.colorize(msg));
             return true;

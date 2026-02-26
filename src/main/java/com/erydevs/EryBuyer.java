@@ -17,7 +17,7 @@ import com.erydevs.listeners.PlayerInventoryListener;
 import com.erydevs.economy.EconomyManager;
 import com.erydevs.autobuyer.AutoBuyerManager;
 import com.erydevs.bossbar.BossBarManager;
-import com.erydevs.placeholders.BuyerPlaceholder;
+import com.erydevs.placeholders.PlaceholderAPIHook;
 
 import java.io.File;
 import java.util.List;
@@ -73,7 +73,7 @@ public class EryBuyer extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), this);
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new BuyerPlaceholder(this).register();
+            new PlaceholderAPIHook(this).register();
         }
 
         printStartupMessage();
