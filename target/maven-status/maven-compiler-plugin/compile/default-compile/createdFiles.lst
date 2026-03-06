@@ -13,7 +13,6 @@ com\erydevs\gui\BuyerSite.class
 com\erydevs\gui\menu\ItemStackFactory.class
 com\erydevs\gui\Entry.class
 com\erydevs\gui\action\ActionMenu.class
-com\erydevs\listeners\PlayerPickupListener.class
 com\erydevs\EryBuyer.class
 com\erydevs\commands\LevelCommand.class
 com\erydevs\commands\AutoBuyerCommand.class

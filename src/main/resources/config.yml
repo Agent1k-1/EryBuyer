@@ -35,7 +35,7 @@ bossbar-settings:
   bossbar: true
   text: "&c▪ &fУ вас &aвключён &cавто-скупщик"
   color: RED
-  autobuyer-time: 40
+  autobuyer-time: 80
 
 levels:
   1:

@@ -59,6 +59,10 @@ public class InventoryListener implements Listener {
             playMenuOpenSound(p);
             return;
         }
+        
+        if (plugin.getAutoBuyerManager().isAutobuyerEnabled(p)) {
+            return;
+        }
 
         Entry entry = plugin.getBuyerGUI().getEntry(title, slot);
         if (entry == null) return;
@@ -114,8 +118,13 @@ public class InventoryListener implements Listener {
         double total = unitPrice * sold * multiplier;
         Economy econ = plugin.getEconomyManager().getEconomy();
         if (econ != null) econ.depositPlayer(p, total);
-        plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), total);
-        checkAndUpdateLevel(p);
+        
+        int maxLevel = plugin.getLevelConfig().getMaxLevel();
+        if (playerLevel.getCurrentLevel() < maxLevel) {
+            plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), total);
+            checkAndUpdateLevel(p);
+        }
+        
         String raw = plugin.getConfigManager().getConfig().getString("message.successfully-buyer");
         raw = raw.replace("%prince%", String.format("%.2f", total));
         p.sendMessage(PlaceholderAPIHook.apply(raw, p, entry, sold));
@@ -141,8 +150,13 @@ public class InventoryListener implements Listener {
         double finalPrice = totalPrice * multiplier;
         Economy econ = plugin.getEconomyManager().getEconomy();
         if (econ != null) econ.depositPlayer(p, finalPrice);
-        plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), finalPrice);
-        checkAndUpdateLevel(p);
+        
+        int maxLevel = plugin.getLevelConfig().getMaxLevel();
+        if (playerLevel.getCurrentLevel() < maxLevel) {
+            plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), finalPrice);
+            checkAndUpdateLevel(p);
+        }
+        
         String raw = plugin.getConfigManager().getConfig().getString("message.successfully-buyer");
         raw = raw.replace("%prince%", String.format("%.2f", finalPrice));
         p.sendMessage(PlaceholderAPIHook.apply(raw, p, entry, amount));

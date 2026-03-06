@@ -68,12 +68,7 @@ public class AutoBuyerManager {
         long currentTime = System.currentTimeMillis();
         long delay = getAutobueyerDelay();
         
-        if (!lastSellTime.containsKey(id)) {
-            lastSellTime.put(id, currentTime);
-            return;
-        }
-        
-        long lastTime = lastSellTime.get(id);
+        long lastTime = lastSellTime.getOrDefault(id, 0L);
         if (currentTime - lastTime < delay) {
             return;
         }
@@ -112,8 +107,13 @@ public class AutoBuyerManager {
         double total = entry.priceX1 * amount * multiplier;
         Economy econ = plugin.getEconomyManager().getEconomy();
         if (econ != null) econ.depositPlayer(p, total);
-        plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), total);
-        checkAndUpdateLevel(p);
+        
+        int maxLevel = plugin.getLevelConfig().getMaxLevel();
+        if (playerLevel.getCurrentLevel() < maxLevel) {
+            plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), total);
+            checkAndUpdateLevel(p);
+        }
+        
         String msg = plugin.getConfigManager().getConfig().getString("message.auto-buyer");
         p.sendMessage(PlaceholderAPIHook.apply(msg, p, entry, amount));
         playSound(p);

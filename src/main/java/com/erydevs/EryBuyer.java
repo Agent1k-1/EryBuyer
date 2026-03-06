@@ -11,9 +11,7 @@ import com.erydevs.commands.LevelCommand;
 import com.erydevs.levels.LevelConfig;
 import com.erydevs.data.DataBase;
 import com.erydevs.listeners.InventoryListener;
-import com.erydevs.listeners.PlayerPickupListener;
 import com.erydevs.listeners.PlayerQuitListener;
-import com.erydevs.listeners.PlayerInventoryListener;
 import com.erydevs.economy.EconomyManager;
 import com.erydevs.autobuyer.AutoBuyerManager;
 import com.erydevs.bossbar.BossBarManager;
@@ -68,8 +66,6 @@ public class EryBuyer extends JavaPlugin {
             getCommand("level").setExecutor(new LevelCommand(this));
 
         getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
-        getServer().getPluginManager().registerEvents(new PlayerPickupListener(this), this);
-        getServer().getPluginManager().registerEvents(new PlayerInventoryListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), this);
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
