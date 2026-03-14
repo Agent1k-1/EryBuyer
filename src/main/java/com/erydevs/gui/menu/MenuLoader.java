@@ -1,34 +1,22 @@
 package com.erydevs.gui.menu;
 
+import com.erydevs.EryBuyer;
+import com.erydevs.gui.Entry;
+import com.erydevs.utils.HexUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import com.erydevs.EryBuyer;
-import com.erydevs.utils.HexUtils;
-import com.erydevs.gui.Entry;
+
+import java.io.File;
 import java.util.*;
 
 public class MenuLoader {
     private final EryBuyer plugin;
-    private final Map<Integer, Entry> combinedSlotMap;
-    private final Map<String, Map<Integer, Entry>> entriesByTitle;
-    private final Map<String, Map<Integer, List<String>>> actionsByTitle;
-    private final Map<String, Integer> exitSlotByTitle;
-    private final Map<String, Integer> autobuyerSlotByTitle;
-    private final Map<String, String> menuNameByTitle;
+    private final MenuCache cache;
 
-    public MenuLoader(EryBuyer plugin, Map<Integer, Entry> combinedSlotMap,
-                      Map<String, Map<Integer, Entry>> entriesByTitle,
-                      Map<String, Map<Integer, List<String>>> actionsByTitle,
-                      Map<String, Integer> exitSlotByTitle, Map<String, Integer> autobuyerSlotByTitle,
-                      Map<String, String> menuNameByTitle) {
+    public MenuLoader(EryBuyer plugin, MenuCache cache) {
         this.plugin = plugin;
-        this.combinedSlotMap = combinedSlotMap;
-        this.entriesByTitle = entriesByTitle;
-        this.actionsByTitle = actionsByTitle;
-        this.exitSlotByTitle = exitSlotByTitle;
-        this.autobuyerSlotByTitle = autobuyerSlotByTitle;
-        this.menuNameByTitle = menuNameByTitle;
+        this.cache = cache;
     }
 
     public void loadAllMenus() {
@@ -36,28 +24,41 @@ public class MenuLoader {
         if (register == null) return;
         for (String path : register) {
             if (path == null || path.trim().isEmpty()) continue;
-            java.io.File f = new java.io.File(plugin.getDataFolder(), path);
+            File f = new File(plugin.getDataFolder(), path);
             if (!f.exists()) continue;
             loadMenu(f);
         }
     }
 
-    private void loadMenu(java.io.File f) {
+    private void loadMenu(File f) {
         FileConfiguration cfg = YamlConfiguration.loadConfiguration(f);
         String menuName = f.getName().replace(".yml", "");
         String title = HexUtils.colorize(cfg.getString("name", menuName));
-        menuNameByTitle.put(title, menuName);
-        exitSlotByTitle.put(title, cfg.getInt("knops-settings.1.slot"));
-        autobuyerSlotByTitle.put(title, cfg.getInt("knops-settings.2.slot"));
+
+        int exitSlot = cfg.getInt("knops-settings.1.slot", -1);
 
         Map<Integer, Entry> entries = new HashMap<>();
         Map<Integer, List<String>> actions = new HashMap<>();
+
         loadItemSettings(cfg, entries);
         loadMenuSettings(cfg, entries, actions);
         loadKnopsSettings(cfg, entries, actions);
 
-        entriesByTitle.put(title, entries);
-        actionsByTitle.put(title, actions);
+        int autobuyerSlot = findAutobuyerSlot(actions);
+
+        cache.addMenu(title, menuName, exitSlot, autobuyerSlot, entries, actions);
+    }
+
+    private int findAutobuyerSlot(Map<Integer, List<String>> actions) {
+        for (Map.Entry<Integer, List<String>> entry : actions.entrySet()) {
+            List<String> acts = entry.getValue();
+            for (String action : acts) {
+                if (action != null && action.contains("[command] autobuyer")) {
+                    return entry.getKey();
+                }
+            }
+        }
+        return -1;
     }
 
     private void loadItemSettings(FileConfiguration cfg, Map<Integer, Entry> entries) {
@@ -71,7 +72,6 @@ public class MenuLoader {
                         cfg.getStringList(path + ".lore"), cfg.getDouble(path + ".prince-x1"),
                         cfg.getDouble(path + ".prince-x64"), slot);
                 entries.put(slot, e);
-                combinedSlotMap.put(combinedSlotMap.size(), e);
             }
         }
     }
@@ -91,13 +91,17 @@ public class MenuLoader {
     }
 
     private void loadMenuOrKnopsItem(FileConfiguration cfg, Map<Integer, Entry> entries, Map<Integer, List<String>> actions, String path, String id) {
+        if (!cfg.contains(path + ".slot")) return;
+
         int slot = cfg.getInt(path + ".slot");
         if (slot < 0) return;
+
         Material m = Material.matchMaterial(cfg.getString(path + ".material"));
         if (m != null) {
             Entry e = new Entry(id, m, cfg.getString(path + ".name"), cfg.getStringList(path + ".lore"), 0.0, 0.0, slot);
             entries.put(slot, e);
         }
+
         List<String> acts = cfg.getStringList(path + ".action");
         if ((acts == null || acts.isEmpty()) && cfg.contains(path + ".action")) {
             String single = cfg.getString(path + ".action");

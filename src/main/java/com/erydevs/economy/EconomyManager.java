@@ -18,11 +18,25 @@ public class EconomyManager {
     }
 
     private boolean setup() {
-        if (plugin.getServer().getPluginManager().getPlugin("Vault") == null) return false;
+        if (plugin.getServer().getPluginManager().getPlugin("Vault") == null) {
+            plugin.getLogger().info("Vault не подключен");
+            return false;
+        }
+        
         RegisteredServiceProvider<Economy> rsp = plugin.getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) return false;
+        if (rsp == null) {
+            plugin.getLogger().info("Vault не подключен");
+            return false;
+        }
+        
         economy = rsp.getProvider();
-        return economy != null;
+        if (economy != null) {
+            plugin.getLogger().info("Vault подключен");
+            return true;
+        }
+        
+        plugin.getLogger().info("Vault не подключен");
+        return false;
     }
 
     public boolean isEnabled() {

@@ -4,11 +4,11 @@ com\erydevs\listeners\PlayerQuitListener.class
 com\erydevs\utils\HexUtils.class
 com\erydevs\data\DataBase.class
 com\erydevs\commands\BuyerCommand.class
-com\erydevs\listeners\PlayerInventoryListener.class
 com\erydevs\autobuyer\AutoBuyerManager.class
 com\erydevs\levels\LevelConfig.class
 com\erydevs\gui\BuyerSite$ClickType.class
 com\erydevs\bossbar\BossBarManager.class
+com\erydevs\gui\menu\MenuCache.class
 com\erydevs\gui\BuyerSite.class
 com\erydevs\gui\menu\ItemStackFactory.class
 com\erydevs\gui\Entry.class
@@ -17,6 +17,7 @@ com\erydevs\EryBuyer.class
 com\erydevs\commands\LevelCommand.class
 com\erydevs\commands\AutoBuyerCommand.class
 com\erydevs\gui\menu\MenuLoader.class
+com\erydevs\gui\menu\MenuLoad.class
 com\erydevs\listeners\InventoryListener.class
 com\erydevs\placeholders\PlaceholderAPIHook.class
 com\erydevs\levels\PlayerLevel.class

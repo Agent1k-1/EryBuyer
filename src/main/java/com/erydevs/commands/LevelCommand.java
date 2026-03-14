@@ -2,6 +2,7 @@ package com.erydevs.commands;
 
 import com.erydevs.EryBuyer;
 import com.erydevs.levels.PlayerLevel;
+import com.erydevs.placeholders.PlaceholderAPIHook;
 import com.erydevs.utils.HexUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -26,10 +27,7 @@ public class LevelCommand implements CommandExecutor {
         double remaining = Math.max(0, requiredForNext - playerLevel.getTotalEarned());
 
         for (String line : plugin.getConfigManager().getConfig().getStringList("message.level-info")) {
-            String processed = line.replace("%buyer_total_earned%", String.valueOf((long) playerLevel.getTotalEarned()))
-                    .replace("%buyer_current_level%", String.valueOf(playerLevel.getCurrentLevel()))
-                    .replace("%buyer_required_amount%", String.valueOf((long) remaining));
-            p.sendMessage(HexUtils.colorize(processed));
+            p.sendMessage(PlaceholderAPIHook.apply(line, p));
         }
 
         return true;

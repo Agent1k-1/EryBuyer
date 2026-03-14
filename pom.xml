@@ -6,7 +6,7 @@
 
   <groupId>com.erydevs</groupId>
   <artifactId>EryBuyer</artifactId>
-  <version>1.4.4</version>
+  <version>1.5</version>
   <packaging>jar</packaging>
 
   <name>EryBuyer</name>
@@ -86,6 +86,17 @@
           <artifactId>placeholderapi</artifactId>
           <version>2.11.5</version>
           <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.xerial</groupId>
+          <artifactId>sqlite-jdbc</artifactId>
+          <version>3.44.0.0</version>
+      </dependency>
+      <dependency>
+          <groupId>org.jetbrains</groupId>
+          <artifactId>annotations</artifactId>
+          <version>26.0.2</version>
+          <scope>compile</scope>
       </dependency>
   </dependencies>
 </project>

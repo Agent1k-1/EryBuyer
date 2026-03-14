@@ -9,19 +9,27 @@ public class DataBase {
 
     private Connection connection;
     private final File dbFile;
+    private static final int MAX_RETRIES = 3;
 
     public DataBase(File dataFolder) {
         this.dbFile = new File(dataFolder, "playerdata.db");
         connect();
-        createTable();
+        if (connection != null) {
+            createTable();
+        } else {
+            System.err.println("Не удалось подключиться к базе данных!");
+        }
     }
 
     private void connect() {
         try {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile.getAbsolutePath());
-        } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("SQLite база данных инициализирована: " + dbFile.getAbsolutePath());
+        } catch (ClassNotFoundException e) {
+            System.err.println("Ошибка: SQLite JDBC драйвер не найден!");
+        } catch (SQLException e) {
+            System.err.println("Ошибка подключения к БД: " + e.getMessage());
         }
     }
 
@@ -33,11 +41,16 @@ public class DataBase {
                     "total_earned REAL DEFAULT 0.0" +
                     ")");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Ошибка создания таблицы: " + e.getMessage());
         }
     }
 
     public PlayerLevel getPlayerData(UUID uuid) {
+        if (connection == null) {
+            System.err.println("Ошибка: соединение с БД не инициализировано");
+            return new PlayerLevel(uuid, 1, 0.0);
+        }
+        
         try (PreparedStatement stmt = connection.prepareStatement(
                 "SELECT current_level, total_earned FROM player_levels WHERE uuid = ?")) {
             stmt.setString(1, uuid.toString());
@@ -46,12 +59,17 @@ public class DataBase {
                 return new PlayerLevel(uuid, rs.getInt("current_level"), rs.getDouble("total_earned"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Ошибка чтения данных игрока: " + e.getMessage());
         }
         return new PlayerLevel(uuid, 1, 0.0);
     }
 
     public void savePlayerData(PlayerLevel player) {
+        if (connection == null) {
+            System.err.println("Ошибка: соединение с БД не инициализировано");
+            return;
+        }
+        
         try (PreparedStatement stmt = connection.prepareStatement(
                 "INSERT OR REPLACE INTO player_levels (uuid, current_level, total_earned) VALUES (?, ?, ?)")) {
             stmt.setString(1, player.getUuid().toString());
@@ -59,23 +77,52 @@ public class DataBase {
             stmt.setDouble(3, player.getTotalEarned());
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Ошибка сохранения данных игрока: " + e.getMessage());
         }
     }
 
     public void addPlayerEarnings(UUID uuid, double amount) {
-        PlayerLevel player = getPlayerData(uuid);
-        player.addEarnings(amount);
-        savePlayerData(player);
+        if (connection == null) {
+            System.err.println("Ошибка: соединение с БД не инициализировано");
+            return;
+        }
+        
+        try (PreparedStatement stmt = connection.prepareStatement(
+                "UPDATE player_levels SET total_earned = total_earned + ? WHERE uuid = ?")) {
+            stmt.setDouble(1, amount);
+            stmt.setString(2, uuid.toString());
+            int updated = stmt.executeUpdate();
+            
+            if (updated == 0) {
+                try (PreparedStatement insert = connection.prepareStatement(
+                        "INSERT INTO player_levels (uuid, current_level, total_earned) VALUES (?, 1, ?)")) {
+                    insert.setString(1, uuid.toString());
+                    insert.setDouble(2, amount);
+                    insert.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Ошибка операции с БД: " + e.getMessage());
+        }
     }
 
     public void closeConnection() {
         try {
             if (connection != null && !connection.isClosed()) {
                 connection.close();
+                System.out.println("Соединение с БД закрыто");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Ошибка закрытия БД: " + e.getMessage());
+        }
+    }
+
+    public boolean isConnected() {
+        if (connection == null) return false;
+        try {
+            return !connection.isClosed();
+        } catch (SQLException e) {
+            return false;
         }
     }
 }

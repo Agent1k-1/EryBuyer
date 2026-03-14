@@ -38,9 +38,8 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        com.erydevs.config.Configuration confMgr = plugin.getConfigManager();
         String menuName = plugin.getBuyerGUI().getMenuNameByTitle(title);
-        org.bukkit.configuration.file.FileConfiguration menuCfg = confMgr.getMenuConfig(menuName);
+        org.bukkit.configuration.file.FileConfiguration menuCfg = plugin.getMenuLoad().getMenuConfig(menuName);
         
         int exitSlot = plugin.getBuyerGUI().getExitSlot(title, menuCfg);
         if (exitSlot >= 0 && slot == exitSlot) {
@@ -65,101 +64,88 @@ public class InventoryListener implements Listener {
         }
 
         Entry entry = plugin.getBuyerGUI().getEntry(title, slot);
-        if (entry == null) return;
-        if (entry.priceX1 <= 0) return;
-        BuyerSite.ClickType clickType = e.isLeftClick() ? BuyerSite.ClickType.LEFT : BuyerSite.ClickType.RIGHT;
-        if (clickType == BuyerSite.ClickType.LEFT) {
-            sellAmount(p, entry, 1, entry.priceX1);
+        if (entry == null || entry.priceX1 <= 0) {
             return;
         }
-        if (clickType == BuyerSite.ClickType.RIGHT) {
-            int totalCount = 0;
-            for (int i = 0; i < p.getInventory().getSize(); i++) {
-                ItemStack it = p.getInventory().getItem(i);
-                if (it == null) continue;
-                if (it.getType() == entry.material) totalCount += it.getAmount();
-            }
+
+        if (e.isLeftClick()) {
+            handleSale(p, entry, 1, entry.priceX1);
+        } else if (e.isRightClick()) {
+            int totalCount = countItemsInInventory(p, entry.material);
             if (totalCount == 0) {
                 String msg = plugin.getConfigManager().getConfig().getString("message.no-item");
                 p.sendMessage(PlaceholderAPIHook.apply(msg, p, entry, 64));
                 playNoItemSound(p);
                 return;
             }
-            if (totalCount < 64) return;
-            removeExactAmountAndPay(p, entry, 64, entry.priceX64);
+            if (totalCount < 64) {
+                return;
+            }
+            handleSale(p, entry, 64, entry.priceX64);
         }
     }
 
-    private void sellAmount(Player p, Entry entry, int want, double unitPrice) {
-        int needed = want;
-        int sold = 0;
-        for (int i = 0; i < p.getInventory().getSize() && needed > 0; i++) {
+    private int countItemsInInventory(Player p, org.bukkit.Material material) {
+        int total = 0;
+        for (int i = 0; i < p.getInventory().getSize(); i++) {
             ItemStack is = p.getInventory().getItem(i);
-            if (is == null) continue;
-            if (is.getType() != entry.material) continue;
-            int can = Math.min(is.getAmount(), needed);
-            if (is.getAmount() > can) {
-                is.setAmount(is.getAmount() - can);
-                p.getInventory().setItem(i, is);
-            } else {
-                p.getInventory().setItem(i, null);
+            if (is != null && is.getType() == material) {
+                total += is.getAmount();
             }
-            sold += can;
-            needed -= can;
         }
-        if (sold == 0) {
+        return total;
+    }
+
+    private void handleSale(Player p, Entry entry, int requestedAmount, double unitPrice) {
+        int actualAmount = removeItemsFromInventory(p, entry, requestedAmount);
+        
+        if (actualAmount == 0) {
             String msg = plugin.getConfigManager().getConfig().getString("message.no-item");
-            p.sendMessage(PlaceholderAPIHook.apply(msg, p, entry, want));
+            p.sendMessage(PlaceholderAPIHook.apply(msg, p, entry, requestedAmount));
             playNoItemSound(p);
             return;
         }
-        com.erydevs.levels.PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(p.getUniqueId());
-        double multiplier = 1.0 + plugin.getLevelConfig().getMultiplierByLevel(playerLevel.getCurrentLevel());
-        double total = unitPrice * sold * multiplier;
-        Economy econ = plugin.getEconomyManager().getEconomy();
-        if (econ != null) econ.depositPlayer(p, total);
-        
-        int maxLevel = plugin.getLevelConfig().getMaxLevel();
-        if (playerLevel.getCurrentLevel() < maxLevel) {
-            plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), total);
-            checkAndUpdateLevel(p);
-        }
-        
-        String raw = plugin.getConfigManager().getConfig().getString("message.successfully-buyer");
-        raw = raw.replace("%prince%", String.format("%.2f", total));
-        p.sendMessage(PlaceholderAPIHook.apply(raw, p, entry, sold));
+
+        processSaleTransaction(p, entry, actualAmount, unitPrice);
     }
 
-    private void removeExactAmountAndPay(Player p, Entry entry, int amount, double totalPrice) {
-        int needed = amount;
-        for (int i = 0; i < p.getInventory().getSize() && needed > 0; i++) {
+    private int removeItemsFromInventory(Player p, Entry entry, int amountNeeded) {
+        int removed = 0;
+        for (int i = 0; i < p.getInventory().getSize() && removed < amountNeeded; i++) {
             ItemStack is = p.getInventory().getItem(i);
-            if (is == null) continue;
-            if (is.getType() != entry.material) continue;
-            int can = Math.min(is.getAmount(), needed);
-            if (is.getAmount() > can) {
-                is.setAmount(is.getAmount() - can);
+            if (is == null || is.getType() != entry.material) {
+                continue;
+            }
+            int canRemove = Math.min(is.getAmount(), amountNeeded - removed);
+            if (is.getAmount() > canRemove) {
+                is.setAmount(is.getAmount() - canRemove);
                 p.getInventory().setItem(i, is);
             } else {
                 p.getInventory().setItem(i, null);
             }
-            needed -= can;
+            removed += canRemove;
         }
+        return removed;
+    }
+
+    private void processSaleTransaction(Player p, Entry entry, int amount, double unitPrice) {
         com.erydevs.levels.PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(p.getUniqueId());
         double multiplier = 1.0 + plugin.getLevelConfig().getMultiplierByLevel(playerLevel.getCurrentLevel());
-        double finalPrice = totalPrice * multiplier;
+        double totalPrice = unitPrice * amount * multiplier;
+
         Economy econ = plugin.getEconomyManager().getEconomy();
-        if (econ != null) econ.depositPlayer(p, finalPrice);
+        if (econ != null) {
+            econ.depositPlayer(p, totalPrice);
+        }
         
         int maxLevel = plugin.getLevelConfig().getMaxLevel();
         if (playerLevel.getCurrentLevel() < maxLevel) {
-            plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), finalPrice);
+            plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), totalPrice);
             checkAndUpdateLevel(p);
         }
-        
+
         String raw = plugin.getConfigManager().getConfig().getString("message.successfully-buyer");
-        raw = raw.replace("%prince%", String.format("%.2f", finalPrice));
-        p.sendMessage(PlaceholderAPIHook.apply(raw, p, entry, amount));
+        p.sendMessage(PlaceholderAPIHook.apply(raw, p, entry, amount, totalPrice));
     }
 
     private void playMenuOpenSound(Player player) {
@@ -183,13 +169,11 @@ public class InventoryListener implements Listener {
             playerLevel.setCurrentLevel(newLevel);
             plugin.getDataBase().savePlayerData(playerLevel);
             String msg = plugin.getConfigManager().getConfig().getString("message.level-up");
-            msg = msg.replace("%new_level%", String.valueOf(newLevel));
-            p.sendMessage(com.erydevs.utils.HexUtils.colorize(msg));
+            p.sendMessage(PlaceholderAPIHook.apply(msg, p));
             try {
                 Sound s = Sound.valueOf(plugin.getConfigManager().getConfig().getString("sound.autobuyer-sound"));
                 p.playSound(p.getLocation(), s, 1.0f, 1.0f);
             } catch (Exception ignored) {}
         }
     }
-
 }

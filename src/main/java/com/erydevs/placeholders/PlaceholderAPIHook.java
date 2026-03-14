@@ -5,8 +5,10 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
 import com.erydevs.EryBuyer;
 import com.erydevs.gui.Entry;
+import com.erydevs.levels.PlayerLevel;
 import com.erydevs.utils.HexUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
@@ -21,6 +23,10 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         this.plugin = plugin;
     }
 
+    public static boolean isAvailable() {
+        return Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
+    }
+
     @Override
     public @NotNull String getIdentifier() {
         return "erybuyer";
@@ -28,7 +34,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getAuthor() {
-        return "EryDev";
+        return "Agent1k";
     }
 
     @Override
@@ -61,9 +67,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         }
     }
 
-    public static String apply(String input, Player player, Entry entry, int amount) {
-        if (input == null) return "";
-        
+    private static Map<String, String> buildPlaceholders(Player player, Entry entry, int amount, double customPrice) {
         EryBuyer plugin = EryBuyer.getInstance();
         String itemName = entry != null ? stripColors(entry.name) : "";
         double priceX1 = entry != null ? entry.priceX1 : 0.0;
@@ -73,7 +77,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
                 plugin.getConfigManager().getConfig().getString("placeholder.enable-autobuyer") :
                 plugin.getConfigManager().getConfig().getString("placeholder.disable-autobuyer");
         
-        com.erydevs.levels.PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(player.getUniqueId());
+        PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(player.getUniqueId());
         double totalEarned = playerLevel.getTotalEarned();
         int currentLevel = playerLevel.getCurrentLevel();
         int nextLevel = currentLevel + 1;
@@ -85,23 +89,43 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         placeholders.put("%prince-x1%", formatDouble(priceX1));
         placeholders.put("%prince-x64%", formatDouble(priceX64));
         placeholders.put("%price%", formatDouble(priceX1));
+        placeholders.put("%prince%", formatDouble(customPrice));
         placeholders.put("%item_sell%", String.valueOf(amount));
         placeholders.put("%balance%", formatDouble(getBalance(player)));
         placeholders.put("%autobuyer_status%", autobuyerStatus);
         placeholders.put("%buyer_current_level%", String.valueOf(currentLevel));
         placeholders.put("%buyer_total_earned%", String.valueOf((long) totalEarned));
         placeholders.put("%buyer_required_amount%", String.valueOf((long) remaining));
+        placeholders.put("%new_level%", String.valueOf(nextLevel));
         
-        String s = input;
-        for (Map.Entry<String, String> placeholder : placeholders.entrySet()) {
-            s = s.replace(placeholder.getKey(), placeholder.getValue());
-        }
+        return placeholders;
+    }
+
+    public static String apply(String input, Player player, Entry entry, int amount, double customPrice) {
+        if (input == null) return "";
+        if (player == null) return HexUtils.colorize(input);
         
-        return HexUtils.colorize(s);
+        Map<String, String> placeholders = buildPlaceholders(player, entry, amount, customPrice);
+        return applyPlaceholders(input, placeholders);
+    }
+
+    public static String apply(String input, Player player, Entry entry, int amount) {
+        return apply(input, player, entry, amount, entry != null ? entry.priceX1 : 0.0);
     }
 
     public static String apply(String input, Player player) {
-        return apply(input, player, null, 0);
+        return apply(input, player, null, 0, 0.0);
+    }
+
+    public static String applyPlaceholders(String input, Map<String, String> placeholders) {
+        if (input == null) return "";
+        
+        String result = input;
+        for (Map.Entry<String, String> placeholder : placeholders.entrySet()) {
+            result = result.replace(placeholder.getKey(), placeholder.getValue());
+        }
+        
+        return HexUtils.colorize(result);
     }
 
     public static List<String> applyList(List<String> list, Player player, Entry entry, int amount) {
