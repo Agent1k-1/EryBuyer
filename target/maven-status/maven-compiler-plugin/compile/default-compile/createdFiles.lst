@@ -22,3 +22,4 @@ com\erydevs\levels\PlayerLevel.class
 com\erydevs\gui\BuyerGUI.class
 com\erydevs\economy\EconomyManager.class
 com\erydevs\levels\LevelData.class
+com\erydevs\sound\Sounds.class

@@ -5,8 +5,8 @@ import com.erydevs.gui.Entry;
 import com.erydevs.gui.BuyerSite;
 import com.erydevs.placeholders.PlaceholderAPIHook;
 import com.erydevs.gui.action.ActionMenu;
+import com.erydevs.sound.Sounds;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,9 +16,11 @@ import org.bukkit.inventory.ItemStack;
 public class InventoryListener implements Listener {
 
     private final EryBuyer plugin;
+    private final Sounds sounds;
 
     public InventoryListener(EryBuyer plugin) {
         this.plugin = plugin;
+        this.sounds = new Sounds(plugin);
     }
 
     @EventHandler
@@ -56,7 +58,7 @@ public class InventoryListener implements Listener {
             String raw = plugin.getConfigManager().getConfig().getString(path, enabled ? "&7Автоскупщик &aвключён" : "&7Автоскупщик &cвыключен");
             p.sendMessage(PlaceholderAPIHook.apply(raw, p));
             p.openInventory(plugin.getBuyerGUI().createInventory(p, menuName));
-            playMenuOpenSound(p);
+            sounds.playMenuOpenSound(p);
             return;
         }
         
@@ -77,7 +79,7 @@ public class InventoryListener implements Listener {
             if (totalCount == 0) {
                 String msg = plugin.getConfigManager().getConfig().getString("message.no-item");
                 p.sendMessage(PlaceholderAPIHook.apply(msg, p, entry, 64));
-                playNoItemSound(p);
+                sounds.playNoItemSound(p);
                 return;
             }
             if (totalCount < 64) return;
@@ -119,7 +121,7 @@ public class InventoryListener implements Listener {
         if (actualAmount == 0) {
             String msg = plugin.getConfigManager().getConfig().getString("message.no-item");
             p.sendMessage(PlaceholderAPIHook.apply(msg, p, entry, requestedAmount));
-            playNoItemSound(p);
+            sounds.playNoItemSound(p);
             return;
         }
         
@@ -138,20 +140,6 @@ public class InventoryListener implements Listener {
         
         String raw = plugin.getConfigManager().getConfig().getString("message.successfully-buyer");
         p.sendMessage(PlaceholderAPIHook.apply(raw, p, entry, actualAmount, totalPrice));
-    }
-
-    private void playMenuOpenSound(Player player) {
-        try {
-            Sound s = Sound.valueOf(plugin.getConfigManager().getConfig().getString("sound.sound_open_menu"));
-            player.playSound(player.getLocation(), s, 1.0f, 1.0f);
-        } catch (Exception ignored) {}
-    }
-
-    private void playNoItemSound(Player player) {
-        try {
-            Sound s = Sound.valueOf(plugin.getConfigManager().getConfig().getString("sound.no-item-sound"));
-            player.playSound(player.getLocation(), s, 1.0f, 1.0f);
-        } catch (Exception ignored) {}
     }
 
     private void checkAndUpdateLevel(Player p) {
