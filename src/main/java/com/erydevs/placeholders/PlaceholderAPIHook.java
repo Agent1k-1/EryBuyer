@@ -13,6 +13,7 @@ import com.erydevs.utils.HexUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.jetbrains.annotations.NotNull;
 
 public class PlaceholderAPIHook extends PlaceholderExpansion {
@@ -106,7 +107,13 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         if (player == null) return HexUtils.colorize(input);
         
         Map<String, String> placeholders = buildPlaceholders(player, entry, amount, customPrice);
-        return applyPlaceholders(input, placeholders);
+        String result = applyPlaceholders(input, placeholders);
+        
+        if (isAvailable()) {
+            result = PlaceholderAPI.setPlaceholders(player, result);
+        }
+        
+        return result;
     }
 
     public static String apply(String input, Player player, Entry entry, int amount) {
@@ -115,6 +122,21 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
 
     public static String apply(String input, Player player) {
         return apply(input, player, null, 0, 0.0);
+    }
+
+    public static String applyLevelUp(String input, Player player, int newLevel) {
+        if (input == null) return "";
+        if (player == null) return HexUtils.colorize(input);
+        
+        Map<String, String> placeholders = buildPlaceholders(player, null, 0, 0.0);
+        placeholders.put("%new_level%", String.valueOf(newLevel));
+        String result = applyPlaceholders(input, placeholders);
+        
+        if (isAvailable()) {
+            result = PlaceholderAPI.setPlaceholders(player, result);
+        }
+        
+        return result;
     }
 
     public static String applyPlaceholders(String input, Map<String, String> placeholders) {

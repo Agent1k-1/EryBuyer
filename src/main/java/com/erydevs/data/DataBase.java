@@ -50,7 +50,7 @@ public class DataBase {
             System.err.println("Ошибка: соединение с БД не инициализировано");
             return new PlayerLevel(uuid, 1, 0.0);
         }
-        
+
         try (PreparedStatement stmt = connection.prepareStatement(
                 "SELECT current_level, total_earned FROM player_levels WHERE uuid = ?")) {
             stmt.setString(1, uuid.toString());
@@ -69,7 +69,7 @@ public class DataBase {
             System.err.println("Ошибка: соединение с БД не инициализировано");
             return;
         }
-        
+
         try (PreparedStatement stmt = connection.prepareStatement(
                 "INSERT OR REPLACE INTO player_levels (uuid, current_level, total_earned) VALUES (?, ?, ?)")) {
             stmt.setString(1, player.getUuid().toString());
@@ -86,13 +86,13 @@ public class DataBase {
             System.err.println("Ошибка: соединение с БД не инициализировано");
             return;
         }
-        
+
         try (PreparedStatement stmt = connection.prepareStatement(
                 "UPDATE player_levels SET total_earned = total_earned + ? WHERE uuid = ?")) {
             stmt.setDouble(1, amount);
             stmt.setString(2, uuid.toString());
             int updated = stmt.executeUpdate();
-            
+
             if (updated == 0) {
                 try (PreparedStatement insert = connection.prepareStatement(
                         "INSERT INTO player_levels (uuid, current_level, total_earned) VALUES (?, 1, ?)")) {

@@ -29,6 +29,7 @@ placeholder:
 sound: # звуки
   sound_open_menu: BLOCK_CHEST_OPEN
   no-item-sound: ENTITY_VILLAGER_NO
+  sound_exchange: BLOCK_NOTE_BLOCK_XYLOPHONE # Звук удачной сдачи предмета скупщику
   autobuyer-sound: BLOCK_NOTE_BLOCK_XYLOPHONE
 
 bossbar-settings:
@@ -43,18 +44,16 @@ levels:
     required-money: 0.0
   2:
     multiplier: 0.1
-    required-money: 1000.0
-
-
+    required-money: 16000.0
   3:
     multiplier: 0.2
-    required-money: 5000.0
+    required-money: 35000.0
   4:
     multiplier: 0.3
-    required-money: 10000.0
+    required-money: 70000.0
   5:
     multiplier: 0.5
-    required-money: 50000.0
+    required-money: 140000.0
 
 register-menu:
   - "menu/menu.yml"

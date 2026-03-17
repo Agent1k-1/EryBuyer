@@ -1,7 +1,9 @@
 package com.erydevs.config;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import java.io.File;
 
 public class Configuration {
 
@@ -15,5 +17,11 @@ public class Configuration {
 
     public FileConfiguration getConfig() {
         return config;
+    }
+
+    public FileConfiguration getMenuConfig(String name) {
+        File file = new File(plugin.getDataFolder(), "menu/" + name + ".yml");
+        if (!file.exists()) return YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "menu/menu.yml"));
+        return YamlConfiguration.loadConfiguration(file);
     }
 }

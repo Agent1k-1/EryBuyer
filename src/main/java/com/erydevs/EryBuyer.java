@@ -5,7 +5,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.erydevs.config.Configuration;
 import com.erydevs.gui.BuyerGUI;
-import com.erydevs.gui.menu.MenuLoad;
 import com.erydevs.commands.BuyerCommand;
 import com.erydevs.commands.AutoBuyerCommand;
 import com.erydevs.commands.LevelCommand;
@@ -26,7 +25,6 @@ public class EryBuyer extends JavaPlugin {
     private static EryBuyer instance;
     private EconomyManager economyManager;
     private Configuration configManager;
-    private MenuLoad menuLoad;
     private BuyerGUI buyerGUI;
     private AutoBuyerManager autoBuyerManager;
     private BossBarManager bossBarManager;
@@ -49,7 +47,6 @@ public class EryBuyer extends JavaPlugin {
         }
 
         configManager = new Configuration(this);
-        menuLoad = new MenuLoad(this);
         levelConfig = new LevelConfig(this);
         dataBase = new DataBase(getDataFolder());
         economyManager = new EconomyManager(this);
@@ -124,10 +121,6 @@ public class EryBuyer extends JavaPlugin {
 
     public Configuration getConfigManager() {
         return configManager;
-    }
-
-    public MenuLoad getMenuLoad() {
-        return menuLoad;
     }
 
     public BuyerGUI getBuyerGUI() {

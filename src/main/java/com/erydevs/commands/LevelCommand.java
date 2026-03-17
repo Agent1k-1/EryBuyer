@@ -3,7 +3,6 @@ package com.erydevs.commands;
 import com.erydevs.EryBuyer;
 import com.erydevs.levels.PlayerLevel;
 import com.erydevs.placeholders.PlaceholderAPIHook;
-import com.erydevs.utils.HexUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,10 +20,6 @@ public class LevelCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!(sender instanceof Player)) return true;
         Player p = (Player) sender;
-
-        PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(p.getUniqueId());
-        double requiredForNext = plugin.getLevelConfig().getRequiredMoneyForLevel(playerLevel.getCurrentLevel() + 1);
-        double remaining = Math.max(0, requiredForNext - playerLevel.getTotalEarned());
 
         for (String line : plugin.getConfigManager().getConfig().getStringList("message.level-info")) {
             p.sendMessage(PlaceholderAPIHook.apply(line, p));

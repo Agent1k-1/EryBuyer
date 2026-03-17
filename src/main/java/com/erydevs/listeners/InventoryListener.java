@@ -38,8 +38,9 @@ public class InventoryListener implements Listener {
             return;
         }
 
+        com.erydevs.config.Configuration confMgr = plugin.getConfigManager();
         String menuName = plugin.getBuyerGUI().getMenuNameByTitle(title);
-        org.bukkit.configuration.file.FileConfiguration menuCfg = plugin.getMenuLoad().getMenuConfig(menuName);
+        org.bukkit.configuration.file.FileConfiguration menuCfg = confMgr.getMenuConfig(menuName);
         
         int exitSlot = plugin.getBuyerGUI().getExitSlot(title, menuCfg);
         if (exitSlot >= 0 && slot == exitSlot) {
@@ -64,13 +65,14 @@ public class InventoryListener implements Listener {
         }
 
         Entry entry = plugin.getBuyerGUI().getEntry(title, slot);
-        if (entry == null || entry.priceX1 <= 0) {
+        if (entry == null) return;
+        if (entry.priceX1 <= 0) return;
+        BuyerSite.ClickType clickType = e.isLeftClick() ? BuyerSite.ClickType.LEFT : BuyerSite.ClickType.RIGHT;
+        if (clickType == BuyerSite.ClickType.LEFT) {
+            processSale(p, entry, 1, entry.priceX1);
             return;
         }
-
-        if (e.isLeftClick()) {
-            handleSale(p, entry, 1, entry.priceX1);
-        } else if (e.isRightClick()) {
+        if (clickType == BuyerSite.ClickType.RIGHT) {
             int totalCount = countItemsInInventory(p, entry.material);
             if (totalCount == 0) {
                 String msg = plugin.getConfigManager().getConfig().getString("message.no-item");
@@ -78,10 +80,8 @@ public class InventoryListener implements Listener {
                 playNoItemSound(p);
                 return;
             }
-            if (totalCount < 64) {
-                return;
-            }
-            handleSale(p, entry, 64, entry.priceX64);
+            if (totalCount < 64) return;
+            processSale(p, entry, 64, entry.priceX1);
         }
     }
 
@@ -96,26 +96,11 @@ public class InventoryListener implements Listener {
         return total;
     }
 
-    private void handleSale(Player p, Entry entry, int requestedAmount, double unitPrice) {
-        int actualAmount = removeItemsFromInventory(p, entry, requestedAmount);
-        
-        if (actualAmount == 0) {
-            String msg = plugin.getConfigManager().getConfig().getString("message.no-item");
-            p.sendMessage(PlaceholderAPIHook.apply(msg, p, entry, requestedAmount));
-            playNoItemSound(p);
-            return;
-        }
-
-        processSaleTransaction(p, entry, actualAmount, unitPrice);
-    }
-
     private int removeItemsFromInventory(Player p, Entry entry, int amountNeeded) {
         int removed = 0;
         for (int i = 0; i < p.getInventory().getSize() && removed < amountNeeded; i++) {
             ItemStack is = p.getInventory().getItem(i);
-            if (is == null || is.getType() != entry.material) {
-                continue;
-            }
+            if (is == null || is.getType() != entry.material) continue;
             int canRemove = Math.min(is.getAmount(), amountNeeded - removed);
             if (is.getAmount() > canRemove) {
                 is.setAmount(is.getAmount() - canRemove);
@@ -128,24 +113,31 @@ public class InventoryListener implements Listener {
         return removed;
     }
 
-    private void processSaleTransaction(Player p, Entry entry, int amount, double unitPrice) {
-        com.erydevs.levels.PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(p.getUniqueId());
-        double multiplier = 1.0 + plugin.getLevelConfig().getMultiplierByLevel(playerLevel.getCurrentLevel());
-        double totalPrice = unitPrice * amount * multiplier;
-
-        Economy econ = plugin.getEconomyManager().getEconomy();
-        if (econ != null) {
-            econ.depositPlayer(p, totalPrice);
+    private void processSale(Player p, Entry entry, int requestedAmount, double unitPrice) {
+        int actualAmount = removeItemsFromInventory(p, entry, requestedAmount);
+        
+        if (actualAmount == 0) {
+            String msg = plugin.getConfigManager().getConfig().getString("message.no-item");
+            p.sendMessage(PlaceholderAPIHook.apply(msg, p, entry, requestedAmount));
+            playNoItemSound(p);
+            return;
         }
+        
+        com.erydevs.levels.PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(p.getUniqueId());
+        double basePrice = unitPrice * actualAmount;
+        double multiplier = 1.0 + plugin.getLevelConfig().getMultiplierByLevel(playerLevel.getCurrentLevel());
+        double totalPrice = basePrice * multiplier;
+        Economy econ = plugin.getEconomyManager().getEconomy();
+        if (econ != null) econ.depositPlayer(p, totalPrice);
         
         int maxLevel = plugin.getLevelConfig().getMaxLevel();
         if (playerLevel.getCurrentLevel() < maxLevel) {
-            plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), totalPrice);
+            plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), basePrice);
             checkAndUpdateLevel(p);
         }
-
+        
         String raw = plugin.getConfigManager().getConfig().getString("message.successfully-buyer");
-        p.sendMessage(PlaceholderAPIHook.apply(raw, p, entry, amount, totalPrice));
+        p.sendMessage(PlaceholderAPIHook.apply(raw, p, entry, actualAmount, totalPrice));
     }
 
     private void playMenuOpenSound(Player player) {
@@ -164,16 +156,20 @@ public class InventoryListener implements Listener {
 
     private void checkAndUpdateLevel(Player p) {
         com.erydevs.levels.PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(p.getUniqueId());
-        int newLevel = plugin.getLevelConfig().getLevelByMoney(playerLevel.getTotalEarned());
-        if (newLevel > playerLevel.getCurrentLevel()) {
-            playerLevel.setCurrentLevel(newLevel);
-            plugin.getDataBase().savePlayerData(playerLevel);
-            String msg = plugin.getConfigManager().getConfig().getString("message.level-up");
-            p.sendMessage(PlaceholderAPIHook.apply(msg, p));
-            try {
-                Sound s = Sound.valueOf(plugin.getConfigManager().getConfig().getString("sound.autobuyer-sound"));
-                p.playSound(p.getLocation(), s, 1.0f, 1.0f);
-            } catch (Exception ignored) {}
+        int maxLevel = plugin.getLevelConfig().getMaxLevel();
+        double totalEarned = playerLevel.getTotalEarned();
+        
+        while (playerLevel.getCurrentLevel() < maxLevel) {
+            int nextLevel = playerLevel.getCurrentLevel() + 1;
+            if (plugin.getLevelConfig().getRequiredMoneyForLevel(nextLevel) <= totalEarned) {
+                playerLevel.setCurrentLevel(nextLevel);
+                plugin.getDataBase().savePlayerData(playerLevel);
+                String msg = plugin.getConfigManager().getConfig().getString("message.level-up");
+                p.sendMessage(com.erydevs.placeholders.PlaceholderAPIHook.applyLevelUp(msg, p, nextLevel));
+            } else {
+                break;
+            }
         }
     }
+
 }
