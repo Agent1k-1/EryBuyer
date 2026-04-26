@@ -6,13 +6,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class EconomyManager {
+public class VaultAPI {
 
     private final JavaPlugin plugin;
     private Economy economy;
     private boolean enabled;
 
-    public EconomyManager(JavaPlugin plugin) {
+    public VaultAPI(JavaPlugin plugin) {
         this.plugin = plugin;
         this.enabled = setup();
     }

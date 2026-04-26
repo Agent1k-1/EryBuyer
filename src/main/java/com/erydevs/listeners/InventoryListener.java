@@ -5,7 +5,7 @@ import com.erydevs.gui.Entry;
 import com.erydevs.gui.BuyerSite;
 import com.erydevs.placeholders.PlaceholderAPIHook;
 import com.erydevs.gui.action.ActionMenu;
-import com.erydevs.sound.Sounds;
+import com.erydevs.utils.sound.Sounds;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -40,9 +40,8 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        com.erydevs.config.Configuration confMgr = plugin.getConfigManager();
         String menuName = plugin.getBuyerGUI().getMenuNameByTitle(title);
-        org.bukkit.configuration.file.FileConfiguration menuCfg = confMgr.getMenuConfig(menuName);
+        org.bukkit.configuration.file.FileConfiguration menuCfg = plugin.getMenuRegistry().getMenuConfig(menuName);
         
         int exitSlot = plugin.getBuyerGUI().getExitSlot(title, menuCfg);
         if (exitSlot >= 0 && slot == exitSlot) {
@@ -54,8 +53,7 @@ public class InventoryListener implements Listener {
         if (autobuyerSlot >= 0 && slot == autobuyerSlot) {
             plugin.getAutoBuyerManager().toggleAutobuyer(p);
             boolean enabled = plugin.getAutoBuyerManager().isAutobuyerEnabled(p);
-            String path = enabled ? "message.auto-buyer-on" : "message.auto-buyer-off";
-            String raw = plugin.getConfigManager().getConfig().getString(path, enabled ? "&7Автоскупщик &aвключён" : "&7Автоскупщик &cвыключен");
+            String raw = enabled ? plugin.getConfigManager().getMessageAutoBuyerOn() : plugin.getConfigManager().getMessageAutoBuyerOff();
             p.sendMessage(PlaceholderAPIHook.apply(raw, p));
             p.openInventory(plugin.getBuyerGUI().createInventory(p, menuName));
             sounds.playMenuOpenSound(p);
@@ -69,7 +67,16 @@ public class InventoryListener implements Listener {
         Entry entry = plugin.getBuyerGUI().getEntry(title, slot);
         if (entry == null) return;
         if (entry.priceX1 <= 0) return;
-        BuyerSite.ClickType clickType = e.isLeftClick() ? BuyerSite.ClickType.LEFT : BuyerSite.ClickType.RIGHT;
+        
+        BuyerSite.ClickType clickType;
+        if (e.isShiftClick() && e.isLeftClick()) {
+            clickType = BuyerSite.ClickType.SHIFT_LEFT;
+        } else if (e.isLeftClick()) {
+            clickType = BuyerSite.ClickType.LEFT;
+        } else {
+            clickType = BuyerSite.ClickType.RIGHT;
+        }
+        
         if (clickType == BuyerSite.ClickType.LEFT) {
             processSale(p, entry, 1, entry.priceX1);
             return;
@@ -77,13 +84,24 @@ public class InventoryListener implements Listener {
         if (clickType == BuyerSite.ClickType.RIGHT) {
             int totalCount = countItemsInInventory(p, entry.material);
             if (totalCount == 0) {
-                String msg = plugin.getConfigManager().getConfig().getString("message.no-item");
+                String msg = plugin.getConfigManager().getMessageNoItem();
                 p.sendMessage(PlaceholderAPIHook.apply(msg, p, entry, 64));
                 sounds.playNoItemSound(p);
                 return;
             }
             if (totalCount < 64) return;
             processSale(p, entry, 64, entry.priceX1);
+            return;
+        }
+        if (clickType == BuyerSite.ClickType.SHIFT_LEFT) {
+            int totalCount = countItemsInInventory(p, entry.material);
+            if (totalCount == 0) {
+                String msg = plugin.getConfigManager().getMessageNoItem();
+                p.sendMessage(PlaceholderAPIHook.apply(msg, p, entry, totalCount));
+                sounds.playNoItemSound(p);
+                return;
+            }
+            processSale(p, entry, totalCount, entry.priceX1);
         }
     }
 
@@ -119,7 +137,7 @@ public class InventoryListener implements Listener {
         int actualAmount = removeItemsFromInventory(p, entry, requestedAmount);
         
         if (actualAmount == 0) {
-            String msg = plugin.getConfigManager().getConfig().getString("message.no-item");
+            String msg = plugin.getConfigManager().getMessageNoItem();
             p.sendMessage(PlaceholderAPIHook.apply(msg, p, entry, requestedAmount));
             sounds.playNoItemSound(p);
             return;
@@ -135,10 +153,14 @@ public class InventoryListener implements Listener {
         int maxLevel = plugin.getLevelConfig().getMaxLevel();
         if (playerLevel.getCurrentLevel() < maxLevel) {
             plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), basePrice);
+            com.erydevs.levels.PlayerLevel updatedLevel = plugin.getDataBase().getPlayerData(p.getUniqueId());
+            if (updatedLevel.getTotalEarned() >= plugin.getConfigManager().getBuyerTopUpdateMoney()) {
+                plugin.getDataBase().updateTopPlayers(plugin.getConfigManager().getBuyerTopUpdateMoney());
+            }
             checkAndUpdateLevel(p);
         }
         
-        String raw = plugin.getConfigManager().getConfig().getString("message.successfully-buyer");
+        String raw = plugin.getConfigManager().getMessageSuccessfullyBuyer();
         p.sendMessage(PlaceholderAPIHook.apply(raw, p, entry, actualAmount, totalPrice));
     }
 
@@ -152,7 +174,7 @@ public class InventoryListener implements Listener {
             if (plugin.getLevelConfig().getRequiredMoneyForLevel(nextLevel) <= totalEarned) {
                 playerLevel.setCurrentLevel(nextLevel);
                 plugin.getDataBase().savePlayerData(playerLevel);
-                String msg = plugin.getConfigManager().getConfig().getString("message.level-up");
+                String msg = plugin.getConfigManager().getMessageLevelUp();
                 p.sendMessage(com.erydevs.placeholders.PlaceholderAPIHook.applyLevelUp(msg, p, nextLevel));
             } else {
                 break;

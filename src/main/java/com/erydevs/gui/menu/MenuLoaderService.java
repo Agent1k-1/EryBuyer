@@ -8,31 +8,26 @@ import com.erydevs.utils.HexUtils;
 import com.erydevs.gui.Entry;
 import java.util.*;
 
-public class MenuLoader {
+public class MenuLoaderService {
     private final EryBuyer plugin;
     private final Map<Integer, Entry> combinedSlotMap;
     private final Map<String, Map<Integer, Entry>> entriesByTitle;
     private final Map<String, Map<Integer, List<String>>> actionsByTitle;
-    private final Map<String, Integer> exitSlotByTitle;
-    private final Map<String, Integer> autobuyerSlotByTitle;
     private final Map<String, String> menuNameByTitle;
 
-    public MenuLoader(EryBuyer plugin, Map<Integer, Entry> combinedSlotMap,
+    public MenuLoaderService(EryBuyer plugin, Map<Integer, Entry> combinedSlotMap,
                       Map<String, Map<Integer, Entry>> entriesByTitle,
                       Map<String, Map<Integer, List<String>>> actionsByTitle,
-                      Map<String, Integer> exitSlotByTitle, Map<String, Integer> autobuyerSlotByTitle,
                       Map<String, String> menuNameByTitle) {
         this.plugin = plugin;
         this.combinedSlotMap = combinedSlotMap;
         this.entriesByTitle = entriesByTitle;
         this.actionsByTitle = actionsByTitle;
-        this.exitSlotByTitle = exitSlotByTitle;
-        this.autobuyerSlotByTitle = autobuyerSlotByTitle;
         this.menuNameByTitle = menuNameByTitle;
     }
 
     public void loadAllMenus() {
-        List<String> register = plugin.getConfigManager().getConfig().getStringList("register-menu");
+        List<String> register = plugin.getConfigManager().getRegisterMenu();
         if (register == null) return;
         for (String path : register) {
             if (path == null || path.trim().isEmpty()) continue;
@@ -47,8 +42,6 @@ public class MenuLoader {
         String menuName = f.getName().replace(".yml", "");
         String title = HexUtils.colorize(cfg.getString("name", menuName));
         menuNameByTitle.put(title, menuName);
-        exitSlotByTitle.put(title, cfg.getInt("knops-settings.1.slot"));
-        autobuyerSlotByTitle.put(title, cfg.getInt("knops-settings.2.slot"));
 
         Map<Integer, Entry> entries = new HashMap<>();
         Map<Integer, List<String>> actions = new HashMap<>();

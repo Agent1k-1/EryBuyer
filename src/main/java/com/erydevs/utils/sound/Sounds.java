@@ -1,4 +1,4 @@
-package com.erydevs.sound;
+package com.erydevs.utils.sound;
 
 import com.erydevs.EryBuyer;
 import org.bukkit.Sound;
@@ -14,7 +14,7 @@ public class Sounds {
 
     public void playMenuOpenSound(Player player) {
         try {
-            String soundName = plugin.getConfigManager().getConfig().getString("sound.sound_open_menu");
+            String soundName = plugin.getConfigManager().getSoundOpenMenu();
             Sound sound = Sound.valueOf(soundName);
             player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
         } catch (Exception ignored) {}
@@ -22,7 +22,7 @@ public class Sounds {
 
     public void playNoItemSound(Player player) {
         try {
-            String soundName = plugin.getConfigManager().getConfig().getString("sound.no-item-sound");
+            String soundName = plugin.getConfigManager().getSoundNoItem();
             Sound sound = Sound.valueOf(soundName);
             player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
         } catch (Exception ignored) {}
@@ -30,7 +30,7 @@ public class Sounds {
 
     public void playAutobuyerSound(Player player) {
         try {
-            String soundName = plugin.getConfigManager().getConfig().getString("sound.autobuyer-sound");
+            String soundName = plugin.getConfigManager().getSoundAutobuyer();
             Sound sound = Sound.valueOf(soundName);
             player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
         } catch (Exception ignored) {}

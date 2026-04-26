@@ -21,7 +21,7 @@ public class LevelCommand implements CommandExecutor {
         if (!(sender instanceof Player)) return true;
         Player p = (Player) sender;
 
-        for (String line : plugin.getConfigManager().getConfig().getStringList("message.level-info")) {
+        for (String line : plugin.getConfigManager().getMessageLevelInfo()) {
             p.sendMessage(PlaceholderAPIHook.apply(line, p));
         }
 

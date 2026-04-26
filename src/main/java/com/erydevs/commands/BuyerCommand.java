@@ -25,7 +25,7 @@ public class BuyerCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         if (!player.hasPermission("erybuyer.open")) {
-            String msg = plugin.getConfigManager().getConfig().getString("message.no-permission");
+            String msg = plugin.getConfigManager().getMessageNoPermission();
             player.sendMessage(HexUtils.colorize(msg));
             return true;
         }
@@ -37,7 +37,7 @@ public class BuyerCommand implements CommandExecutor {
 
     private void playMenuOpenSound(Player player) {
         try {
-            Sound s = Sound.valueOf(plugin.getConfigManager().getConfig().getString("sound.sound_open_menu"));
+            Sound s = Sound.valueOf(plugin.getConfigManager().getSoundOpenMenu());
             player.playSound(player.getLocation(), s, 1.0f, 1.0f);
         } catch (Exception ignored) {
         }

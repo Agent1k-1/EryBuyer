@@ -9,10 +9,14 @@ commands:
   buyer:
     aliases:
       - seller
+      - скупщик
   autobuyer:
   level:
+  adminbuyer:
 permission:
   erybuyer.open:
     default: op
   erybuyer.autobuyer:
+    default: op
+  erybuyer.admin:
     default: op

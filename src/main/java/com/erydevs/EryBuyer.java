@@ -5,14 +5,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.erydevs.config.Configuration;
 import com.erydevs.gui.BuyerGUI;
+import com.erydevs.gui.menu.MenuRegistry;
 import com.erydevs.commands.BuyerCommand;
 import com.erydevs.commands.AutoBuyerCommand;
 import com.erydevs.commands.LevelCommand;
+import com.erydevs.commands.admin.AdminBuyerCommand;
+import com.erydevs.commands.admin.AdminBuyerTabCompleter;
 import com.erydevs.levels.LevelConfig;
 import com.erydevs.data.DataBase;
 import com.erydevs.listeners.InventoryListener;
 import com.erydevs.listeners.PlayerQuitListener;
-import com.erydevs.economy.EconomyManager;
+import com.erydevs.economy.VaultAPI;
 import com.erydevs.autobuyer.AutoBuyerManager;
 import com.erydevs.bossbar.BossBarManager;
 import com.erydevs.placeholders.PlaceholderAPIHook;
@@ -23,8 +26,9 @@ import java.util.List;
 public class EryBuyer extends JavaPlugin {
 
     private static EryBuyer instance;
-    private EconomyManager economyManager;
+    private VaultAPI vaultAPI;
     private Configuration configManager;
+    private MenuRegistry menuRegistry;
     private BuyerGUI buyerGUI;
     private AutoBuyerManager autoBuyerManager;
     private BossBarManager bossBarManager;
@@ -33,11 +37,13 @@ public class EryBuyer extends JavaPlugin {
 
     public void onEnable() {
         instance = this;
-        saveDefaultConfig();
+
+        configManager = new Configuration(this);
+        configManager.loadConfigs();
 
         File menuDir = new File(getDataFolder(), "menu");
         if (!menuDir.exists()) menuDir.mkdirs();
-        List<String> register = getConfig().getStringList("register-menu");
+        List<String> register = configManager.getRegisterMenu();
         for (String path : register) {
             if (path == null || path.trim().isEmpty()) continue;
             File f = new File(getDataFolder(), path);
@@ -46,17 +52,19 @@ public class EryBuyer extends JavaPlugin {
             }
         }
 
-        configManager = new Configuration(this);
+        menuRegistry = new MenuRegistry(this);
         levelConfig = new LevelConfig(this);
         dataBase = new DataBase(getDataFolder());
-        economyManager = new EconomyManager(this);
-        if (!economyManager.isEnabled()) {
+        vaultAPI = new VaultAPI(this);
+        if (!vaultAPI.isEnabled()) {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-        buyerGUI = new BuyerGUI(this, configManager);
+        buyerGUI = new BuyerGUI(this, configManager, menuRegistry);
         bossBarManager = new BossBarManager(this);
         autoBuyerManager = new AutoBuyerManager(this);
+        
+        startTopPlayersUpdateTask();
 
         if (getCommand("buyer") != null)
             getCommand("buyer").setExecutor(new BuyerCommand(this));
@@ -64,6 +72,11 @@ public class EryBuyer extends JavaPlugin {
             getCommand("autobuyer").setExecutor(new AutoBuyerCommand(this));
         if (getCommand("level") != null)
             getCommand("level").setExecutor(new LevelCommand(this));
+        if (getCommand("adminbuyer") != null) {
+            AdminBuyerCommand adminCommand = new AdminBuyerCommand(this);
+            getCommand("adminbuyer").setExecutor(adminCommand);
+            getCommand("adminbuyer").setTabCompleter(new AdminBuyerTabCompleter());
+        }
 
         getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), this);
@@ -73,6 +86,13 @@ public class EryBuyer extends JavaPlugin {
         }
 
         printStartupMessage();
+    }
+
+    private void startTopPlayersUpdateTask() {
+        long updateInterval = configManager.getBuyerTopUpdateInterval() * 20L;
+        Bukkit.getScheduler().runTaskTimer(this, () -> {
+            dataBase.updateTopPlayers(configManager.getBuyerTopUpdateMoney());
+        }, updateInterval, updateInterval);
     }
 
     private void printStartupMessage() {
@@ -90,9 +110,9 @@ public class EryBuyer extends JavaPlugin {
     }
 
     public void onDisable() {
-        autoBuyerManager.shutdown();
-        bossBarManager.shutdown();
-        dataBase.closeConnection();
+        if (autoBuyerManager != null) autoBuyerManager.shutdown();
+        if (bossBarManager != null) bossBarManager.shutdown();
+        if (dataBase != null) dataBase.closeConnection();
         instance = null;
         printShutdownMessage();
     }
@@ -115,12 +135,16 @@ public class EryBuyer extends JavaPlugin {
         return instance;
     }
 
-    public EconomyManager getEconomyManager() {
-        return economyManager;
+    public VaultAPI getEconomyManager() {
+        return vaultAPI;
     }
 
     public Configuration getConfigManager() {
         return configManager;
+    }
+
+    public MenuRegistry getMenuRegistry() {
+        return menuRegistry;
     }
 
     public BuyerGUI getBuyerGUI() {

@@ -1,91 +1,105 @@
-name: "&c▪ &#0000FFСкупщик"
+name: "             • Скупщик •"
 size: 54
 panels:
-  - material: BLUE_STAINED_GLASS_PANE
-    name: "&fТут что-то будет.."
+  - material: MAGENTA_STAINED_GLASS_PANE
+    name: ""
     lore:
       - ""
     slots:
+      - 0
       - 1
       - 2
-      - 6
-      - 7
-      - 8
       - 9
-      - 10
-      - 16
+      - 44
+      - 54
+      - 53
+      - 52
+      - 51
+  - material: PURPLE_STAINED_GLASS_PANE
+    name: ""
+    lore:
+      - ""
+    slots:
+      - 6
+      - 7 
+      - 8
       - 17
+      - 36 
+      - 45
+      - 46
+      - 47
+  - material: GRAY_STAINED_GLASS_PANE
+    name: ""
+    lore:
+      - ""
+    slots:
+      - 3
+      - 4
+      - 5
       - 18
       - 26
       - 27
       - 35
-      - 36
-      - 37
-      - 43
-      - 44
-      - 45
-      - 46
-      - 47
-      - 51
-      - 52
+      - 48
+      - 49
+      - 50
 knops-settings:
   1:
-    name: "&c▪ &#00FF00Выход"
+    name: "&#C821FFАвто скупщик"
     lore:
       - ""
-      - "&fНажмите для выхода"
+      - "&fСтатус авто скупщика"
+      - "&fНа данный момент: %autobuyer_status%"
       - ""
-    slot: 53
-    material: SPECTRAL_ARROW
-    action:
-      - "[sound] BLOCK_ENDER_CHEST_CLOSE"
-      - "[close]"
-  2:
-    name: "&c▪ &#FF0000Авто-скупщик"
-    lore:
-      - ""
-      - "&FСтатус: %autobuyer_status%"
-    slot: 49
-    material: CLOCK
+    slot: 41
+    material: BOOK
     action:
       - "[command] autobuyer"
-  3:
-    name: "&fВаша статистика уровней"
+  2:
+    name: "&fВаша статистика скупщика:"
     lore:
       - ""
-      - "&fОбщая сумма продаж %buyer_total_earned%"
-      - "&fТекущий уровень %buyer_current_level%"
-      - "&fДо следующего уровня %buyer_required_amount%"
-    slot: 0
-    material: BOOK
+      - "&fОбщая сумма продаж &e%buyer_total_earned%⛁"
+      - "&fТекущий уровень &a%buyer_current_level%&f/&#C821FF%max_level%"
+      - "&fДо следующего уровня &e%buyer_required_amount%⛁"
+      - ""
+    slot: 39
+    material: PAPER
+
 menu-settings:
   1:
-    name: "&fРесурсы с шахты"
+    name: "&#C821FFРесурсы с шахты"
     lore:
       - ""
-      - "&fНажмите для перехода"
-    slot: 21
+      - "&fНажмите чтобы перейти"
+      - "&fв этот раздел "
+      - ""
+    slot: 22
     material: DIAMOND
     action:
       - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
       - "[openmenu] mine"
   2:
-    name: "&fФермерство"
+    name: "&#C821FFФермерство"
     lore:
       - ""
-      - "&fНажмите для перехода"
-    slot: 23
+      - "&fНажмите чтобы перейти"
+      - "&fв этот раздел "
+      - ""
+    slot: 20
     material: WHEAT
     action:
       - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
       - "[openmenu] farm"
   3:
-    name: "&fЛут с мобов"
+    name: "&#C821FFДроп с мобов"
     lore:
       - ""
-      - "&fНажмите для перехода"
-    slot: 31
-    material: GUNPOWDER
+      - "&fНажмите чтобы перейти"
+      - "&fв этот раздел "
+      - ""
+    slot: 24
+    material: BONE
     action:
       - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
-      - "[openmenu] mobs"
+      - "[openmenu] ast"

@@ -3,7 +3,8 @@ package com.erydevs.data;
 import com.erydevs.levels.PlayerLevel;
 import java.sql.*;
 import java.io.File;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class DataBase {
 
@@ -123,6 +124,40 @@ public class DataBase {
             return !connection.isClosed();
         } catch (SQLException e) {
             return false;
+        }
+    }
+
+    public List<Map.Entry<String, Double>> getTopPlayers(int limit, double minEarned) {
+        if (connection == null) {
+            System.err.println("Ошибка: соединение с БД не инициализировано");
+            return new ArrayList<>();
+        }
+
+        List<Map.Entry<String, Double>> topPlayers = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(
+                "SELECT uuid, total_earned FROM player_levels WHERE total_earned >= ? ORDER BY total_earned DESC LIMIT ?")) {
+            stmt.setDouble(1, minEarned);
+            stmt.setInt(2, limit);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                topPlayers.add(new AbstractMap.SimpleEntry<>(rs.getString("uuid"), rs.getDouble("total_earned")));
+            }
+        } catch (SQLException e) {
+            System.err.println("Ошибка получения топов: " + e.getMessage());
+        }
+        return topPlayers;
+    }
+
+    public void updateTopPlayers(double minEarned) {
+        if (connection == null) {
+            System.err.println("Ошибка: соединение с БД не инициализировано");
+            return;
+        }
+
+        try {
+            getTopPlayers(Integer.MAX_VALUE, minEarned);
+        } catch (Exception e) {
+            System.err.println("Ошибка обновления топов: " + e.getMessage());
         }
     }
 }

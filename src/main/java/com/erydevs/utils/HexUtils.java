@@ -14,7 +14,6 @@ public class HexUtils {
             return message;
         }
 
-        // Добавляем белый цвет по умолчанию если текст не начинается с цветового кода
         if (!message.startsWith("&") && !message.startsWith("&#")) {
             message = "&f" + message;
         }

@@ -6,7 +6,7 @@
 
   <groupId>com.erydevs</groupId>
   <artifactId>EryBuyer</artifactId>
-  <version>1.5d</version>
+  <version>1.6</version>
   <packaging>jar</packaging>
 
   <name>EryBuyer</name>

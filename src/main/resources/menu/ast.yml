@@ -1,4 +1,4 @@
-name: "&fФермерство"
+name: "&fДроп с мобов"
 size: 54
 panels:
   - material: BLUE_STAINED_GLASS_PANE
@@ -53,102 +53,102 @@ knops-settings:
       - "[sound] BLOCK_ENDER_CHEST_CLOSE"
       - "[openmenu] menu"
 item-settings:
-  6:
-    name: "&fКакао бобы"
+  17:
+    name: "&fКость"
     lore:
       - "&fЦена за &#C907EE1&f: %prince-x1% &7ЛКМ"
       - "&fЦена за &#C907EE64&f: %prince-x64% &7ПКМ"
       - ""
       - "&o&fСдать всё &o&cСКМ"
-    material: COCOA_BEANS
+    material: BONE
+    slot: 32
+    prince-x1: 0.25
+    prince-x64: 16
+  18:
+    name: "&fПорох"
+    lore:
+      - "&fЦена за &#C907EE1&f: %prince-x1% &7ЛКМ"
+      - "&fЦена за &#C907EE64&f: %prince-x64% &7ПКМ"
+      - ""
+      - "&o&fСдать всё &o&cСКМ"
+    material: GUNPOWDER
     slot: 20
-    prince-x1: 0.5
-    prince-x64: 32
-  7:
-    name: "&fТыква"
+    prince-x1: 3
+    prince-x64: 192
+  19:
+    name: "&fСлизь"
     lore:
       - "&fЦена за &#C907EE1&f: %prince-x1% &7ЛКМ"
       - "&fЦена за &#C907EE64&f: %prince-x64% &7ПКМ"
       - ""
       - "&o&fСдать всё &o&cСКМ"
-    material: PUMPKIN
+    material: SLIME_BALL
     slot: 21
     prince-x1: 2
     prince-x64: 128
-  8:
-    name: "&fАрбуз"
+  20:
+    name: "&fОгненный стержень"
     lore:
       - "&fЦена за &#C907EE1&f: %prince-x1% &7ЛКМ"
-      - "&o&fЦена за &#C907EE64&f: %prince-x64% &7ПКМ"
+      - "&fЦена за &#C907EE64&f: %prince-x64% &7ПКМ"
       - ""
       - "&o&fСдать всё &o&cСКМ"
-    material: MELON
+    material: BLAZE_ROD
     slot: 22
-    prince-x1: 1.5
-    prince-x64: 96
-  9:
-    name: "&fКактус"
+    prince-x1: 0.4
+    prince-x64: 25
+  21:
+    name: "&fПаучьи глаза"
     lore:
       - "&fЦена за &#C907EE1&f: %prince-x1% &7ЛКМ"
       - "&fЦена за &#C907EE64&f: %prince-x64% &7ПКМ"
       - ""
       - "&o&fСдать всё &o&cСКМ"
-    material: CACTUS
+    material: SPIDER_EYE
     slot: 23
-    prince-x1: 1
-    prince-x64: 64
-  10:
-    name: "&fТростник"
+    prince-x1: 0.3
+    prince-x64: 20
+  22:
+    name: "&fНить"
     lore:
       - "&fЦена за &#C907EE1&f: %prince-x1% &7ЛКМ"
       - "&fЦена за &#C907EE64&f: %prince-x64% &7ПКМ"
       - ""
       - "&o&fСдать всё &o&cСКМ"
-    material: SUGAR_CANE
+    material: STRING
     slot: 24
-    prince-x1: 2
-    prince-x64: 128
-  11:
-    name: "&fНезерский нарост"
-    lore:
-      - "&fЦена за &#C907EE1&f: %prince-x1% &7ЛКМ"
-      - "&fЦена за &#C907EE64&f: %prince-x64% &7ПКМ"
-      - ""
-      - "&o&fСдать всё &o&cСКМ"
-    material: NETHER_WART
-    slot: 32
-    prince-x1: 4
-    prince-x64: 256
-  12:
-    name: "&fМорковь"
-    lore:
-      - "&fЦена за &#C907EE1&f: %prince-x1% &7ЛКМ"
-      - "&fЦена за &#C907EE64&f: %prince-x64% &7ПКМ"
-      - ""
-      - "&o&fСдать всё &o&cСКМ"
-    material: CARROT
-    slot: 30
-    prince-x1: 1
-    prince-x64: 64
-  13:
-    name: "&fСветящиеся ягоды"
+    prince-x1: 0.35
+    prince-x64: 22
+  26:
+    name: "&fКварц Нижнего мира"
     lore:
       - "&o&fЦена за &#C907EE1&f: %prince-x1% &o&7ЛКМ"
       - "&o&fЦена за &#C907EE64&f: %prince-x64% &o&7ПКМ"
       - ""
       - "&o&fСдать всё &o&cСКМ"
-    material: GLOW_BERRIES
-    slot: 30
-    prince-x1: 0.5
-    prince-x64: 32
-  14:
-    name: "&fСладкие ягоды"
+    material: NETHER_QUARTZ
+    slot: 34
+    prince-x1: 0.6
+    prince-x64: 38.4
+  30:
+    name: "&fКожа"
     lore:
       - "&fЦена за &#C907EE1&f: %prince-x1% &7ЛКМ"
       - "&fЦена за &#C907EE64&f: %prince-x64% &7ПКМ"
       - ""
       - "&o&fСдать всё &o&cСКМ"
-    material: SWEET_BERRIES
+    material: LEATHER
+    slot: 30
+    prince-x1: 0.3
+    prince-x64: 19.2
+  31:
+    name: "&fГнилая плоть"
+    lore:
+      - "&fЦена за &#C907EE1&f: %prince-x1% &7ЛКМ"
+      - "&fЦена за &#C907EE64&f: %prince-x64% &7ПКМ"
+      - ""
+      - "&o&fСдать всё &o&cСКМ"
+    material: ROTTEN_FLESH
     slot: 31
-    prince-x1: 0.6
-    prince-x64: 38
+    prince-x1: 1
+    prince-x64: 64

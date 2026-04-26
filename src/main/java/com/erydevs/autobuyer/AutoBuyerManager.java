@@ -42,7 +42,7 @@ public class AutoBuyerManager {
     public void setAutobuyer(Player player, boolean enabled) {
         UUID id = player.getUniqueId();
         autobuyers.put(id, enabled);
-        boolean bossbarEnabled = plugin.getConfigManager().getConfig().getBoolean("bossbar-settings.bossbar", true);
+        boolean bossbarEnabled = plugin.getConfigManager().isBossbarEnabled();
         if (enabled) {
             lastSellTime.put(id, System.currentTimeMillis());
             if (bossbarEnabled && plugin.getBossBarManager() != null) plugin.getBossBarManager().createBossBar(player);
@@ -104,7 +104,7 @@ public class AutoBuyerManager {
     }
 
     private long getAutobuyerDelay() {
-        long configValue = plugin.getConfigManager().getConfig().getLong("bossbar-settings.autobuyer-time", 40);
+        long configValue = plugin.getConfigManager().getAutobuyerTime();
         return configValue * 50;
     }
 
@@ -119,10 +119,14 @@ public class AutoBuyerManager {
         int maxLevel = plugin.getLevelConfig().getMaxLevel();
         if (playerLevel.getCurrentLevel() < maxLevel) {
             plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), basePrice);
+            com.erydevs.levels.PlayerLevel updatedLevel = plugin.getDataBase().getPlayerData(p.getUniqueId());
+            if (updatedLevel.getTotalEarned() >= plugin.getConfigManager().getBuyerTopUpdateMoney()) {
+                plugin.getDataBase().updateTopPlayers(plugin.getConfigManager().getBuyerTopUpdateMoney());
+            }
             checkAndUpdateLevel(p);
         }
         
-        String msg = plugin.getConfigManager().getConfig().getString("message.auto-buyer");
+        String msg = plugin.getConfigManager().getMessageAutoBuyer();
         p.sendMessage(PlaceholderAPIHook.apply(msg, p, entry, amount, total));
         playSound(p);
     }
@@ -137,7 +141,7 @@ public class AutoBuyerManager {
             if (plugin.getLevelConfig().getRequiredMoneyForLevel(nextLevel) <= totalEarned) {
                 playerLevel.setCurrentLevel(nextLevel);
                 plugin.getDataBase().savePlayerData(playerLevel);
-                String msg = plugin.getConfigManager().getConfig().getString("message.level-up");
+                String msg = plugin.getConfigManager().getMessageLevelUp();
                 p.sendMessage(com.erydevs.placeholders.PlaceholderAPIHook.applyLevelUp(msg, p, nextLevel));
             } else {
                 break;
@@ -147,7 +151,7 @@ public class AutoBuyerManager {
 
     private void playSound(Player p) {
         try {
-            Sound s = Sound.valueOf(plugin.getConfigManager().getConfig().getString("sound.autobuyer-sound"));
+            Sound s = Sound.valueOf(plugin.getConfigManager().getSoundAutobuyer());
             p.playSound(p.getLocation(), s, 1.0f, 1.0f);
         } catch (Exception ignored) {}
     }

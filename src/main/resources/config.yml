@@ -10,12 +10,12 @@
 # [sound] произведение звуков
 # Плагин разработан студией EryDev
 message:
-  no-item: "&c▪ &fУ вас нет предмета &a%item_name%"
-  successfully-buyer: "&c▪ &fВы успешно продали &a%item_name% &fза &#4A90E2%prince%"
-  auto-buyer: "&c▪ &fВы продали скупщику &#FFFFFF%item_sell% &f штук баланс &a%balance%"
-  auto-buyer-on: "&c▪ &fАвто-скупщик %autobuyer_status%"
-  auto-buyer-off: "&c▪ &fАвто-скупщик %autobuyer_status%"
-  no-permission: "&c▪ &4У вас недостаточно прав"
+  no-item: "&fУ вас нет предмета &a%item_name%"
+  successfully-buyer: "&fВы успешно продали &a%item_name% &fза &#4A90E2%prince%"
+  auto-buyer: "&fВы продали скупщику &#FFFFFF%item_sell% &f штук баланс &a%vault_eco_balance%"
+  auto-buyer-on: "&fАвто-скупщик %autobuyer_status%"
+  auto-buyer-off: "&fАвто-скупщик %autobuyer_status%"
+  no-permission: "&4У вас недостаточно прав"
   level-up: "&#4A90E2🎉 Вы достигли уровня &#FFFFFF%new_level%"
   level-info:
     - "&fВаша статистика уровней"
@@ -23,39 +23,87 @@ message:
     - "&fОбщая сумма продаж %buyer_total_earned%"
     - "&fТекущий уровень %buyer_current_level%"
     - "&fДо следующего уровня %buyer_required_amount%"
+  config-reload: "&aПлагин успешно перезагружен ошибки не найдены"
 placeholder:
-  enable-autobuyer: "&c▪ &aВключен"
-  disable-autobuyer: "&c▪ &cВыключен"
-sound: # звуки
+  enable-autobuyer: "&aВключен ✓"
+  disable-autobuyer: "&cВыключен ✗"
+sound:
   sound_open_menu: BLOCK_CHEST_OPEN
   no-item-sound: ENTITY_VILLAGER_NO
   autobuyer-sound: BLOCK_NOTE_BLOCK_XYLOPHONE
 
 bossbar-settings:
-  bossbar: true
-  text: "&c▪ &fУ вас &aвключён &cавто-скупщик"
+  bossbar: false
+  text: "&fУ вас &aвключён &cавто-скупщик"
   color: RED
-  autobuyer-time: 80
-
+  autobuyer-time: 40
+buyer-top:
+  update-money: 14000 # максимальная сумма от которой будет обновление топов
+  update-interval: 20 # время обновления топов
 levels:
   1:
     multiplier: 0.0
     required-money: 0.0
   2:
     multiplier: 0.1
-    required-money: 16000.0
+    required-money: 25000.0
   3:
     multiplier: 0.2
-    required-money: 35000.0
+    required-money: 50000.0
   4:
     multiplier: 0.3
-    required-money: 70000.0
+    required-money: 100000.0
   5:
     multiplier: 0.5
-    required-money: 140000.0
+    required-money: 500000.0
+  6:
+    multiplier: 0.6
+    required-money: 750000.0
+  7:
+    multiplier: 0.7
+    required-money: 1000000.0
+  8:
+    multiplier: 0.8
+    required-money: 1300000.0
+  9:
+    multiplier: 0.9
+    required-money: 1550000.0
+  10:
+    multiplier: 1.0
+    required-money: 2700000.0
+  11:
+    multiplier: 1.1
+    required-money: 3100000.0
+  12:
+    multiplier: 1.2
+    required-money: 3450000.0
+  13:
+    multiplier: 1.3
+    required-money: 4000000.0
+  14:
+    multiplier: 1.4
+    required-money: 5000000.0
+  15:
+    multiplier: 1.5
+    required-money: 6300000.0
+  16:
+    multiplier: 1.6
+    required-money: 7400000.0
+  17:
+    multiplier: 1.7
+    required-money: 8500000.0
+  18:
+    multiplier: 1.8
+    required-money: 9000000.0
+  19:
+    multiplier: 1.9
+    required-money: 10000000.0
+  20:
+    multiplier: 2.0
+    required-money: 15000000.0
 
 register-menu:
   - "menu/menu.yml"
   - "menu/mine.yml"
   - "menu/farm.yml"
-  - "menu/mobs.yml"
+  - "menu/ast.yml"

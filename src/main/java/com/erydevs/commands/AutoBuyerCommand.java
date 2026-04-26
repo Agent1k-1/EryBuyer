@@ -23,15 +23,14 @@ public class AutoBuyerCommand implements CommandExecutor {
         Player p = (Player) sender;
 
         if (!p.hasPermission("erybuyer.autobuyer")) {
-            String msg = plugin.getConfigManager().getConfig().getString("message.no-permission");
+            String msg = plugin.getConfigManager().getMessageNoPermission();
             p.sendMessage(HexUtils.colorize(msg));
             return true;
         }
 
         this.plugin.getAutoBuyerManager().toggleAutobuyer(p);
         boolean enabled = this.plugin.getAutoBuyerManager().isAutobuyerEnabled(p);
-        String path = enabled ? "message.auto-buyer-on" : "message.auto-buyer-off";
-        String raw = this.plugin.getConfigManager().getConfig().getString(path);
+        String raw = enabled ? plugin.getConfigManager().getMessageAutoBuyerOn() : plugin.getConfigManager().getMessageAutoBuyerOff();
         p.sendMessage(PlaceholderAPIHook.apply(raw, p));
         return true;
     }

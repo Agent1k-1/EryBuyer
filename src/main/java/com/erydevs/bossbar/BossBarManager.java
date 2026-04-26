@@ -28,11 +28,11 @@ public class BossBarManager {
     public void createBossBar(Player player) {
         UUID id = player.getUniqueId();
         if (bossbars.containsKey(id)) return;
-        String raw = plugin.getConfigManager().getConfig().getString("bossbar-settings.text", "&fУ вас включён &cавто-скупщик");
+        String raw = plugin.getConfigManager().getBossbarText();
         String text = PlaceholderAPIHook.apply(raw, player);
         BarColor color = BarColor.RED;
         try {
-            String c = plugin.getConfigManager().getConfig().getString("bossbar-settings.color", "RED");
+            String c = plugin.getConfigManager().getBossbarColor();
             color = BarColor.valueOf(c.toUpperCase());
         } catch (Exception ignored) {}
         BossBar bar = plugin.getServer().createBossBar(text, color, BarStyle.SOLID);
@@ -75,7 +75,7 @@ public class BossBarManager {
         BossBar bar = bossbars.get(player.getUniqueId());
         if (bar != null) {
             try {
-                String raw = plugin.getConfigManager().getConfig().getString("bossbar-settings.text", "&fУ вас включён &cавто-скупщик");
+                String raw = plugin.getConfigManager().getBossbarText();
                 String text = PlaceholderAPIHook.apply(raw, player);
                 bar.setTitle(text);
             } catch (Exception ignored) {}

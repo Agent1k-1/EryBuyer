@@ -21,11 +21,16 @@ public class LevelConfig {
         for (String key : config.getConfigurationSection("levels").getKeys(false)) {
             try {
                 int level = Integer.parseInt(key);
-                double multiplier = config.getDouble("levels." + level + ".multiplier", 0.0);
-                double required = config.getDouble("levels." + level + ".required-money", 0.0);
+                double multiplier = config.getDouble("levels." + level + ".multiplier");
+                double required = config.getDouble("levels." + level + ".required-money");
                 levels.put(level, new LevelData(level, multiplier, required));
             } catch (NumberFormatException ignored) {}
         }
+    }
+
+    public void reloadLevels() {
+        levels.clear();
+        loadLevels();
     }
 
     public LevelData getLevelData(int level) {
