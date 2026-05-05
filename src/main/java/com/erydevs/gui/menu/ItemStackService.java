@@ -1,18 +1,22 @@
 package com.erydevs.gui.menu;
 
-
+import com.erydevs.EryBuyer;
+import com.erydevs.gui.impl.ButtonConfig;
+import com.erydevs.gui.Entry;
+import com.erydevs.gui.panels.PanelService;
+import com.erydevs.gui.impl.head.SkullUtils;
+import com.erydevs.placeholders.PlaceholderAPIHook;
+import com.erydevs.utils.HexUtils;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import com.erydevs.EryBuyer;
-import com.erydevs.utils.HexUtils;
-import com.erydevs.gui.Entry;
-import com.erydevs.config.ButtonConfig;
-import com.erydevs.gui.panels.PanelService;
-import com.erydevs.placeholders.PlaceholderAPIHook;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class ItemStackService {
@@ -21,11 +25,16 @@ public class ItemStackService {
 
     public ItemStackService(EryBuyer plugin) {
         this.plugin = plugin;
-        this.panelService = new PanelService();
+        this.panelService = new PanelService(plugin);
     }
 
     public ItemStack createItemStack(Entry entry, Player player) {
-        ItemStack is = new ItemStack(entry.material);
+        ItemStack is;
+        if (entry.material == Material.PLAYER_HEAD && entry.materialData != null && !entry.materialData.isEmpty()) {
+            is = SkullUtils.getSkullByBase64(plugin, entry.materialData);
+        } else {
+            is = new ItemStack(entry.material);
+        }
         ItemMeta im = is.getItemMeta();
         if (im != null) {
             String displayName = PlaceholderAPIHook.apply(entry.name, player, entry, 1);
@@ -41,7 +50,14 @@ public class ItemStackService {
     }
 
     public ItemStack createExitItem(ButtonConfig button) {
-        ItemStack exit = new ItemStack(button.getMaterial());
+        ItemStack exit;
+        if (button.getMaterial() == Material.PLAYER_HEAD
+                && button.getMaterialStr() != null
+                && !button.getMaterialStr().isEmpty()) {
+            exit = SkullUtils.getSkullByBase64(plugin, button.getMaterialStr());
+        } else {
+            exit = new ItemStack(button.getMaterial());
+        }
         ItemMeta em = exit.getItemMeta();
         if (em != null) {
             em.setDisplayName(HexUtils.colorize(button.getName()));
@@ -54,7 +70,14 @@ public class ItemStackService {
     }
 
     public ItemStack createAutobuyerItem(ButtonConfig button, Player player) {
-        ItemStack autobuyer = new ItemStack(button.getMaterial());
+        ItemStack autobuyer;
+        if (button.getMaterial() == Material.PLAYER_HEAD
+                && button.getMaterialStr() != null
+                && !button.getMaterialStr().isEmpty()) {
+            autobuyer = SkullUtils.getSkullByBase64(plugin, button.getMaterialStr());
+        } else {
+            autobuyer = new ItemStack(button.getMaterial());
+        }
         ItemMeta am = autobuyer.getItemMeta();
         if (am != null) {
             am.setDisplayName(HexUtils.colorize(button.getName()));
@@ -82,5 +105,5 @@ public class ItemStackService {
     public void addPanels(Inventory inv, FileConfiguration cfg, int size) {
         panelService.addPanelsToInventory(inv, cfg, size);
     }
-    }
+}
 

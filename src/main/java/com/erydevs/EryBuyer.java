@@ -9,10 +9,8 @@ import com.erydevs.gui.menu.MenuRegistry;
 import com.erydevs.commands.BuyerCommand;
 import com.erydevs.commands.AutoBuyerCommand;
 import com.erydevs.commands.LevelCommand;
-import com.erydevs.commands.admin.AdminBuyerCommand;
-import com.erydevs.commands.admin.AdminBuyerTabCompleter;
 import com.erydevs.levels.LevelConfig;
-import com.erydevs.data.DataBase;
+import com.erydevs.data.SQLite;
 import com.erydevs.listeners.InventoryListener;
 import com.erydevs.listeners.PlayerQuitListener;
 import com.erydevs.economy.VaultAPI;
@@ -33,7 +31,7 @@ public class EryBuyer extends JavaPlugin {
     private AutoBuyerManager autoBuyerManager;
     private BossBarManager bossBarManager;
     private LevelConfig levelConfig;
-    private DataBase dataBase;
+    private SQLite SQLite;
 
     public void onEnable() {
         instance = this;
@@ -54,7 +52,7 @@ public class EryBuyer extends JavaPlugin {
 
         menuRegistry = new MenuRegistry(this);
         levelConfig = new LevelConfig(this);
-        dataBase = new DataBase(getDataFolder());
+        SQLite = new SQLite(getDataFolder(), configManager.getDatabaseFileName());
         vaultAPI = new VaultAPI(this);
         if (!vaultAPI.isEnabled()) {
             getServer().getPluginManager().disablePlugin(this);
@@ -72,11 +70,6 @@ public class EryBuyer extends JavaPlugin {
             getCommand("autobuyer").setExecutor(new AutoBuyerCommand(this));
         if (getCommand("level") != null)
             getCommand("level").setExecutor(new LevelCommand(this));
-        if (getCommand("adminbuyer") != null) {
-            AdminBuyerCommand adminCommand = new AdminBuyerCommand(this);
-            getCommand("adminbuyer").setExecutor(adminCommand);
-            getCommand("adminbuyer").setTabCompleter(new AdminBuyerTabCompleter());
-        }
 
         getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), this);
@@ -91,7 +84,7 @@ public class EryBuyer extends JavaPlugin {
     private void startTopPlayersUpdateTask() {
         long updateInterval = configManager.getBuyerTopUpdateInterval() * 20L;
         Bukkit.getScheduler().runTaskTimer(this, () -> {
-            dataBase.updateTopPlayers(configManager.getBuyerTopUpdateMoney());
+            SQLite.updateTopPlayers(configManager.getBuyerTopUpdateMoney());
         }, updateInterval, updateInterval);
     }
 
@@ -112,7 +105,7 @@ public class EryBuyer extends JavaPlugin {
     public void onDisable() {
         if (autoBuyerManager != null) autoBuyerManager.shutdown();
         if (bossBarManager != null) bossBarManager.shutdown();
-        if (dataBase != null) dataBase.closeConnection();
+        if (SQLite != null) SQLite.closeConnection();
         instance = null;
         printShutdownMessage();
     }
@@ -163,7 +156,7 @@ public class EryBuyer extends JavaPlugin {
         return levelConfig;
     }
 
-    public DataBase getDataBase() {
-        return dataBase;
+    public SQLite getDataBase() {
+        return SQLite;
     }
 }

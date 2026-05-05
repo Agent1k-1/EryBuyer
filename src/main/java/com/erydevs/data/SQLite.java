@@ -4,21 +4,17 @@ import com.erydevs.levels.PlayerLevel;
 import java.sql.*;
 import java.io.File;
 import java.util.*;
-import java.util.stream.Collectors;
 
-public class DataBase {
+public class SQLite {
 
     private Connection connection;
     private final File dbFile;
-    private static final int MAX_RETRIES = 3;
 
-    public DataBase(File dataFolder) {
-        this.dbFile = new File(dataFolder, "playerdata.db");
+    public SQLite(File dataFolder, String fileName) {
+        this.dbFile = new File(dataFolder, fileName);
         connect();
         if (connection != null) {
             createTable();
-        } else {
-            System.err.println("Не удалось подключиться к базе данных!");
         }
     }
 
@@ -26,9 +22,8 @@ public class DataBase {
         try {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile.getAbsolutePath());
-            System.out.println("SQLite база данных инициализирована: " + dbFile.getAbsolutePath());
         } catch (ClassNotFoundException e) {
-            System.err.println("Ошибка: SQLite JDBC драйвер не найден!");
+            System.err.println("SQLite JDBC драйвер не найден!");
         } catch (SQLException e) {
             System.err.println("Ошибка подключения к БД: " + e.getMessage());
         }
@@ -48,7 +43,6 @@ public class DataBase {
 
     public PlayerLevel getPlayerData(UUID uuid) {
         if (connection == null) {
-            System.err.println("Ошибка: соединение с БД не инициализировано");
             return new PlayerLevel(uuid, 1, 0.0);
         }
 
@@ -67,7 +61,6 @@ public class DataBase {
 
     public void savePlayerData(PlayerLevel player) {
         if (connection == null) {
-            System.err.println("Ошибка: соединение с БД не инициализировано");
             return;
         }
 
@@ -84,7 +77,6 @@ public class DataBase {
 
     public void addPlayerEarnings(UUID uuid, double amount) {
         if (connection == null) {
-            System.err.println("Ошибка: соединение с БД не инициализировано");
             return;
         }
 
@@ -111,7 +103,6 @@ public class DataBase {
         try {
             if (connection != null && !connection.isClosed()) {
                 connection.close();
-                System.out.println("Соединение с БД закрыто");
             }
         } catch (SQLException e) {
             System.err.println("Ошибка закрытия БД: " + e.getMessage());
@@ -129,7 +120,6 @@ public class DataBase {
 
     public List<Map.Entry<String, Double>> getTopPlayers(int limit, double minEarned) {
         if (connection == null) {
-            System.err.println("Ошибка: соединение с БД не инициализировано");
             return new ArrayList<>();
         }
 
@@ -150,7 +140,6 @@ public class DataBase {
 
     public void updateTopPlayers(double minEarned) {
         if (connection == null) {
-            System.err.println("Ошибка: соединение с БД не инициализировано");
             return;
         }
 

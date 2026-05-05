@@ -48,15 +48,27 @@ public class Configuration {
     }
 
     public String getSoundOpenMenu() {
-        return config.getString("sound.sound_open_menu");
+        return config.getString("sound.sound_open_menu.sound");
+    }
+
+    public boolean isSoundOpenMenuEnabled() {
+        return config.getBoolean("sound.sound_open_menu.enabled");
     }
 
     public String getSoundNoItem() {
-        return config.getString("sound.no-item-sound");
+        return config.getString("sound.no-item-sound.sound");
+    }
+
+    public boolean isSoundNoItemEnabled() {
+        return config.getBoolean("sound.no-item-sound.enabled");
     }
 
     public String getSoundAutobuyer() {
-        return config.getString("sound.autobuyer-sound");
+        return config.getString("sound.autobuyer-sound.sound");
+    }
+
+    public boolean isSoundAutobuyerEnabled() {
+        return config.getBoolean("sound.autobuyer-sound.enabled");
     }
 
     public List<String> getRegisterMenu() {
@@ -109,5 +121,10 @@ public class Configuration {
 
     public int getBuyerTopUpdateInterval() {
         return config.getInt("buyer-top.update-interval");
+    }
+
+    public String getDatabaseFileName() {
+        String fileName = config.getString("database.sqlite.file");
+        return fileName != null ? fileName : "playerdata.db";
     }
 }

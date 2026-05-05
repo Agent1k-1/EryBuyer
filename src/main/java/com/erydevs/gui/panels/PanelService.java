@@ -1,15 +1,27 @@
 package com.erydevs.gui.panels;
 
-import org.bukkit.Material;
+import com.erydevs.EryBuyer;
+import com.erydevs.gui.impl.head.MaterialHeadParser;
+import com.erydevs.gui.impl.head.ParsedMaterial;
+import com.erydevs.gui.impl.head.SkullUtils;
+import com.erydevs.utils.HexUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import com.erydevs.utils.HexUtils;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class PanelService {
-    
+
+    private final EryBuyer plugin;
+
+    public PanelService(EryBuyer plugin) {
+        this.plugin = plugin;
+    }
+
     public void addPanelsToInventory(Inventory inv, FileConfiguration cfg, int size) {
         List<PanelConfig> panels = loadPanels(cfg);
         for (PanelConfig panel : panels) {
@@ -49,9 +61,11 @@ public class PanelService {
         if (material == null || slots == null) {
             return null;
         }
-        
-        Material mat = Material.matchMaterial(material);
-        if (mat == null) return null;
+
+        ParsedMaterial pm = MaterialHeadParser.parse(material);
+        if (pm == null) {
+            return null;
+        }
         
         List<String> loreList = new ArrayList<>();
         if (lore != null) {
@@ -65,7 +79,7 @@ public class PanelService {
             slotList.add(((Number) slot).intValue());
         }
         
-        return new PanelConfig(mat, name, loreList, slotList);
+        return new PanelConfig(pm.getMaterial(), pm.getHeadTextureBase64(), name, loreList, slotList);
     }
     
     private void addPanel(Inventory inv, PanelConfig panel, int size) {
@@ -79,7 +93,13 @@ public class PanelService {
     }
     
     private ItemStack createPanelItem(PanelConfig panel) {
-        ItemStack item = new ItemStack(panel.getMaterial());
+        ItemStack item;
+        String headTex = panel.getHeadTextureBase64();
+        if (headTex != null && !headTex.isEmpty()) {
+            item = SkullUtils.getSkullByBase64(plugin, headTex);
+        } else {
+            item = new ItemStack(panel.getMaterial());
+        }
         ItemMeta meta = item.getItemMeta();
         
         if (meta != null) {

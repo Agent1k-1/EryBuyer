@@ -47,7 +47,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
     @Override
     public String onPlaceholderRequest(Player player, @NotNull String params) {
         if (player == null) return null;
-        
+
         if (params.startsWith("money_player_")) {
             try {
                 int position = Integer.parseInt(params.substring(13));
@@ -66,7 +66,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
                 return String.valueOf(plugin.getDataBase().getPlayerData(player.getUniqueId()).getCurrentLevel());
             case "buyer_total_earned":
                 return String.valueOf((long) plugin.getDataBase().getPlayerData(player.getUniqueId()).getTotalEarned());
-            case "buyer_required_amount":
+            case "buyer_next_level":
                 double totalEarned = plugin.getDataBase().getPlayerData(player.getUniqueId()).getTotalEarned();
                 int nextLevel = plugin.getDataBase().getPlayerData(player.getUniqueId()).getCurrentLevel() + 1;
                 double requiredForNext = plugin.getLevelConfig().getRequiredMoneyForLevel(nextLevel);
@@ -77,7 +77,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
                 return null;
         }
     }
-    
+
     private String getTopPlayerByPosition(int position) {
         List<Map.Entry<String, Double>> topPlayers = plugin.getDataBase().getTopPlayers(position, plugin.getConfigManager().getBuyerTopUpdateMoney());
         if (topPlayers == null || topPlayers.size() < position) {
@@ -102,11 +102,11 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         String itemName = entry != null ? stripColors(entry.name) : "";
         double priceX1 = entry != null ? entry.priceX1 : 0.0;
         double priceX64 = entry != null ? entry.priceX64 : priceX1 * 64;
-        
+
         String autobuyerStatus = plugin.getAutoBuyerManager().isAutobuyerEnabled(player) ?
                 plugin.getConfigManager().getPlaceholderEnableAutobuyer() :
                 plugin.getConfigManager().getPlaceholderDisableAutobuyer();
-        
+
         PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(player.getUniqueId());
         double totalEarned = playerLevel.getTotalEarned();
         int currentLevel = playerLevel.getCurrentLevel();
@@ -114,7 +114,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         double requiredForNext = plugin.getLevelConfig().getRequiredMoneyForLevel(nextLevel);
         double remaining = Math.max(0, requiredForNext - totalEarned);
         int maxLevel = plugin.getLevelConfig().getMaxLevel();
-        
+
         String result = input
                 .replace("%item_name%", itemName)
                 .replace("%prince-x1%", formatDouble(priceX1))
@@ -125,10 +125,10 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
                 .replace("%autobuyer_status%", autobuyerStatus)
                 .replace("%buyer_current_level%", String.valueOf(currentLevel))
                 .replace("%buyer_total_earned%", String.valueOf((long) totalEarned))
-                .replace("%buyer_required_amount%", String.valueOf((long) remaining))
+                .replace("%buyer_next_level%", String.valueOf((long) remaining))
                 .replace("%max_level%", String.valueOf(maxLevel))
                 .replace("%new_level%", String.valueOf(nextLevel));
-        
+
         return HexUtils.colorize(result);
     }
 
@@ -136,10 +136,10 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         if (input == null) return "";
         if (!isAvailable()) return input;
         if (player == null) return HexUtils.colorize(input);
-        
+
         String result = applyPlaceholders(input, player, entry, amount, customPrice);
         result = PlaceholderAPI.setPlaceholders(player, result);
-        
+
         return result;
     }
 
@@ -155,11 +155,11 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         if (input == null) return "";
         if (!isAvailable()) return input;
         if (player == null) return HexUtils.colorize(input);
-        
+
         String withLevel = input.replace("%new_level%", String.valueOf(newLevel));
         String result = applyPlaceholders(withLevel, player, null, 0, 0.0);
         result = PlaceholderAPI.setPlaceholders(player, result);
-        
+
         return result;
     }
 

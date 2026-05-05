@@ -102,6 +102,7 @@ public class AutoBuyerManager {
         }
         return total;
     }
+    
 
     private long getAutobuyerDelay() {
         long configValue = plugin.getConfigManager().getAutobuyerTime();
@@ -150,6 +151,7 @@ public class AutoBuyerManager {
     }
 
     private void playSound(Player p) {
+        if (!plugin.getConfigManager().isSoundAutobuyerEnabled()) return;
         try {
             Sound s = Sound.valueOf(plugin.getConfigManager().getSoundAutobuyer());
             p.playSound(p.getLocation(), s, 1.0f, 1.0f);

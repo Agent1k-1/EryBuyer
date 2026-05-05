@@ -10,31 +10,39 @@
 # [sound] произведение звуков
 # Плагин разработан студией EryDev
 message:
-  no-item: "&fУ вас нет предмета &a%item_name%"
-  successfully-buyer: "&fВы успешно продали &a%item_name% &fза &#4A90E2%prince%"
-  auto-buyer: "&fВы продали скупщику &#FFFFFF%item_sell% &f штук баланс &a%vault_eco_balance%"
-  auto-buyer-on: "&fАвто-скупщик %autobuyer_status%"
-  auto-buyer-off: "&fАвто-скупщик %autobuyer_status%"
-  no-permission: "&4У вас недостаточно прав"
-  level-up: "&#4A90E2🎉 Вы достигли уровня &#FFFFFF%new_level%"
+  no-item: "&#FFCC00▪ &#FFFFFFУ вас нет предмета &#FFA500%item_name%"
+  successfully-buyer: "&#FFCC00▪ &#FFFFFFВы успешно продали &#FFA500%item_name% &#FFFFFFза &#FF0000%prince%"
+  auto-buyer: "&#FFCC00▪ &#FFFFFFВы продали скупщику &#FFA500%item_sell% &#FFFFFFштук, баланс &#FF0000%vault_eco_balance%"
+  auto-buyer-on: "&#FFCC00▪ &#FFFFFFАвто-скупщик &#FFA500%autobuyer_status%"
+  auto-buyer-off: "&#FFCC00▪ &#FFFFFFАвто-скупщик &#FF0000%autobuyer_status%"
+  no-permission: "&#FF0000▪ &#FFFFFFУ вас недостаточно прав"
+  level-up: "&#FFA500🎉 &#FFFFFFВы достигли уровня &#FFCC00%new_level%"
+  config-reload: "&#FFCC00▪ &#FFFFFFКонфиг успешно перезагружен"
   level-info:
-    - "&fВаша статистика уровней"
+    - "&#FFFFFFВаша статистика уровней"
     - ""
-    - "&fОбщая сумма продаж %buyer_total_earned%"
-    - "&fТекущий уровень %buyer_current_level%"
-    - "&fДо следующего уровня %buyer_required_amount%"
-  config-reload: "&aПлагин успешно перезагружен ошибки не найдены"
+    - "&#FFFFFFОбщая сумма продаж &#FFA500%buyer_total_earned%"
+    - "&#FFFFFFТекущий уровень &#FFCC00%buyer_current_level%"
+    - "&#FFFFFFДо следующего уровня &#FF0000%buyer_next_level%"
 placeholder:
-  enable-autobuyer: "&aВключен ✓"
-  disable-autobuyer: "&cВыключен ✗"
+  enable-autobuyer: "&c▪ &aВключен"
+  disable-autobuyer: "&c▪ &cВыключен"
 sound:
-  sound_open_menu: BLOCK_CHEST_OPEN
-  no-item-sound: ENTITY_VILLAGER_NO
-  autobuyer-sound: BLOCK_NOTE_BLOCK_XYLOPHONE
-
+  sound_open_menu:
+    sound: BLOCK_CHEST_OPEN
+    enabled: true
+  no-item-sound:
+    sound: ENTITY_VILLAGER_NO
+    enabled: true
+  autobuyer-sound:
+    sound: BLOCK_NOTE_BLOCK_XYLOPHONE
+    enabled: true
+database: # база данных
+  sqlite:
+    file: playerdata.db # название файла sqlite
 bossbar-settings:
-  bossbar: false
-  text: "&fУ вас &aвключён &cавто-скупщик"
+  bossbar: true
+  text: "&c▪ &fУ вас &aвключён &cавто-скупщик"
   color: RED
   autobuyer-time: 40
 buyer-top:
@@ -106,4 +114,4 @@ register-menu:
   - "menu/menu.yml"
   - "menu/mine.yml"
   - "menu/farm.yml"
-  - "menu/ast.yml"
+  - "menu/mobs.yml"

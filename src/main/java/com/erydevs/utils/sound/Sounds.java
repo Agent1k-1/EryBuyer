@@ -13,6 +13,7 @@ public class Sounds {
     }
 
     public void playMenuOpenSound(Player player) {
+        if (!plugin.getConfigManager().isSoundOpenMenuEnabled()) return;
         try {
             String soundName = plugin.getConfigManager().getSoundOpenMenu();
             Sound sound = Sound.valueOf(soundName);
@@ -21,6 +22,7 @@ public class Sounds {
     }
 
     public void playNoItemSound(Player player) {
+        if (!plugin.getConfigManager().isSoundNoItemEnabled()) return;
         try {
             String soundName = plugin.getConfigManager().getSoundNoItem();
             Sound sound = Sound.valueOf(soundName);
@@ -29,6 +31,7 @@ public class Sounds {
     }
 
     public void playAutobuyerSound(Player player) {
+        if (!plugin.getConfigManager().isSoundAutobuyerEnabled()) return;
         try {
             String soundName = plugin.getConfigManager().getSoundAutobuyer();
             Sound sound = Sound.valueOf(soundName);

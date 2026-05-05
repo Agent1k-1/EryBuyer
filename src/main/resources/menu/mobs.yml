@@ -1,4 +1,4 @@
-name: "&4▪ &4Фермерство"
+name: "&4▪ &4Лут с мобов"
 size: 54
 panels:
   - material: RED_STAINED_GLASS_PANE
@@ -48,113 +48,102 @@ knops-settings:
       - "[sound] BLOCK_ENDER_CHEST_CLOSE"
       - "[openmenu] menu"
 item-settings:
-  6:
-    name: "&fКакао бобы"
+  1:
+    name: "&fПорох"
+    lore:
+      - "&o&fЦена за &o&6x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &o&6x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: GUNPOWDER
+    slot: 41
+    prince-x1: 300.00
+    prince-x64: 19200.00
+  2:
+    name: "&fОгненный стержень"
     lore:
       - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
       - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
       - "&o&fПродать всё: &#00FF00СКМ"
-    material: COCOA_BEANS
-    slot: 33
-    prince-x1: 80.00
-    prince-x64: 5120.00
-  7:
-    name: "&fТыква"
-    lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
-      - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
-    material: PUMPKIN
-    slot: 13
+    material: BLAZE_ROD
+    slot: 21
     prince-x1: 160.00
     prince-x64: 10240.00
-  8:
-    name: "&fАрбуз"
+  3:
+    name: "&fКость"
     lore:
       - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
       - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
       - "&o&fПродать всё: &#00FF00СКМ"
-    material: MELON
-    slot: 21
-    prince-x1: 140.00
-    prince-x64: 8960.00
-  9:
-    name: "&fКактус"
-    lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
-      - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
-    material: CACTUS
+    material: BONE
     slot: 22
     prince-x1: 80.00
     prince-x64: 5120.00
-  10:
-    name: "&fТростник"
+  4:
+    name: "&fНить"
     lore:
       - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
       - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
       - "&o&fПродать всё: &#00FF00СКМ"
-    material: SUGAR_CANE
+    material: STRING
     slot: 23
-    prince-x1: 130.00
-    prince-x64: 8320.00
-  11:
-    name: "&fПшеница"
+    prince-x1: 80.00
+    prince-x64: 5120.00
+  5:
+    name: "&fЭндер-Жемчуг"
     lore:
       - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
       - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
       - "&o&fПродать всё: &#00FF00СКМ"
-    material: WHEAT
+    material: ENDER_PEARL
+    slot: 13
+    prince-x1: 160.00
+    prince-x64: 10240.00
+  6:
+    name: "&fМаринованный Паучий Глаз"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: FERMENTED_SPIDER_EYE
     slot: 30
-    prince-x1: 120.00
-    prince-x64: 7680.00
-  12:
-    name: "&fКартофель"
+    prince-x1: 500.00
+    prince-x64: 32000.00
+  7:
+    name: "&fСветокаменная Пыль"
     lore:
       - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
       - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
       - "&o&fПродать всё: &#00FF00СКМ"
-    material: POTATO
-    slot: 32
-    prince-x1: 130.00
-    prince-x64: 8320.00
-  13:
-    name: "&fСвёкла"
-    lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
-      - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
-    material: BEETROOT
-    slot: 40
-    prince-x1: 150.00
-    prince-x64: 9600.00
-  14:
-    name: "&fМорковь"
-    lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
-      - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
-    material: CARROT
-    slot: 29
-    prince-x1: 120.00
-    prince-x64: 7680.00
-  15:
-    name: "&fСладкие ягоды"
-    lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
-      - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
-    material: SWEET_BERRIES
+    material: GLOWSTONE_DUST
     slot: 31
-    prince-x1: 30.00
-    prince-x64: 1920.00
+    prince-x1: 100.00
+    prince-x64: 6400.00
+  8:
+    name: "&fСгусток магмы"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: MAGMA_CREAM
+    slot: 32
+    prince-x1: 180.00
+    prince-x64: 11520.00
+  9:
+    name: "&fТотем"
+    lore:
+      - "&o&fЦена за &o&6x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &o&6x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: TOTEM_OF_UNDYING
+    slot: 39
+    prince-x1: 3000.00
+    prince-x64: 192000.00

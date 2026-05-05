@@ -1,17 +1,19 @@
 package com.erydevs.gui;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import com.erydevs.EryBuyer;
 import com.erydevs.config.Configuration;
-import com.erydevs.config.ButtonConfig;
+import com.erydevs.gui.impl.ButtonConfig;
 import com.erydevs.gui.menu.MenuRegistry;
 import com.erydevs.gui.menu.MenuLoaderService;
 import com.erydevs.gui.menu.ItemStackService;
+import com.erydevs.gui.impl.head.MaterialHeadParser;
+import com.erydevs.gui.impl.head.ParsedMaterial;
+import com.erydevs.gui.impl.head.SkullUtils;
 import com.erydevs.utils.HexUtils;
 import java.util.*;
 import java.util.Optional;
@@ -73,7 +75,13 @@ public class BuyerGUI {
         Map<Integer, ButtonConfig> buttons = loadButtons(cfg);
         for (Map.Entry<Integer, ButtonConfig> entry : buttons.entrySet()) {
             ButtonConfig btn = entry.getValue();
-            Entry it = new Entry(btn.getId(), btn.getMaterial(), btn.getName(), btn.getLore(), 0.0, 0.0, btn.getSlot());
+            Entry it;
+            if (btn.getMaterialStr() != null && !btn.getMaterialStr().isEmpty()) {
+                it = new Entry(btn.getId(), btn.getMaterial(), btn.getMaterialStr(),
+                        btn.getName(), btn.getLore(), 0.0, 0.0, btn.getSlot());
+            } else {
+                it = new Entry(btn.getId(), btn.getMaterial(), btn.getName(), btn.getLore(), 0.0, 0.0, btn.getSlot());
+            }
             if (it.slot < size) {
                 entries.put(it.slot, it);
             }
@@ -90,10 +98,14 @@ public class BuyerGUI {
         if (!cfg.isConfigurationSection("item-settings")) return;
         for (String key : cfg.getConfigurationSection("item-settings").getKeys(false)) {
             String path = "item-settings." + key;
-            Material m = Material.matchMaterial(cfg.getString(path + ".material"));
+            ParsedMaterial pm = MaterialHeadParser.parse(cfg.getString(path + ".material"));
             int slot = cfg.getInt(path + ".slot");
-            if (m != null && slot >= 0) {
-                Entry e = new Entry(key, m, cfg.getString(path + ".name"),
+            if (pm != null && slot >= 0) {
+                Entry e = pm.isCustomHead()
+                        ? new Entry(key, pm.getMaterial(), pm.getHeadTextureBase64(), cfg.getString(path + ".name"),
+                        cfg.getStringList(path + ".lore"), cfg.getDouble(path + ".prince-x1"),
+                        cfg.getDouble(path + ".prince-x64"), slot)
+                        : new Entry(key, pm.getMaterial(), cfg.getString(path + ".name"),
                         cfg.getStringList(path + ".lore"), cfg.getDouble(path + ".prince-x1"),
                         cfg.getDouble(path + ".prince-x64"), slot);
                 entries.put(slot, e);
@@ -148,8 +160,8 @@ public class BuyerGUI {
             int slot = cfg.getInt(path + ".slot");
             if (slot < 0) continue;
 
-            Material material = Material.matchMaterial(cfg.getString(path + ".material", ""));
-            if (material == null) continue;
+            ParsedMaterial pm = MaterialHeadParser.parse(cfg.getString(path + ".material", ""));
+            if (pm == null) continue;
 
             String name = cfg.getString(path + ".name", "");
             List<String> lore = cfg.getStringList(path + ".lore");
@@ -162,7 +174,9 @@ public class BuyerGUI {
                 }
             }
 
-            ButtonConfig btn = new ButtonConfig(key, slot, material, name, lore, actions);
+            ButtonConfig btn = pm.isCustomHead()
+                    ? new ButtonConfig(key, slot, pm.getMaterial(), pm.getHeadTextureBase64(), name, lore, actions)
+                    : new ButtonConfig(key, slot, pm.getMaterial(), name, lore, actions);
             buttons.put(slot, btn);
         }
     }
@@ -214,5 +228,6 @@ public class BuyerGUI {
         actionsByTitle.clear();
         menuNameByTitle.clear();
         menuLoader.loadAllMenus();
+        SkullUtils.clearCache();
     }
 }

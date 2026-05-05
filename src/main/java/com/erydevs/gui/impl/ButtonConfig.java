@@ -1,4 +1,4 @@
-package com.erydevs.config;
+package com.erydevs.gui.impl;
 
 import org.bukkit.Material;
 import java.util.Collections;
