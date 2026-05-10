@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import com.erydevs.EryBuyer;
-import com.erydevs.config.Configuration;
-import com.erydevs.gui.impl.ButtonConfig;
+import com.erydevs.config.Configs;
+import com.erydevs.utils.button.ButtonConfig;
 import com.erydevs.gui.menu.MenuRegistry;
 import com.erydevs.gui.menu.MenuLoaderService;
 import com.erydevs.gui.menu.ItemStackService;
@@ -20,7 +20,7 @@ import java.util.Optional;
 
 public class BuyerGUI {
     private final EryBuyer plugin;
-    private final Configuration configManager;
+    private final Configs configManager;
     private final MenuRegistry menuRegistry;
     private final MenuLoaderService menuLoader;
     private final ItemStackService itemStackFactory;
@@ -29,7 +29,7 @@ public class BuyerGUI {
     private final Map<String, Map<Integer, List<String>>> actionsByTitle = new HashMap<>();
     private final Map<String, String> menuNameByTitle = new HashMap<>();
 
-    public BuyerGUI(EryBuyer plugin, Configuration configManager, MenuRegistry menuRegistry) {
+    public BuyerGUI(EryBuyer plugin, Configs configManager, MenuRegistry menuRegistry) {
         this.plugin = plugin;
         this.configManager = configManager;
         this.menuRegistry = menuRegistry;

@@ -3,19 +3,20 @@ package com.erydevs;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.erydevs.config.Configuration;
+import com.erydevs.config.Configs;
 import com.erydevs.gui.BuyerGUI;
 import com.erydevs.gui.menu.MenuRegistry;
 import com.erydevs.commands.BuyerCommand;
 import com.erydevs.commands.AutoBuyerCommand;
 import com.erydevs.commands.LevelCommand;
+import com.erydevs.commands.EryBuyerCommand;
 import com.erydevs.levels.LevelConfig;
 import com.erydevs.data.SQLite;
 import com.erydevs.listeners.InventoryListener;
 import com.erydevs.listeners.PlayerQuitListener;
 import com.erydevs.economy.VaultAPI;
 import com.erydevs.autobuyer.AutoBuyerManager;
-import com.erydevs.bossbar.BossBarManager;
+import com.erydevs.bossbar.Bossbars;
 import com.erydevs.placeholders.PlaceholderAPIHook;
 
 import java.io.File;
@@ -25,18 +26,18 @@ public class EryBuyer extends JavaPlugin {
 
     private static EryBuyer instance;
     private VaultAPI vaultAPI;
-    private Configuration configManager;
+    private Configs configManager;
     private MenuRegistry menuRegistry;
     private BuyerGUI buyerGUI;
     private AutoBuyerManager autoBuyerManager;
-    private BossBarManager bossBarManager;
+    private Bossbars bossbars;
     private LevelConfig levelConfig;
     private SQLite SQLite;
 
     public void onEnable() {
         instance = this;
 
-        configManager = new Configuration(this);
+        configManager = new Configs(this);
         configManager.loadConfigs();
 
         File menuDir = new File(getDataFolder(), "menu");
@@ -54,15 +55,14 @@ public class EryBuyer extends JavaPlugin {
         levelConfig = new LevelConfig(this);
         SQLite = new SQLite(getDataFolder(), configManager.getDatabaseFileName());
         vaultAPI = new VaultAPI(this);
+        Bukkit.getConsoleSender().sendMessage(vaultAPI.getStatus());
         if (!vaultAPI.isEnabled()) {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
         buyerGUI = new BuyerGUI(this, configManager, menuRegistry);
-        bossBarManager = new BossBarManager(this);
+        bossbars = new Bossbars(this);
         autoBuyerManager = new AutoBuyerManager(this);
-        
-        startTopPlayersUpdateTask();
 
         if (getCommand("buyer") != null)
             getCommand("buyer").setExecutor(new BuyerCommand(this));
@@ -70,6 +70,12 @@ public class EryBuyer extends JavaPlugin {
             getCommand("autobuyer").setExecutor(new AutoBuyerCommand(this));
         if (getCommand("level") != null)
             getCommand("level").setExecutor(new LevelCommand(this));
+
+        EryBuyerCommand eryBuyerCommand = new EryBuyerCommand(this);
+        if (getCommand("erybuyer") != null) {
+            getCommand("erybuyer").setExecutor(eryBuyerCommand);
+            getCommand("erybuyer").setTabCompleter(eryBuyerCommand);
+        }
 
         getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), this);
@@ -81,11 +87,19 @@ public class EryBuyer extends JavaPlugin {
         printStartupMessage();
     }
 
-    private void startTopPlayersUpdateTask() {
-        long updateInterval = configManager.getBuyerTopUpdateInterval() * 20L;
-        Bukkit.getScheduler().runTaskTimer(this, () -> {
-            SQLite.updateTopPlayers(configManager.getBuyerTopUpdateMoney());
-        }, updateInterval, updateInterval);
+    public void onDisable() {
+        if (autoBuyerManager != null) autoBuyerManager.shutdown();
+        if (bossbars != null) bossbars.shutdown();
+        if (SQLite != null) SQLite.closeConnection();
+        instance = null;
+        printShutdownMessage();
+    }
+
+    public void reload() {
+        configManager.reloadConfig();
+        levelConfig.reloadLevels();
+        buyerGUI.reloadMenus();
+        bossbars.reload();
     }
 
     private void printStartupMessage() {
@@ -100,14 +114,7 @@ public class EryBuyer extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Плагин: " + ChatColor.GREEN + "включен");
         Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Версия плагина: " + ChatColor.YELLOW + getDescription().getVersion());
         Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Ядро: " + ChatColor.YELLOW + Bukkit.getVersion());
-    }
-
-    public void onDisable() {
-        if (autoBuyerManager != null) autoBuyerManager.shutdown();
-        if (bossBarManager != null) bossBarManager.shutdown();
-        if (SQLite != null) SQLite.closeConnection();
-        instance = null;
-        printShutdownMessage();
+        Bukkit.getConsoleSender().sendMessage(vaultAPI.getStatus());
     }
 
     private void printShutdownMessage() {
@@ -132,7 +139,7 @@ public class EryBuyer extends JavaPlugin {
         return vaultAPI;
     }
 
-    public Configuration getConfigManager() {
+    public Configs getConfigManager() {
         return configManager;
     }
 
@@ -148,8 +155,8 @@ public class EryBuyer extends JavaPlugin {
         return autoBuyerManager;
     }
 
-    public BossBarManager getBossBarManager() {
-        return bossBarManager;
+    public Bossbars getBossBarManager() {
+        return bossbars;
     }
 
     public LevelConfig getLevelConfig() {

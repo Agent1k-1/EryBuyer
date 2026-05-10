@@ -1,7 +1,7 @@
 package com.erydevs.gui.menu;
 
 import com.erydevs.EryBuyer;
-import com.erydevs.gui.impl.ButtonConfig;
+import com.erydevs.utils.button.ButtonConfig;
 import com.erydevs.gui.Entry;
 import com.erydevs.gui.panels.PanelService;
 import com.erydevs.gui.impl.head.SkullUtils;

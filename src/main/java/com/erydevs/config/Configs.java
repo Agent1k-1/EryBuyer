@@ -4,12 +4,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
 
-public class Configuration {
+public class Configs {
 
     private final JavaPlugin plugin;
     private FileConfiguration config;
 
-    public Configuration(JavaPlugin plugin) {
+    public Configs(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -27,24 +27,48 @@ public class Configuration {
         return config;
     }
 
-    public String getMessageAutoBuyerOn() {
-        return config.getString("message.auto-buyer-on");
-    }
-
-    public String getMessageAutoBuyerOff() {
-        return config.getString("message.auto-buyer-off");
-    }
-
     public String getMessageNoItem() {
-        return config.getString("message.no-item");
+        return config.getString("message.error-no-item");
     }
 
     public String getMessageSuccessfullyBuyer() {
         return config.getString("message.successfully-buyer");
     }
 
+    public String getMessageAutoBuyer() {
+        return config.getString("message.autobuyer-use");
+    }
+
+    public String getMessageAutoBuyerOn() {
+        return config.getString("message.autobuyer-on");
+    }
+
+    public String getMessageAutoBuyerOff() {
+        return config.getString("message.autobuyer-off");
+    }
+
+    public String getMessageNoPermission() {
+        return config.getString("message.error-permission");
+    }
+
     public String getMessageLevelUp() {
-        return config.getString("message.level-up");
+        return config.getString("message.new-level");
+    }
+
+    public String getConfigReloadMessage() {
+        return config.getString("message.config-reload");
+    }
+
+    public List<String> getMessageLevelInfo() {
+        return config.getStringList("message.level-info");
+    }
+
+    public String getPlaceholderEnableAutobuyer() {
+        return config.getString("placeholder.enable-autobuyer");
+    }
+
+    public String getPlaceholderDisableAutobuyer() {
+        return config.getString("placeholder.disable-autobuyer");
     }
 
     public String getSoundOpenMenu() {
@@ -71,24 +95,13 @@ public class Configuration {
         return config.getBoolean("sound.autobuyer-sound.enabled");
     }
 
-    public List<String> getRegisterMenu() {
-        return config.getStringList("register-menu");
+    public String getDatabaseFileName() {
+        String fileName = config.getString("database.sqlite.file");
+        return fileName != null ? fileName : "playerdata.db";
     }
 
-    public String getPlaceholderEnableAutobuyer() {
-        return config.getString("placeholder.enable-autobuyer");
-    }
-
-    public String getPlaceholderDisableAutobuyer() {
-        return config.getString("placeholder.disable-autobuyer");
-    }
-
-    public String getMessageNoPermission() {
-        return config.getString("message.no-permission");
-    }
-
-    public List<String> getMessageLevelInfo() {
-        return config.getStringList("message.level-info");
+    public boolean isBossbarEnabled() {
+        return config.getBoolean("bossbar-settings.bossbar");
     }
 
     public String getBossbarText() {
@@ -99,20 +112,8 @@ public class Configuration {
         return config.getString("bossbar-settings.color");
     }
 
-    public boolean isBossbarEnabled() {
-        return config.getBoolean("bossbar-settings.bossbar");
-    }
-
     public long getAutobuyerTime() {
         return config.getLong("bossbar-settings.autobuyer-time");
-    }
-
-    public String getMessageAutoBuyer() {
-        return config.getString("message.auto-buyer");
-    }
-
-    public String getConfigReloadMessage() {
-        return config.getString("message.config-reload");
     }
 
     public double getBuyerTopUpdateMoney() {
@@ -123,8 +124,7 @@ public class Configuration {
         return config.getInt("buyer-top.update-interval");
     }
 
-    public String getDatabaseFileName() {
-        String fileName = config.getString("database.sqlite.file");
-        return fileName != null ? fileName : "playerdata.db";
+    public List<String> getRegisterMenu() {
+        return config.getStringList("register-menu");
     }
 }

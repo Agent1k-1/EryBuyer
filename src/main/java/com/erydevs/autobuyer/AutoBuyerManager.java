@@ -17,14 +17,23 @@ public class AutoBuyerManager {
     private final Map<UUID, Boolean> autobuyers = new ConcurrentHashMap<>();
     private final Map<UUID, Long> lastSellTime = new ConcurrentHashMap<>();
     private int taskId = -1;
+    private int topTaskId = -1;
 
     public AutoBuyerManager(EryBuyer plugin) {
         this.plugin = plugin;
         startTickTask();
+        startTopPlayersUpdateTask();
     }
 
     private void startTickTask() {
         taskId = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this::processAllPlayers, 0, 40);
+    }
+
+    private void startTopPlayersUpdateTask() {
+        long interval = plugin.getConfigManager().getBuyerTopUpdateInterval() * 20L;
+        topTaskId = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () ->
+                        plugin.getDataBase().updateTopPlayers(plugin.getConfigManager().getBuyerTopUpdateMoney()),
+                interval, interval);
     }
 
     private void processAllPlayers() {
@@ -66,13 +75,9 @@ public class AutoBuyerManager {
     public void processPlayerInventory(Player p) {
         UUID id = p.getUniqueId();
         long currentTime = System.currentTimeMillis();
-        long delay = getAutobuyerDelay();
-        
         long lastTime = lastSellTime.getOrDefault(id, 0L);
-        if (currentTime - lastTime < delay) {
-            return;
-        }
-        
+        if (currentTime - lastTime < getAutobuyerDelay()) return;
+
         for (Entry entry : plugin.getBuyerGUI().getAllEntries()) {
             if (entry == null || entry.material == null || entry.priceX1 <= 0) continue;
             int stackAmount = removeItemsFromInventory(p, entry);
@@ -102,11 +107,9 @@ public class AutoBuyerManager {
         }
         return total;
     }
-    
 
     private long getAutobuyerDelay() {
-        long configValue = plugin.getConfigManager().getAutobuyerTime();
-        return configValue * 50;
+        return plugin.getConfigManager().getAutobuyerTime() * 50;
     }
 
     private void depositAndNotify(Player p, Entry entry, int amount) {
@@ -114,19 +117,16 @@ public class AutoBuyerManager {
         double basePrice = entry.priceX1 * amount;
         double multiplier = 1.0 + plugin.getLevelConfig().getMultiplierByLevel(playerLevel.getCurrentLevel());
         double total = basePrice * multiplier;
+
         Economy econ = plugin.getEconomyManager().getEconomy();
         if (econ != null) econ.depositPlayer(p, total);
-        
+
         int maxLevel = plugin.getLevelConfig().getMaxLevel();
         if (playerLevel.getCurrentLevel() < maxLevel) {
             plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), basePrice);
-            com.erydevs.levels.PlayerLevel updatedLevel = plugin.getDataBase().getPlayerData(p.getUniqueId());
-            if (updatedLevel.getTotalEarned() >= plugin.getConfigManager().getBuyerTopUpdateMoney()) {
-                plugin.getDataBase().updateTopPlayers(plugin.getConfigManager().getBuyerTopUpdateMoney());
-            }
             checkAndUpdateLevel(p);
         }
-        
+
         String msg = plugin.getConfigManager().getMessageAutoBuyer();
         p.sendMessage(PlaceholderAPIHook.apply(msg, p, entry, amount, total));
         playSound(p);
@@ -136,7 +136,7 @@ public class AutoBuyerManager {
         com.erydevs.levels.PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(p.getUniqueId());
         int maxLevel = plugin.getLevelConfig().getMaxLevel();
         double totalEarned = playerLevel.getTotalEarned();
-        
+
         while (playerLevel.getCurrentLevel() < maxLevel) {
             int nextLevel = playerLevel.getCurrentLevel() + 1;
             if (plugin.getLevelConfig().getRequiredMoneyForLevel(nextLevel) <= totalEarned) {
@@ -160,6 +160,7 @@ public class AutoBuyerManager {
 
     public void shutdown() {
         plugin.getServer().getScheduler().cancelTask(taskId);
+        plugin.getServer().getScheduler().cancelTask(topTaskId);
         for (Player p : plugin.getServer().getOnlinePlayers()) {
             removePlayer(p);
         }

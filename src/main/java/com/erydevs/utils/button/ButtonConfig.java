@@ -1,4 +1,4 @@
-package com.erydevs.gui.impl;
+package com.erydevs.utils.button;
 
 import org.bukkit.Material;
 import java.util.Collections;
@@ -72,13 +72,4 @@ public class ButtonConfig {
         return actions.stream().anyMatch(a -> a != null && a.contains(fragment));
     }
 
-    @Override
-    public String toString() {
-        return "ButtonConfig{" +
-                "id='" + id + '\'' +
-                ", slot=" + slot +
-                ", material=" + material +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

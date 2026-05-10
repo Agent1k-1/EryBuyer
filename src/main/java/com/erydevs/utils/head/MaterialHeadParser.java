@@ -10,7 +10,7 @@ public final class MaterialHeadParser {
     private MaterialHeadParser() {
     }
 
-    public static ParsedMaterial parse(String raw) {
+    public static com.erydevs.gui.impl.head.ParsedMaterial parse(String raw) {
         if (raw == null) {
             return null;
         }

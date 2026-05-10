@@ -10,13 +10,13 @@
 # [sound] произведение звуков
 # Плагин разработан студией EryDev
 message:
-  no-item: "&#FFCC00▪ &#FFFFFFУ вас нет предмета &#FFA500%item_name%"
+  error-no-item: "&#FFCC00▪ &#FFFFFFУ вас нет предмета &#FFA500%item_name%"
   successfully-buyer: "&#FFCC00▪ &#FFFFFFВы успешно продали &#FFA500%item_name% &#FFFFFFза &#FF0000%prince%"
-  auto-buyer: "&#FFCC00▪ &#FFFFFFВы продали скупщику &#FFA500%item_sell% &#FFFFFFштук, баланс &#FF0000%vault_eco_balance%"
-  auto-buyer-on: "&#FFCC00▪ &#FFFFFFАвто-скупщик &#FFA500%autobuyer_status%"
-  auto-buyer-off: "&#FFCC00▪ &#FFFFFFАвто-скупщик &#FF0000%autobuyer_status%"
-  no-permission: "&#FF0000▪ &#FFFFFFУ вас недостаточно прав"
-  level-up: "&#FFA500🎉 &#FFFFFFВы достигли уровня &#FFCC00%new_level%"
+  autobuyer-use: "&#FFCC00▪ &#FFFFFFВы продали скупщику &#FFA500%item_sell% &#FFFFFFштук, баланс &#FF0000%vault_eco_balance%"
+  autobuyer-on: "&#FFCC00▪ &#FFFFFFАвто-скупщик &#FFA500%autobuyer_status%"
+  autobuyer-off: "&#FFCC00▪ &#FFFFFFАвто-скупщик &#FF0000%autobuyer_status%"
+  error-permission: "&#FF0000▪ &#FFFFFFУ вас недостаточно прав"
+  new-level: "&#FFFFFFВы достигли уровня &#FFCC00%new_level%"
   config-reload: "&#FFCC00▪ &#FFFFFFКонфиг успешно перезагружен"
   level-info:
     - "&#FFFFFFВаша статистика уровней"

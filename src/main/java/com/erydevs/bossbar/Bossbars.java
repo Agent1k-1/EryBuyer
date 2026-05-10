@@ -10,14 +10,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class BossBarManager {
+public class Bossbars {
 
     private final EryBuyer plugin;
     private final Map<UUID, BossBar> bossbars = new ConcurrentHashMap<>();
+    private BarColor barColor;
     private int updateTaskId = -1;
 
-    public BossBarManager(EryBuyer plugin) {
+    public Bossbars(EryBuyer plugin) {
         this.plugin = plugin;
+        this.barColor = parseColor(plugin.getConfigManager().getBossbarColor());
         startBossBarUpdateTask();
     }
 
@@ -28,14 +30,8 @@ public class BossBarManager {
     public void createBossBar(Player player) {
         UUID id = player.getUniqueId();
         if (bossbars.containsKey(id)) return;
-        String raw = plugin.getConfigManager().getBossbarText();
-        String text = PlaceholderAPIHook.apply(raw, player);
-        BarColor color = BarColor.RED;
-        try {
-            String c = plugin.getConfigManager().getBossbarColor();
-            color = BarColor.valueOf(c.toUpperCase());
-        } catch (Exception ignored) {}
-        BossBar bar = plugin.getServer().createBossBar(text, color, BarStyle.SOLID);
+        String text = PlaceholderAPIHook.apply(plugin.getConfigManager().getBossbarText(), player);
+        BossBar bar = plugin.getServer().createBossBar(text, barColor, BarStyle.SOLID);
         bar.addPlayer(player);
         bar.setVisible(true);
         bar.setProgress(1.0);
@@ -43,8 +39,7 @@ public class BossBarManager {
     }
 
     public void removeBossBar(Player player) {
-        UUID id = player.getUniqueId();
-        BossBar bar = bossbars.remove(id);
+        BossBar bar = bossbars.remove(player.getUniqueId());
         if (bar != null) {
             bar.removeAll();
             bar.setVisible(false);
@@ -64,21 +59,36 @@ public class BossBarManager {
     }
 
     private void updateAllBossBars() {
-        for (Player p : plugin.getServer().getOnlinePlayers()) {
-            if (plugin.getAutoBuyerManager().isAutobuyerEnabled(p)) {
-                updateBossBar(p);
-            }
+        if (bossbars.isEmpty()) return;
+        String rawText = plugin.getConfigManager().getBossbarText();
+        for (Map.Entry<UUID, BossBar> entry : bossbars.entrySet()) {
+            Player p = plugin.getServer().getPlayer(entry.getKey());
+            if (p == null || !p.isOnline()) continue;
+            try {
+                entry.getValue().setTitle(PlaceholderAPIHook.apply(rawText, p));
+            } catch (Exception ignored) {}
         }
     }
 
-    private void updateBossBar(Player player) {
-        BossBar bar = bossbars.get(player.getUniqueId());
-        if (bar != null) {
+    public void reload() {
+        barColor = parseColor(plugin.getConfigManager().getBossbarColor());
+        String rawText = plugin.getConfigManager().getBossbarText();
+        for (Map.Entry<UUID, BossBar> entry : bossbars.entrySet()) {
+            Player p = plugin.getServer().getPlayer(entry.getKey());
+            if (p == null || !p.isOnline()) continue;
+            BossBar bar = entry.getValue();
+            bar.setColor(barColor);
             try {
-                String raw = plugin.getConfigManager().getBossbarText();
-                String text = PlaceholderAPIHook.apply(raw, player);
-                bar.setTitle(text);
+                bar.setTitle(PlaceholderAPIHook.apply(rawText, p));
             } catch (Exception ignored) {}
+        }
+    }
+
+    private BarColor parseColor(String colorName) {
+        try {
+            return BarColor.valueOf(colorName.toUpperCase());
+        } catch (Exception ignored) {
+            return BarColor.RED;
         }
     }
 
