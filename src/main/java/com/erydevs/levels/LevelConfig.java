@@ -1,7 +1,10 @@
 package com.erydevs.levels;
 
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +12,8 @@ public class LevelConfig {
 
     private final JavaPlugin plugin;
     private final Map<Integer, LevelData> levels = new HashMap<>();
+    private File levelFile;
+    private FileConfiguration levelConfiguration;
 
     public LevelConfig(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -16,20 +21,28 @@ public class LevelConfig {
     }
 
     private void loadLevels() {
-        FileConfiguration config = plugin.getConfig();
-        if (!config.isConfigurationSection("levels")) return;
-        for (String key : config.getConfigurationSection("levels").getKeys(false)) {
+        levels.clear();
+
+        levelFile = new File(plugin.getDataFolder(), "level.yml");
+        if (!levelFile.exists()) {
+            plugin.saveResource("level.yml", false);
+        }
+
+        levelConfiguration = YamlConfiguration.loadConfiguration(levelFile);
+
+        if (!levelConfiguration.isConfigurationSection("levels")) return;
+
+        for (String key : levelConfiguration.getConfigurationSection("levels").getKeys(false)) {
             try {
                 int level = Integer.parseInt(key);
-                double multiplier = config.getDouble("levels." + level + ".multiplier");
-                double required = config.getDouble("levels." + level + ".required-money");
+                double multiplier = levelConfiguration.getDouble("levels." + level + ".multiplier");
+                double required = levelConfiguration.getDouble("levels." + level + ".required-money");
                 levels.put(level, new LevelData(level, multiplier, required));
             } catch (NumberFormatException ignored) {}
         }
     }
 
     public void reloadLevels() {
-        levels.clear();
         loadLevels();
     }
 

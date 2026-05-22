@@ -1,13 +1,13 @@
-package com.erydevs.gui.action;
+package com.erydevs.action;
 
 import com.erydevs.EryBuyer;
 import org.bukkit.entity.Player;
 
-public class CloseAction implements ActionHandler {
-    
+public class CloseAction implements Actions {
+
     @Override
     public boolean canHandle(String actionLine) {
-        return actionLine.trim().equalsIgnoreCase("[close]");
+        return actionLine.equalsIgnoreCase("[close]");
     }
 
     @Override

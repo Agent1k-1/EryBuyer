@@ -1,15 +1,21 @@
 package com.erydevs.autobuyer;
 
 import com.erydevs.EryBuyer;
+import com.erydevs.action.Actions;
 import com.erydevs.gui.Entry;
-import com.erydevs.placeholders.PlaceholderAPIHook;
+import com.erydevs.levels.PlayerLevel;
+import com.erydevs.papi.PlaceholderAPIHook;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import java.util.concurrent.ConcurrentHashMap;
+
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class AutoBuyerManager {
 
@@ -31,15 +37,18 @@ public class AutoBuyerManager {
 
     private void startTopPlayersUpdateTask() {
         long interval = plugin.getConfigManager().getBuyerTopUpdateInterval() * 20L;
-        topTaskId = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () ->
-                        plugin.getDataBase().updateTopPlayers(plugin.getConfigManager().getBuyerTopUpdateMoney()),
+        topTaskId = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin,
+                () -> plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
+                        () -> plugin.getDataBase().refreshTopPlayersCache(plugin.getConfigManager().getBuyerTopUpdateMoney())),
                 interval, interval);
     }
 
     private void processAllPlayers() {
+        Collection<Entry> entries = plugin.getBuyerGUI().getBuyableEntries();
+        if (entries.isEmpty()) return;
         for (Player p : plugin.getServer().getOnlinePlayers()) {
             if (isAutobuyerEnabled(p)) {
-                processPlayerInventory(p);
+                processPlayerInventory(p, entries);
             }
         }
     }
@@ -70,50 +79,46 @@ public class AutoBuyerManager {
         autobuyers.remove(id);
         lastSellTime.remove(id);
         if (plugin.getBossBarManager() != null) plugin.getBossBarManager().removeBossBar(player);
+        plugin.getDataBase().evictPlayer(id);
     }
 
-    public void processPlayerInventory(Player p) {
+    public void processPlayerInventory(Player p, Collection<Entry> entries) {
         UUID id = p.getUniqueId();
         long currentTime = System.currentTimeMillis();
         long lastTime = lastSellTime.getOrDefault(id, 0L);
         if (currentTime - lastTime < getAutobuyerDelay()) return;
 
-        for (Entry entry : plugin.getBuyerGUI().getAllEntries()) {
+        ItemStack[] contents = p.getInventory().getContents();
+
+        for (Entry entry : entries) {
             if (entry == null || entry.material == null || entry.priceX1 <= 0) continue;
-            int stackAmount = removeItemsFromInventory(p, entry);
-            if (stackAmount > 0) {
+
+            int total = 0;
+            for (ItemStack is : contents) {
+                if (is != null && is.getType() == entry.material) total += is.getAmount();
+            }
+
+            if (total > 0) {
+                for (int i = 0; i < contents.length; i++) {
+                    ItemStack is = contents[i];
+                    if (is != null && is.getType() == entry.material) {
+                        p.getInventory().setItem(i, null);
+                        contents[i] = null;
+                    }
+                }
                 lastSellTime.put(id, currentTime);
-                depositAndNotify(p, entry, stackAmount);
+                depositAndNotify(p, entry, total);
                 return;
             }
         }
     }
 
-    private int removeItemsFromInventory(Player p, Entry entry) {
-        int total = 0;
-        for (int i = 0; i < p.getInventory().getSize(); i++) {
-            ItemStack is = p.getInventory().getItem(i);
-            if (is != null && is.getType() == entry.material) {
-                total += is.getAmount();
-            }
-        }
-        if (total > 0) {
-            for (int i = 0; i < p.getInventory().getSize(); i++) {
-                ItemStack is = p.getInventory().getItem(i);
-                if (is != null && is.getType() == entry.material) {
-                    p.getInventory().setItem(i, null);
-                }
-            }
-        }
-        return total;
-    }
-
     private long getAutobuyerDelay() {
-        return plugin.getConfigManager().getAutobuyerTime() * 50;
+        return plugin.getConfigManager().getAutobuyerTime() * 50L;
     }
 
     private void depositAndNotify(Player p, Entry entry, int amount) {
-        com.erydevs.levels.PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(p.getUniqueId());
+        PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(p.getUniqueId());
         double basePrice = entry.priceX1 * amount;
         double multiplier = 1.0 + plugin.getLevelConfig().getMultiplierByLevel(playerLevel.getCurrentLevel());
         double total = basePrice * multiplier;
@@ -123,30 +128,42 @@ public class AutoBuyerManager {
 
         int maxLevel = plugin.getLevelConfig().getMaxLevel();
         if (playerLevel.getCurrentLevel() < maxLevel) {
-            plugin.getDataBase().addPlayerEarnings(p.getUniqueId(), basePrice);
-            checkAndUpdateLevel(p);
+            playerLevel.addEarnings(basePrice);
+            checkAndUpdateLevel(p, playerLevel);
         }
 
-        String msg = plugin.getConfigManager().getMessageAutoBuyer();
-        p.sendMessage(PlaceholderAPIHook.apply(msg, p, entry, amount, total));
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
+                () -> plugin.getDataBase().flushPlayerAsync(playerLevel));
+
+        List<String> lines = plugin.getConfigManager().getMessageAutoBuyer().stream()
+                .map(line -> PlaceholderAPIHook.apply(line, p, entry, amount, total))
+                .collect(Collectors.toList());
+        Actions.dispatch(plugin, p, lines);
         playSound(p);
     }
 
-    private void checkAndUpdateLevel(Player p) {
-        com.erydevs.levels.PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(p.getUniqueId());
+    private void checkAndUpdateLevel(Player p, PlayerLevel playerLevel) {
         int maxLevel = plugin.getLevelConfig().getMaxLevel();
         double totalEarned = playerLevel.getTotalEarned();
+        boolean leveled = false;
 
         while (playerLevel.getCurrentLevel() < maxLevel) {
             int nextLevel = playerLevel.getCurrentLevel() + 1;
             if (plugin.getLevelConfig().getRequiredMoneyForLevel(nextLevel) <= totalEarned) {
                 playerLevel.setCurrentLevel(nextLevel);
-                plugin.getDataBase().savePlayerData(playerLevel);
-                String msg = plugin.getConfigManager().getMessageLevelUp();
-                p.sendMessage(com.erydevs.placeholders.PlaceholderAPIHook.applyLevelUp(msg, p, nextLevel));
+                leveled = true;
+                List<String> lines = plugin.getConfigManager().getMessageLevelUp().stream()
+                        .map(line -> PlaceholderAPIHook.applyLevelUp(line, p, nextLevel))
+                        .collect(Collectors.toList());
+                Actions.dispatch(plugin, p, lines);
             } else {
                 break;
             }
+        }
+
+        if (leveled) {
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
+                    () -> plugin.getDataBase().savePlayerData(playerLevel));
         }
     }
 

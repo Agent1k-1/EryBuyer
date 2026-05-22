@@ -1,7 +1,8 @@
 package com.erydevs.commands;
 
 import com.erydevs.EryBuyer;
-import com.erydevs.placeholders.PlaceholderAPIHook;
+import com.erydevs.action.Actions;
+import com.erydevs.papi.PlaceholderAPIHook;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EryBuyerCommand implements CommandExecutor, TabCompleter {
 
@@ -22,17 +24,21 @@ public class EryBuyerCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        Player p = sender instanceof Player ? (Player) sender : null;
+
         if (!sender.hasPermission("erybuyer.admin")) {
-            Player p = sender instanceof Player ? (Player) sender : null;
-            sender.sendMessage(PlaceholderAPIHook.apply(plugin.getConfigManager().getMessageNoPermission(), p));
+            if (p != null) Actions.dispatch(plugin, p, plugin.getConfigManager().getMessageNoPermission());
             return true;
         }
 
         if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
             plugin.reload();
-            Player p = sender instanceof Player ? (Player) sender : null;
-            sender.sendMessage(PlaceholderAPIHook.apply(plugin.getConfigManager().getConfigReloadMessage(), p));
-            return true;
+            if (p != null) {
+                List<String> lines = plugin.getConfigManager().getConfigReloadMessage().stream()
+                        .map(line -> PlaceholderAPIHook.apply(line, p))
+                        .collect(Collectors.toList());
+                Actions.dispatch(plugin, p, lines);
+            }
         }
         return true;
     }

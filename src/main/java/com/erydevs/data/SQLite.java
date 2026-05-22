@@ -6,10 +6,13 @@ import com.erydevs.levels.PlayerLevel;
 import java.sql.*;
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SQLite {
 
     private final SQLiteConnect databaseConnect;
+    private final Map<UUID, PlayerLevel> cache = new ConcurrentHashMap<>();
+    private volatile List<Map.Entry<String, Double>> topPlayersCache = new ArrayList<>();
 
     public SQLite(File dataFolder, String fileName) {
         this.databaseConnect = new SQLiteConnect(dataFolder, fileName);
@@ -30,8 +33,13 @@ public class SQLite {
     }
 
     public PlayerLevel getPlayerData(UUID uuid) {
+        PlayerLevel cached = cache.get(uuid);
+        if (cached != null) return cached;
+
         if (!databaseConnect.isConnected()) {
-            return new PlayerLevel(uuid, 1, 0.0);
+            PlayerLevel def = new PlayerLevel(uuid, 1, 0.0);
+            cache.put(uuid, def);
+            return def;
         }
 
         try (PreparedStatement stmt = databaseConnect.getConnection().prepareStatement(
@@ -39,14 +47,19 @@ public class SQLite {
             stmt.setString(1, uuid.toString());
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return new PlayerLevel(uuid, rs.getInt("current_level"), rs.getDouble("total_earned"));
+                PlayerLevel pl = new PlayerLevel(uuid, rs.getInt("current_level"), rs.getDouble("total_earned"));
+                cache.put(uuid, pl);
+                return pl;
             }
         } catch (SQLException e) {
         }
-        return new PlayerLevel(uuid, 1, 0.0);
+        PlayerLevel def = new PlayerLevel(uuid, 1, 0.0);
+        cache.put(uuid, def);
+        return def;
     }
 
     public void savePlayerData(PlayerLevel player) {
+        cache.put(player.getUuid(), player);
         if (!databaseConnect.isConnected()) return;
 
         try (PreparedStatement stmt = databaseConnect.getConnection().prepareStatement(
@@ -60,53 +73,63 @@ public class SQLite {
         }
     }
 
-    public void addPlayerEarnings(UUID uuid, double amount) {
+    public void flushPlayerAsync(PlayerLevel player) {
+        cache.put(player.getUuid(), player);
         if (!databaseConnect.isConnected()) return;
 
         try (PreparedStatement stmt = databaseConnect.getConnection().prepareStatement(
-                "UPDATE player_levels SET total_earned = total_earned + ? WHERE uuid = ?")) {
-            stmt.setDouble(1, amount);
-            stmt.setString(2, uuid.toString());
-            int updated = stmt.executeUpdate();
-
-            if (updated == 0) {
-                try (PreparedStatement insert = databaseConnect.getConnection().prepareStatement(
-                        "INSERT INTO player_levels (uuid, current_level, total_earned) VALUES (?, 1, ?)")) {
-                    insert.setString(1, uuid.toString());
-                    insert.setDouble(2, amount);
-                    insert.executeUpdate();
-                }
-            }
+                "INSERT OR REPLACE INTO player_levels (uuid, current_level, total_earned) VALUES (?, ?, ?)")) {
+            stmt.setString(1, player.getUuid().toString());
+            stmt.setInt(2, player.getCurrentLevel());
+            stmt.setDouble(3, player.getTotalEarned());
+            stmt.executeUpdate();
         } catch (SQLException e) {
+        }
+    }
+
+    public void addPlayerEarnings(UUID uuid, double amount) {
+        PlayerLevel cached = cache.get(uuid);
+        if (cached != null) {
+            cached.addEarnings(amount);
+        }
+    }
+
+    public void evictPlayer(UUID uuid) {
+        PlayerLevel player = cache.remove(uuid);
+        if (player != null) {
+            flushPlayerAsync(player);
         }
     }
 
     public List<Map.Entry<String, Double>> getTopPlayers(int limit, double minEarned) {
-        if (!databaseConnect.isConnected()) return new ArrayList<>();
+        return topPlayersCache;
+    }
 
-        List<Map.Entry<String, Double>> topPlayers = new ArrayList<>();
+    public void refreshTopPlayersCache(double minEarned) {
+        if (!databaseConnect.isConnected()) return;
+
+        List<Map.Entry<String, Double>> result = new ArrayList<>();
         try (PreparedStatement stmt = databaseConnect.getConnection().prepareStatement(
-                "SELECT uuid, total_earned FROM player_levels WHERE total_earned >= ? ORDER BY total_earned DESC LIMIT ?")) {
+                "SELECT uuid, total_earned FROM player_levels WHERE total_earned >= ? ORDER BY total_earned DESC LIMIT 100")) {
             stmt.setDouble(1, minEarned);
-            stmt.setInt(2, limit);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                topPlayers.add(new AbstractMap.SimpleEntry<>(rs.getString("uuid"), rs.getDouble("total_earned")));
+                result.add(new AbstractMap.SimpleEntry<>(rs.getString("uuid"), rs.getDouble("total_earned")));
             }
         } catch (SQLException e) {
         }
-        return topPlayers;
+        topPlayersCache = result;
     }
 
     public void updateTopPlayers(double minEarned) {
-        if (!databaseConnect.isConnected()) return;
-        try {
-            getTopPlayers(Integer.MAX_VALUE, minEarned);
-        } catch (Exception e) {
-        }
+        refreshTopPlayersCache(minEarned);
     }
 
     public void closeConnection() {
+        for (PlayerLevel player : cache.values()) {
+            flushPlayerAsync(player);
+        }
+        cache.clear();
         databaseConnect.closeConnection();
     }
 

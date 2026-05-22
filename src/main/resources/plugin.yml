@@ -1,5 +1,5 @@
 name: EryBuyer
-version: '1.4.3'
+version: 'v1'
 main: com.erydevs.EryBuyer
 api-version: '1.16'
 depend: [Vault]
@@ -12,7 +12,6 @@ commands:
       - seller
       - скупщик
   autobuyer:
-  level:
 permission:
   erybuyer.admin:
     default: op

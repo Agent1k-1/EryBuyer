@@ -10,13 +10,7 @@ public class HexUtils {
     private static final Pattern HEX_PATTERN = Pattern.compile("&#([A-Fa-f0-9]{6})");
 
     public static String colorize(String message) {
-        if (message == null || message.isEmpty()) {
-            return message;
-        }
-
-        if (!message.startsWith("&") && !message.startsWith("&#")) {
-            message = "&f" + message;
-        }
+        if (message == null || message.isEmpty()) return message;
 
         Matcher matcher = HEX_PATTERN.matcher(message);
         StringBuffer buffer = new StringBuffer();

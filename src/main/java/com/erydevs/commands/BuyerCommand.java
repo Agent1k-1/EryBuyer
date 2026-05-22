@@ -1,12 +1,12 @@
 package com.erydevs.commands;
 
+import com.erydevs.EryBuyer;
+import com.erydevs.action.Actions;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import com.erydevs.EryBuyer;
-import com.erydevs.utils.HexUtils;
 
 public class BuyerCommand implements CommandExecutor {
 
@@ -18,15 +18,11 @@ public class BuyerCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            return false;
-        }
-
+        if (!(sender instanceof Player)) return false;
         Player player = (Player) sender;
 
         if (!player.hasPermission("erybuyer.open")) {
-            String msg = plugin.getConfigManager().getMessageNoPermission();
-            player.sendMessage(HexUtils.colorize(msg));
+            Actions.dispatch(plugin, player, plugin.getConfigManager().getMessageNoPermission());
             return true;
         }
 
@@ -40,7 +36,6 @@ public class BuyerCommand implements CommandExecutor {
         try {
             Sound s = Sound.valueOf(plugin.getConfigManager().getSoundOpenMenu());
             player.playSound(player.getLocation(), s, 1.0f, 1.0f);
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
 }

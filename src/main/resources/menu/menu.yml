@@ -67,7 +67,7 @@ menu-settings:
     material: WHEAT
     action:
       - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
-      - "[openmenu] farm"
+      - "[openmenu] farma"
   3:
     name: "&fЛут с мобов"
     lore:
@@ -77,4 +77,4 @@ menu-settings:
     material: ROTTEN_FLESH
     action:
       - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
-      - "[openmenu] mobs"
+      - "[openmenu] mob"

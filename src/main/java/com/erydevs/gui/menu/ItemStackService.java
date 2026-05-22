@@ -5,7 +5,7 @@ import com.erydevs.utils.button.ButtonConfig;
 import com.erydevs.gui.Entry;
 import com.erydevs.gui.panels.PanelService;
 import com.erydevs.gui.impl.head.SkullUtils;
-import com.erydevs.placeholders.PlaceholderAPIHook;
+import com.erydevs.papi.PlaceholderAPIHook;
 import com.erydevs.utils.HexUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;

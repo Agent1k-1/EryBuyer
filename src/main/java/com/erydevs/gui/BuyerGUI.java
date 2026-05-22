@@ -135,6 +135,10 @@ public class BuyerGUI {
         return out;
     }
 
+    public Collection<Entry> getBuyableEntries() {
+        return combinedSlotMap.values();
+    }
+
     public boolean isManagedTitle(String title) {
         return entriesByTitle.containsKey(title);
     }

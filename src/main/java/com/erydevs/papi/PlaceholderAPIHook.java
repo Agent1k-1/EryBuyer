@@ -1,4 +1,4 @@
-package com.erydevs.placeholders;
+package com.erydevs.papi;
 
 import java.util.List;
 import java.util.Map;
@@ -67,10 +67,10 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
             case "buyer_total_earned":
                 return String.valueOf((long) plugin.getDataBase().getPlayerData(player.getUniqueId()).getTotalEarned());
             case "buyer_next_level":
-                double totalEarned = plugin.getDataBase().getPlayerData(player.getUniqueId()).getTotalEarned();
-                int nextLevel = plugin.getDataBase().getPlayerData(player.getUniqueId()).getCurrentLevel() + 1;
+                PlayerLevel plNext = plugin.getDataBase().getPlayerData(player.getUniqueId());
+                int nextLevel = plNext.getCurrentLevel() + 1;
                 double requiredForNext = plugin.getLevelConfig().getRequiredMoneyForLevel(nextLevel);
-                return String.valueOf((long) Math.max(0, requiredForNext - totalEarned));
+                return String.valueOf((long) Math.max(0, requiredForNext - plNext.getTotalEarned()));
             case "buyer_max_level":
                 return String.valueOf(plugin.getLevelConfig().getMaxLevel());
             default:

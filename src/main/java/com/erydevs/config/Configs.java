@@ -27,40 +27,32 @@ public class Configs {
         return config;
     }
 
-    public String getMessageNoItem() {
-        return config.getString("message.error-no-item");
+    public List<String> getMessageNoItem() {
+        return config.getStringList("message.error-no-item");
     }
 
-    public String getMessageSuccessfullyBuyer() {
-        return config.getString("message.successfully-buyer");
+    public List<String> getMessageSuccessfullyBuyer() {
+        return config.getStringList("message.successfully-buyer");
     }
 
-    public String getMessageAutoBuyer() {
-        return config.getString("message.autobuyer-use");
+    public List<String> getMessageAutoBuyer() {
+        return config.getStringList("message.autobuyer-use");
     }
 
-    public String getMessageAutoBuyerOn() {
-        return config.getString("message.autobuyer-on");
+    public List<String> getMessageAutoBuyerStatus() {
+        return config.getStringList("message.autobuyer-status");
     }
 
-    public String getMessageAutoBuyerOff() {
-        return config.getString("message.autobuyer-off");
+    public List<String> getMessageNoPermission() {
+        return config.getStringList("message.error-permission");
     }
 
-    public String getMessageNoPermission() {
-        return config.getString("message.error-permission");
+    public List<String> getMessageLevelUp() {
+        return config.getStringList("message.new-level");
     }
 
-    public String getMessageLevelUp() {
-        return config.getString("message.new-level");
-    }
-
-    public String getConfigReloadMessage() {
-        return config.getString("message.config-reload");
-    }
-
-    public List<String> getMessageLevelInfo() {
-        return config.getStringList("message.level-info");
+    public List<String> getConfigReloadMessage() {
+        return config.getStringList("message.config-reload");
     }
 
     public String getPlaceholderEnableAutobuyer() {
@@ -96,7 +88,7 @@ public class Configs {
     }
 
     public String getDatabaseFileName() {
-        String fileName = config.getString("database.sqlite.file");
+        String fileName = config.getString("database.file");
         return fileName != null ? fileName : "playerdata.db";
     }
 

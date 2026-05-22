@@ -8,7 +8,6 @@ import com.erydevs.gui.BuyerGUI;
 import com.erydevs.gui.menu.MenuRegistry;
 import com.erydevs.commands.BuyerCommand;
 import com.erydevs.commands.AutoBuyerCommand;
-import com.erydevs.commands.LevelCommand;
 import com.erydevs.commands.EryBuyerCommand;
 import com.erydevs.levels.LevelConfig;
 import com.erydevs.data.SQLite;
@@ -17,7 +16,7 @@ import com.erydevs.listeners.PlayerQuitListener;
 import com.erydevs.economy.VaultAPI;
 import com.erydevs.autobuyer.AutoBuyerManager;
 import com.erydevs.bossbar.Bossbars;
-import com.erydevs.placeholders.PlaceholderAPIHook;
+import com.erydevs.papi.PlaceholderAPIHook;
 
 import java.io.File;
 import java.util.List;
@@ -54,12 +53,20 @@ public class EryBuyer extends JavaPlugin {
         menuRegistry = new MenuRegistry(this);
         levelConfig = new LevelConfig(this);
         SQLite = new SQLite(getDataFolder(), configManager.getDatabaseFileName());
+
+        if (SQLite.isConnected()) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[EryBuyer] База данных SQLite подключена");
+        } else {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EryBuyer] База данных SQLite не подключена");
+        }
+
         vaultAPI = new VaultAPI(this);
         Bukkit.getConsoleSender().sendMessage(vaultAPI.getStatus());
         if (!vaultAPI.isEnabled()) {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
+
         buyerGUI = new BuyerGUI(this, configManager, menuRegistry);
         bossbars = new Bossbars(this);
         autoBuyerManager = new AutoBuyerManager(this);
@@ -68,8 +75,6 @@ public class EryBuyer extends JavaPlugin {
             getCommand("buyer").setExecutor(new BuyerCommand(this));
         if (getCommand("autobuyer") != null)
             getCommand("autobuyer").setExecutor(new AutoBuyerCommand(this));
-        if (getCommand("level") != null)
-            getCommand("level").setExecutor(new LevelCommand(this));
 
         EryBuyerCommand eryBuyerCommand = new EryBuyerCommand(this);
         if (getCommand("erybuyer") != null) {
@@ -115,6 +120,11 @@ public class EryBuyer extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Версия плагина: " + ChatColor.YELLOW + getDescription().getVersion());
         Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Ядро: " + ChatColor.YELLOW + Bukkit.getVersion());
         Bukkit.getConsoleSender().sendMessage(vaultAPI.getStatus());
+        if (SQLite != null && SQLite.isConnected()) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "База данных: " + ChatColor.GREEN + "SQLite подключена");
+        } else {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "База данных: " + ChatColor.RED + "SQLite не подключена");
+        }
     }
 
     private void printShutdownMessage() {
