@@ -67,6 +67,14 @@ public class Configs {
         return config.getString("sound.sound_open_menu.sound");
     }
 
+    public float getSoundOpenMenuPitch() {
+        return (float) config.getDouble("sound.sound_open_menu.pitch", 1.0);
+    }
+
+    public float getSoundOpenMenuVolume() {
+        return (float) config.getDouble("sound.sound_open_menu.volume", 1.0);
+    }
+
     public boolean isSoundOpenMenuEnabled() {
         return config.getBoolean("sound.sound_open_menu.enabled");
     }
@@ -75,12 +83,28 @@ public class Configs {
         return config.getString("sound.no-item-sound.sound");
     }
 
+    public float getSoundNoItemPitch() {
+        return (float) config.getDouble("sound.no-item-sound.pitch", 1.0);
+    }
+
+    public float getSoundNoItemVolume() {
+        return (float) config.getDouble("sound.no-item-sound.volume", 1.0);
+    }
+
     public boolean isSoundNoItemEnabled() {
         return config.getBoolean("sound.no-item-sound.enabled");
     }
 
     public String getSoundAutobuyer() {
         return config.getString("sound.autobuyer-sound.sound");
+    }
+
+    public float getSoundAutobuyerPitch() {
+        return (float) config.getDouble("sound.autobuyer-sound.pitch", 1.0);
+    }
+
+    public float getSoundAutobuyerVolume() {
+        return (float) config.getDouble("sound.autobuyer-sound.volume", 1.0);
     }
 
     public boolean isSoundAutobuyerEnabled() {

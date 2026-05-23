@@ -1,4 +1,4 @@
-package com.erydevs.gui.impl.head;
+package com.erydevs.utils.head;
 
 import com.erydevs.EryBuyer;
 import com.mojang.authlib.GameProfile;

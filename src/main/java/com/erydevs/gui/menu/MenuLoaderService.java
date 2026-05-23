@@ -1,7 +1,7 @@
 package com.erydevs.gui.menu;
 
-import com.erydevs.gui.impl.head.MaterialHeadParser;
-import com.erydevs.gui.impl.head.ParsedMaterial;
+import com.erydevs.utils.head.MaterialHeadParser;
+import com.erydevs.utils.head.ParsedMaterial;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import com.erydevs.EryBuyer;

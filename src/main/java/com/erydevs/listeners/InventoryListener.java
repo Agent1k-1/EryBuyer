@@ -6,8 +6,8 @@ import com.erydevs.gui.Entry;
 import com.erydevs.gui.BuyerSite;
 import com.erydevs.levels.PlayerLevel;
 import com.erydevs.papi.PlaceholderAPIHook;
-import com.erydevs.utils.sound.Sounds;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,11 +20,9 @@ import java.util.stream.Collectors;
 public class InventoryListener implements Listener {
 
     private final EryBuyer plugin;
-    private final Sounds sounds;
 
     public InventoryListener(EryBuyer plugin) {
         this.plugin = plugin;
-        this.sounds = new Sounds(plugin);
     }
 
     @EventHandler
@@ -61,7 +59,7 @@ public class InventoryListener implements Listener {
                     .collect(Collectors.toList());
             Actions.dispatch(plugin, p, lines);
             p.openInventory(plugin.getBuyerGUI().createInventory(p, menuName));
-            sounds.playMenuOpenSound(p);
+            playMenuOpenSound(p);
             return;
         }
 
@@ -91,7 +89,7 @@ public class InventoryListener implements Listener {
                         .map(line -> PlaceholderAPIHook.apply(line, p, entry, 64))
                         .collect(Collectors.toList());
                 Actions.dispatch(plugin, p, lines);
-                sounds.playNoItemSound(p);
+                playNoItemSound(p);
                 return;
             }
             if (totalCount < 64) return;
@@ -105,7 +103,7 @@ public class InventoryListener implements Listener {
                         .map(line -> PlaceholderAPIHook.apply(line, p, entry, totalCount))
                         .collect(Collectors.toList());
                 Actions.dispatch(plugin, p, lines);
-                sounds.playNoItemSound(p);
+                playNoItemSound(p);
                 return;
             }
             processSale(p, entry, totalCount, entry.priceX1);
@@ -146,7 +144,7 @@ public class InventoryListener implements Listener {
                     .map(line -> PlaceholderAPIHook.apply(line, p, entry, requestedAmount))
                     .collect(Collectors.toList());
             Actions.dispatch(plugin, p, lines);
-            sounds.playNoItemSound(p);
+            playNoItemSound(p);
             return;
         }
 
@@ -195,5 +193,25 @@ public class InventoryListener implements Listener {
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
                     () -> plugin.getDataBase().savePlayerData(playerLevel));
         }
+    }
+
+    private void playMenuOpenSound(Player p) {
+        if (!plugin.getConfigManager().isSoundOpenMenuEnabled()) return;
+        try {
+            Sound sound = Sound.valueOf(plugin.getConfigManager().getSoundOpenMenu());
+            p.playSound(p.getLocation(), sound,
+                    plugin.getConfigManager().getSoundOpenMenuVolume(),
+                    plugin.getConfigManager().getSoundOpenMenuPitch());
+        } catch (Exception ignored) {}
+    }
+
+    private void playNoItemSound(Player p) {
+        if (!plugin.getConfigManager().isSoundNoItemEnabled()) return;
+        try {
+            Sound sound = Sound.valueOf(plugin.getConfigManager().getSoundNoItem());
+            p.playSound(p.getLocation(), sound,
+                    plugin.getConfigManager().getSoundNoItemVolume(),
+                    plugin.getConfigManager().getSoundNoItemPitch());
+        } catch (Exception ignored) {}
     }
 }

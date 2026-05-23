@@ -1,4 +1,4 @@
-package com.erydevs.gui.impl.head;
+package com.erydevs.utils.head;
 
 import org.bukkit.Material;
 

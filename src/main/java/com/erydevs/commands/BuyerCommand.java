@@ -34,8 +34,10 @@ public class BuyerCommand implements CommandExecutor {
     private void playMenuOpenSound(Player player) {
         if (!plugin.getConfigManager().isSoundOpenMenuEnabled()) return;
         try {
-            Sound s = Sound.valueOf(plugin.getConfigManager().getSoundOpenMenu());
-            player.playSound(player.getLocation(), s, 1.0f, 1.0f);
+            Sound sound = Sound.valueOf(plugin.getConfigManager().getSoundOpenMenu());
+            float volume = plugin.getConfigManager().getSoundOpenMenuVolume();
+            float pitch = plugin.getConfigManager().getSoundOpenMenuPitch();
+            player.playSound(player.getLocation(), sound, volume, pitch);
         } catch (Exception ignored) {}
     }
 }

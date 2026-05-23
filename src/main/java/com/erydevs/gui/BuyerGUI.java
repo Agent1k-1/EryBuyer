@@ -11,9 +11,9 @@ import com.erydevs.utils.button.ButtonConfig;
 import com.erydevs.gui.menu.MenuRegistry;
 import com.erydevs.gui.menu.MenuLoaderService;
 import com.erydevs.gui.menu.ItemStackService;
-import com.erydevs.gui.impl.head.MaterialHeadParser;
-import com.erydevs.gui.impl.head.ParsedMaterial;
-import com.erydevs.gui.impl.head.SkullUtils;
+import com.erydevs.utils.head.MaterialHeadParser;
+import com.erydevs.utils.head.ParsedMaterial;
+import com.erydevs.utils.head.SkullUtils;
 import com.erydevs.utils.HexUtils;
 import java.util.*;
 import java.util.Optional;
@@ -167,7 +167,7 @@ public class BuyerGUI {
             ParsedMaterial pm = MaterialHeadParser.parse(cfg.getString(path + ".material", ""));
             if (pm == null) continue;
 
-            String name = cfg.getString(path + ".name", "");
+            String name = cfg.getString(path + ".name");
             List<String> lore = cfg.getStringList(path + ".lore");
             List<String> actions = cfg.getStringList(path + ".action");
 

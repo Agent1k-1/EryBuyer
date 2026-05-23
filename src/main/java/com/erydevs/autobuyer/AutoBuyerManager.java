@@ -171,7 +171,9 @@ public class AutoBuyerManager {
         if (!plugin.getConfigManager().isSoundAutobuyerEnabled()) return;
         try {
             Sound s = Sound.valueOf(plugin.getConfigManager().getSoundAutobuyer());
-            p.playSound(p.getLocation(), s, 1.0f, 1.0f);
+            float volume = plugin.getConfigManager().getSoundAutobuyerVolume();
+            float pitch = plugin.getConfigManager().getSoundAutobuyerPitch();
+            p.playSound(p.getLocation(), s, volume, pitch);
         } catch (Exception ignored) {}
     }
 

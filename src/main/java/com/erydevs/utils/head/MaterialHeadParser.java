@@ -1,4 +1,4 @@
-package com.erydevs.gui.impl.head;
+package com.erydevs.utils.head;
 
 import org.bukkit.Material;
 
@@ -10,7 +10,7 @@ public final class MaterialHeadParser {
     private MaterialHeadParser() {
     }
 
-    public static com.erydevs.gui.impl.head.ParsedMaterial parse(String raw) {
+    public static com.erydevs.utils.head.ParsedMaterial parse(String raw) {
         if (raw == null) {
             return null;
         }

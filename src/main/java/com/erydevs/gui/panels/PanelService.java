@@ -1,9 +1,9 @@
 package com.erydevs.gui.panels;
 
 import com.erydevs.EryBuyer;
-import com.erydevs.gui.impl.head.MaterialHeadParser;
-import com.erydevs.gui.impl.head.ParsedMaterial;
-import com.erydevs.gui.impl.head.SkullUtils;
+import com.erydevs.utils.head.MaterialHeadParser;
+import com.erydevs.utils.head.ParsedMaterial;
+import com.erydevs.utils.head.SkullUtils;
 import com.erydevs.utils.HexUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.Inventory;

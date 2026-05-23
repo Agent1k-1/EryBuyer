@@ -33,5 +33,4 @@ com\erydevs\action\SoundAction.class
 com\erydevs\gui\panels\PanelService.class
 com\erydevs\levels\PlayerLevel.class
 com\erydevs\gui\BuyerGUI.class
-com\erydevs\utils\sound\Sounds.class
 com\erydevs\levels\LevelData.class
