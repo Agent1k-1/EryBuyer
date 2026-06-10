@@ -2,7 +2,6 @@ D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\papi\PlaceholderAPIHook.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\config\Configs.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\action\SoundAction.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\gui\menu\ItemStackService.java
-D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\data\connect\SQLiteConnect.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\action\MessageAction.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\levels\PlayerLevel.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\data\SQLite.java
@@ -11,8 +10,6 @@ D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\levels\LevelData.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\utils\head\MaterialHeadParser.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\commands\AutoBuyerCommand.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\utils\HexUtils.java
-D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\gui\panels\PanelConfig.java
-D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\gui\panels\PanelService.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\utils\button\ButtonConfig.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\action\OpenMenuAction.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\utils\head\SkullUtils.java

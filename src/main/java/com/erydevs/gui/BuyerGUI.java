@@ -16,7 +16,6 @@ import com.erydevs.utils.head.ParsedMaterial;
 import com.erydevs.utils.head.SkullUtils;
 import com.erydevs.utils.HexUtils;
 import java.util.*;
-import java.util.Optional;
 
 public class BuyerGUI {
     private final EryBuyer plugin;
@@ -45,73 +44,50 @@ public class BuyerGUI {
         Inventory inv = Bukkit.createInventory(null, size, title);
 
         itemStackFactory.addPanels(inv, cfg, size);
-        
+
         Map<Integer, ButtonConfig> buttons = loadButtons(cfg);
-        
+
         for (Map.Entry<Integer, ButtonConfig> entry : buttons.entrySet()) {
             ButtonConfig btn = entry.getValue();
-            if (btn.getSlot() >= 0 && btn.getSlot() < size) {
-                ItemStack item = null;
-                if (btn.getId().equals("1")) {
-                    item = itemStackFactory.createExitItem(btn);
-                } else if (btn.hasAction("[command] autobuyer")) {
-                    item = itemStackFactory.createAutobuyerItem(btn, player);
-                }
-                if (item != null) {
-                    inv.setItem(btn.getSlot(), item);
-                }
+            if (btn.getSlot() < 0 || btn.getSlot() >= size) continue;
+
+            ItemStack item = null;
+            if (btn.getId().equals("1")) {
+                item = itemStackFactory.createExitItem(btn);
+            } else if (btn.hasAction("[command] autobuyer")) {
+                item = itemStackFactory.createAutobuyerItem(btn, player);
+            }
+
+            if (item != null) {
+                inv.setItem(btn.getSlot(), item);
             }
         }
-        
-        addItems(inv, cfg, title, size, player);
+
+        addItems(inv, cfg, title, size, player, buttons);
 
         return inv;
     }
 
-    private void addItems(Inventory inv, FileConfiguration cfg, String title, int size, Player player) {
-        Map<Integer, Entry> entries = new HashMap<>();
-        loadItemSettings(cfg, entries);
+    private void addItems(Inventory inv, FileConfiguration cfg, String title, int size, Player player, Map<Integer, ButtonConfig> buttons) {
+        Map<Integer, Entry> entries = MenuLoaderService.loadItemSettings(cfg, combinedSlotMap);
 
-        Map<Integer, ButtonConfig> buttons = loadButtons(cfg);
         for (Map.Entry<Integer, ButtonConfig> entry : buttons.entrySet()) {
             ButtonConfig btn = entry.getValue();
-            Entry it;
-            if (btn.getMaterialStr() != null && !btn.getMaterialStr().isEmpty()) {
-                it = new Entry(btn.getId(), btn.getMaterial(), btn.getMaterialStr(),
-                        btn.getName(), btn.getLore(), 0.0, 0.0, btn.getSlot());
-            } else {
-                it = new Entry(btn.getId(), btn.getMaterial(), btn.getName(), btn.getLore(), 0.0, 0.0, btn.getSlot());
-            }
-            if (it.slot < size) {
-                entries.put(it.slot, it);
-            }
+            if (btn.getSlot() >= size) continue;
+
+            Entry it = btn.getMaterialStr() != null && !btn.getMaterialStr().isEmpty()
+                    ? new Entry(btn.getId(), btn.getMaterial(), btn.getMaterialStr(), btn.getName(), btn.getLore(), 0.0, 0.0, btn.getSlot())
+                    : new Entry(btn.getId(), btn.getMaterial(), btn.getName(), btn.getLore(), 0.0, 0.0, btn.getSlot());
+
+            entries.put(it.slot, it);
         }
 
         for (Map.Entry<Integer, Entry> e : entries.entrySet()) {
             Entry it = e.getValue();
             if (it.slot < size) inv.setItem(it.slot, itemStackFactory.createItemStack(it, player));
         }
-        entriesByTitle.put(title, entries);
-    }
 
-    private void loadItemSettings(FileConfiguration cfg, Map<Integer, Entry> entries) {
-        if (!cfg.isConfigurationSection("item-settings")) return;
-        for (String key : cfg.getConfigurationSection("item-settings").getKeys(false)) {
-            String path = "item-settings." + key;
-            ParsedMaterial pm = MaterialHeadParser.parse(cfg.getString(path + ".material"));
-            int slot = cfg.getInt(path + ".slot");
-            if (pm != null && slot >= 0) {
-                Entry e = pm.isCustomHead()
-                        ? new Entry(key, pm.getMaterial(), pm.getHeadTextureBase64(), cfg.getString(path + ".name"),
-                        cfg.getStringList(path + ".lore"), cfg.getDouble(path + ".prince-x1"),
-                        cfg.getDouble(path + ".prince-x64"), slot)
-                        : new Entry(key, pm.getMaterial(), cfg.getString(path + ".name"),
-                        cfg.getStringList(path + ".lore"), cfg.getDouble(path + ".prince-x1"),
-                        cfg.getDouble(path + ".prince-x64"), slot);
-                entries.put(slot, e);
-                combinedSlotMap.put(combinedSlotMap.size(), e);
-            }
-        }
+        entriesByTitle.put(title, entries);
     }
 
     public Inventory createInventory(Player player) {
@@ -143,7 +119,6 @@ public class BuyerGUI {
         return entriesByTitle.containsKey(title);
     }
 
-    
     public Map<Integer, ButtonConfig> loadButtons(FileConfiguration cfg) {
         Map<Integer, ButtonConfig> buttons = new HashMap<>();
         loadButtonsSection(cfg, "menu-settings", buttons);

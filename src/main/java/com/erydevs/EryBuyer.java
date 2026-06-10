@@ -52,7 +52,7 @@ public class EryBuyer extends JavaPlugin {
 
         menuRegistry = new MenuRegistry(this);
         levelConfig = new LevelConfig(this);
-        SQLite = new SQLite(getDataFolder(), configManager.getDatabaseFileName());
+        SQLite = new SQLite(getDataFolder(), configManager.getDatabaseFileName(), getLogger());
 
         if (SQLite.isConnected()) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[EryBuyer] База данных SQLite подключена");
