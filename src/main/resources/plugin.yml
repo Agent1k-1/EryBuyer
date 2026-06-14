@@ -7,15 +7,12 @@ depend: [Vault]
 softdepend:
   - PlaceholderAPI
 commands:
-  erybuyer:
   buyer:
     aliases:
       - seller
       - скупщик
   autobuyer:
 permission:
-  erybuyer.admin:
-    default: op
   erybuyer.open:
     default: op
   erybuyer.autobuyer:

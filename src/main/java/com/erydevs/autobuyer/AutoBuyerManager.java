@@ -165,7 +165,7 @@ public class AutoBuyerManager {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
                 () -> plugin.getDataBase().flushPlayerAsync(playerLevel));
 
-        List<String> lines = plugin.getConfigManager().getMessageAutoBuyer().stream()
+        List<String> lines = plugin.getMessagesConfig().getMessageAutoBuyer().stream()
                 .map(line -> PlaceholderAPIHook.apply(line, player, entry, amount, totalPrice))
                 .collect(Collectors.toList());
         Actions.dispatch(plugin, player, lines);
@@ -185,7 +185,7 @@ public class AutoBuyerManager {
             playerLevel.setCurrentLevel(nextLevel);
             leveledUp = true;
 
-            List<String> lines = plugin.getConfigManager().getMessageLevelUp().stream()
+            List<String> lines = plugin.getMessagesConfig().getMessageLevelUp().stream()
                     .map(line -> PlaceholderAPIHook.applyLevelUp(line, player, nextLevel))
                     .collect(Collectors.toList());
             Actions.dispatch(plugin, player, lines);

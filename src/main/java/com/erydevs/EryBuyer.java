@@ -4,11 +4,11 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.erydevs.config.Configs;
+import com.erydevs.config.MessagesConfig;
 import com.erydevs.gui.BuyerGUI;
 import com.erydevs.gui.menu.MenuRegistry;
 import com.erydevs.commands.BuyerCommand;
 import com.erydevs.commands.AutoBuyerCommand;
-import com.erydevs.commands.EryBuyerCommand;
 import com.erydevs.levels.LevelConfig;
 import com.erydevs.data.SQLite;
 import com.erydevs.listeners.InventoryListener;
@@ -18,6 +18,7 @@ import com.erydevs.autobuyer.AutoBuyerManager;
 import com.erydevs.bossbar.Bossbars;
 import com.erydevs.papi.PlaceholderAPIHook;
 
+import com.erydevs.bstats.Metrics;
 import java.io.File;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class EryBuyer extends JavaPlugin {
     private static EryBuyer instance;
     private VaultAPI vaultAPI;
     private Configs configManager;
+    private MessagesConfig messagesConfig;
     private MenuRegistry menuRegistry;
     private BuyerGUI buyerGUI;
     private AutoBuyerManager autoBuyerManager;
@@ -38,6 +40,9 @@ public class EryBuyer extends JavaPlugin {
 
         configManager = new Configs(this);
         configManager.loadConfigs();
+
+        messagesConfig = new MessagesConfig(this);
+        messagesConfig.loadMessages();
 
         File menuDir = new File(getDataFolder(), "menu");
         if (!menuDir.exists()) menuDir.mkdirs();
@@ -53,12 +58,6 @@ public class EryBuyer extends JavaPlugin {
         menuRegistry = new MenuRegistry(this);
         levelConfig = new LevelConfig(this);
         SQLite = new SQLite(getDataFolder(), configManager.getDatabaseFileName(), getLogger());
-
-        if (SQLite.isConnected()) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[EryBuyer] База данных SQLite подключена");
-        } else {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[EryBuyer] База данных SQLite не подключена");
-        }
 
         vaultAPI = new VaultAPI(this);
         Bukkit.getConsoleSender().sendMessage(vaultAPI.getStatus());
@@ -76,12 +75,6 @@ public class EryBuyer extends JavaPlugin {
         if (getCommand("autobuyer") != null)
             getCommand("autobuyer").setExecutor(new AutoBuyerCommand(this));
 
-        EryBuyerCommand eryBuyerCommand = new EryBuyerCommand(this);
-        if (getCommand("erybuyer") != null) {
-            getCommand("erybuyer").setExecutor(eryBuyerCommand);
-            getCommand("erybuyer").setTabCompleter(eryBuyerCommand);
-        }
-
         getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), this);
 
@@ -90,6 +83,10 @@ public class EryBuyer extends JavaPlugin {
         }
 
         printStartupMessage();
+
+        int pluginId = 31977;
+        Metrics metrics = new Metrics(this, pluginId);
+        metrics.addCustomChart(new Metrics.SimplePie("chart_id", () -> "My value"));
     }
 
     public void onDisable() {
@@ -98,13 +95,6 @@ public class EryBuyer extends JavaPlugin {
         if (SQLite != null) SQLite.closeConnection();
         instance = null;
         printShutdownMessage();
-    }
-
-    public void reload() {
-        configManager.reloadConfig();
-        levelConfig.reloadLevels();
-        buyerGUI.reloadMenus();
-        bossbars.reload();
     }
 
     private void printStartupMessage() {
@@ -120,12 +110,8 @@ public class EryBuyer extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Версия плагина: " + ChatColor.YELLOW + getDescription().getVersion());
         Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Ядро: " + ChatColor.YELLOW + Bukkit.getVersion());
         Bukkit.getConsoleSender().sendMessage(vaultAPI.getStatus());
-        if (SQLite != null && SQLite.isConnected()) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "База данных: " + ChatColor.GREEN + "SQLite подключена");
-        } else {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "База данных: " + ChatColor.RED + "SQLite не подключена");
-        }
     }
+
 
     private void printShutdownMessage() {
         Bukkit.getConsoleSender().sendMessage(ChatColor.BLUE + "\n" +
@@ -151,6 +137,10 @@ public class EryBuyer extends JavaPlugin {
 
     public Configs getConfigManager() {
         return configManager;
+    }
+
+    public MessagesConfig getMessagesConfig() {
+        return messagesConfig;
     }
 
     public MenuRegistry getMenuRegistry() {

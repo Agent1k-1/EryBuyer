@@ -1,7 +1,7 @@
-name: "&4▪ &4Ресурсы с шахты"
+name: "&#EDDE5D         Ресурсы с шахты          "
 size: 54
 panels:
-  - material: RED_STAINED_GLASS_PANE
+  - material: ORANGE_STAINED_GLASS_PANE
     name: ""
     lore:
       - ""
@@ -147,80 +147,3 @@ item-settings:
     slot: 14
     prince-x1: 6.00
     prince-x64: 384.00
-  29:
-    name: "&fГлубинный сланец"
-    lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
-      - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
-    material: DEEPSLATE
-    slot: 19
-    prince-x1: 6.00
-    prince-x64: 250.00
-  30:
-    name: "&fОбсидиан"
-    lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
-      - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
-    material: OBSIDIAN
-    slot: 29
-    prince-x1: 350.00
-    prince-x64: 3840.00
-  31:
-    name: "&fБулыжник"
-    lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
-      - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
-    material: COBBLESTONE
-    slot: 30
-    prince-x1: 10.00
-    prince-x64: 388.00
-  32:
-    name: "&fМедь"
-    lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
-      - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
-    material: COPPER_INGOT
-    slot: 31
-    prince-x1: 35.00
-    prince-x64: 345.00
-  33:
-    name: "&fКамень"
-    lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
-      - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
-    material: STONE
-    slot: 32
-    prince-x1: 12.00
-    prince-x64: 214.00
-  34:
-    name: "&fПлачущий обсидиан"
-    lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
-      - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
-    material: CRYING_OBSIDIAN
-    slot: 33
-    prince-x1: 210.00
-    prince-x64: 2690.00
-  35:
-    name: "&fКолотый глубинный сланец"
-    lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
-      - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
-    material: COBBLED_DEEPSLATE
-    slot: 25
-    prince-x1: 6.00
-    prince-x64: 167.00

@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,25 +16,26 @@ public class AutoBuyerCommand implements CommandExecutor {
 
     private final EryBuyer plugin;
 
-    public AutoBuyerCommand(EryBuyer plugin) {
+    public AutoBuyerCommand(@NotNull EryBuyer plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player)) return true;
-        Player p = (Player) sender;
+        Player player = (Player) sender;
 
-        if (!p.hasPermission("erybuyer.autobuyer")) {
-            Actions.dispatch(plugin, p, plugin.getConfigManager().getMessageNoPermission());
+        if (!player.hasPermission("erybuyer.autobuyer")) {
+            Actions.dispatch(plugin, player, plugin.getMessagesConfig().getMessageNoPermission());
             return true;
         }
 
-        plugin.getAutoBuyerManager().toggleAutobuyer(p);
-        List<String> lines = plugin.getConfigManager().getMessageAutoBuyerStatus().stream()
-                .map(line -> PlaceholderAPIHook.apply(line, p))
+        plugin.getAutoBuyerManager().toggleAutobuyer(player);
+
+        List<String> lines = plugin.getMessagesConfig().getMessageAutoBuyerStatus().stream()
+                .map(line -> PlaceholderAPIHook.apply(line, player))
                 .collect(Collectors.toList());
-        Actions.dispatch(plugin, p, lines);
+        Actions.dispatch(plugin, player, lines);
         return true;
     }
 }

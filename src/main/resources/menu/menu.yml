@@ -1,7 +1,7 @@
-name: "&4▪ &4Скупщик"
+name: "&#EDDE5D              Скупщик            "
 size: 45
 panels:
-  - material: RED_STAINED_GLASS_PANE
+  - material: ORANGE_STAINED_GLASS_PANE
     name: ""
     lore:
       - ""
@@ -19,7 +19,7 @@ panels:
       - 43
 knops-settings:
   1:
-    name: "&c▪ &#00FF00Выход"
+    name: "&fЗакрыть"
     lore:
       - ""
       - "&fНажмите для выхода"
@@ -30,16 +30,16 @@ knops-settings:
       - "[sound] BLOCK_ENDER_CHEST_CLOSE"
       - "[close]"
   2:
-    name: "&fВаша статистика скупщика:"
+    name: "&fСтатистика Скупщика"
     lore:
       - ""
       - "&fОбщая сумма продаж &e%buyer_total_earned%⛁"
-      - "&fТекущий уровень &a%buyer_current_level%&f/&c%max_level%"
+      - "&fТекущий уровень &a%buyer_current_level%&f/&a%max_level%"
       - "&fДо следующего уровня &e%buyer_next_level%⛁"
     slot: 4
     material: PAPER
   3:
-    name: "&c▪ &#FF0000Авто-скупщик"
+    name: "&fАвто-скупщик"
     lore:
       - ""
       - "&FСтатус: %autobuyer_status%"

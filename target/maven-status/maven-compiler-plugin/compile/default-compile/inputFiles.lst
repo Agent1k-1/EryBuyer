@@ -2,6 +2,7 @@ D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\papi\PlaceholderAPIHook.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\config\Configs.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\action\SoundAction.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\gui\menu\ItemStackService.java
+D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\config\MessagesConfig.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\action\MessageAction.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\levels\PlayerLevel.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\data\SQLite.java
@@ -28,5 +29,5 @@ D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\gui\Entry.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\action\Actions.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\gui\menu\MenuRegistry.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\action\CloseAction.java
-D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\commands\EryBuyerCommand.java
+D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\bstats\Metrics.java
 D:\EryDev Plugin\EryBuyer\src\main\java\com\erydevs\gui\BuyerGUI.java

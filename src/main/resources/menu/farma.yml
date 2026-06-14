@@ -1,7 +1,7 @@
-name: "&4▪ &4Фермерство"
+name: "&#EDDE5D            Фермерство            "
 size: 54
 panels:
-  - material: RED_STAINED_GLASS_PANE
+  - material: ORANGE_STAINED_GLASS_PANE
     name: ""
     lore:
       - ""

@@ -60,8 +60,8 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         switch (params) {
             case "autobuyer_status":
                 return plugin.getAutoBuyerManager().isAutobuyerEnabled(player) ?
-                        plugin.getConfigManager().getPlaceholderEnableAutobuyer() :
-                        plugin.getConfigManager().getPlaceholderDisableAutobuyer();
+                        plugin.getMessagesConfig().getPlaceholderEnableAutobuyer() :
+                        plugin.getMessagesConfig().getPlaceholderDisableAutobuyer();
             case "buyer_current_level":
                 return String.valueOf(plugin.getDataBase().getPlayerData(player.getUniqueId()).getCurrentLevel());
             case "buyer_total_earned":
@@ -104,8 +104,8 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         double priceX64 = entry != null ? entry.priceX64 : priceX1 * 64;
 
         String autobuyerStatus = plugin.getAutoBuyerManager().isAutobuyerEnabled(player) ?
-                plugin.getConfigManager().getPlaceholderEnableAutobuyer() :
-                plugin.getConfigManager().getPlaceholderDisableAutobuyer();
+                plugin.getMessagesConfig().getPlaceholderEnableAutobuyer() :
+                plugin.getMessagesConfig().getPlaceholderDisableAutobuyer();
 
         PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(player.getUniqueId());
         double totalEarned = playerLevel.getTotalEarned();

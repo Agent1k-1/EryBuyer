@@ -75,8 +75,8 @@ public class ItemStackService {
                 if (lore.isEmpty()) {
                     boolean enabled = plugin.getAutoBuyerManager().isAutobuyerEnabled(player);
                     String status = enabled
-                            ? plugin.getConfigManager().getPlaceholderEnableAutobuyer()
-                            : plugin.getConfigManager().getPlaceholderDisableAutobuyer();
+                            ? plugin.getMessagesConfig().getPlaceholderEnableAutobuyer()
+                            : plugin.getMessagesConfig().getPlaceholderDisableAutobuyer();
                     lore = new ArrayList<>();
                     lore.add(HexUtils.colorize(status));
                 }

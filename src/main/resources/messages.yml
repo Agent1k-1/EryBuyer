@@ -1,0 +1,16 @@
+message:
+  error-no-item:
+    - "[message] &x&F&0&9&8&1&9▌ &#EDDE5D У вас нет предмета &f%item_name%"
+  successfully-buyer:
+    - "[message] &x&F&0&9&8&1&9▌ &#EDDE5D Вы успешно продали &f%item_name% &#EDDE5Dза &f%prince%"
+  autobuyer-use:
+    - "[message] &x&F&0&9&8&1&9▌ &#EDDE5D Вы продали скупщику &f%item_sell% &#EDDE5Dштук баланс &f%vault_eco_balance%"
+  autobuyer-status:
+    - "[message] &x&F&0&9&8&1&9▌ &#EDDE5D Авто-скупщик &f%autobuyer_status%"
+  error-permission:
+    - "[message] &x&F&0&9&8&1&9▌ &#EDDE5D FУ вас недостаточно прав"
+  new-level:
+    - "[message] &x&F&0&9&8&1&9▌ &#EDDE5D Вы достигли уровня &#FFCC00%new_level%"
+placeholder:
+  enable-autobuyer: "&aВключен"
+  disable-autobuyer: "&cВыключен"

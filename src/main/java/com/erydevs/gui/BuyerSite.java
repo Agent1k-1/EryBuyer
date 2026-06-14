@@ -4,6 +4,7 @@ public class BuyerSite {
     public enum ClickType {
         LEFT,
         RIGHT,
-        SHIFT_LEFT
+        SHIFT_LEFT,
+        SHIFT_RIGHT
     }
 }

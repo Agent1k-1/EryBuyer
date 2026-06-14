@@ -1,7 +1,7 @@
-name: "&4▪ &4Лут с мобов"
+name: "&#EDDE5D             Лут с мобов            "
 size: 54
 panels:
-  - material: RED_STAINED_GLASS_PANE
+  - material: ORANGE_STAINED_GLASS_PANE
     name: ""
     lore:
       - ""

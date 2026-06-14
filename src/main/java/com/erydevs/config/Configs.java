@@ -2,6 +2,8 @@ package com.erydevs.config;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class Configs {
@@ -9,7 +11,7 @@ public class Configs {
     private final JavaPlugin plugin;
     private FileConfiguration config;
 
-    public Configs(JavaPlugin plugin) {
+    public Configs(@NotNull JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -23,94 +25,63 @@ public class Configs {
         config = plugin.getConfig();
     }
 
+    @NotNull
     public FileConfiguration getConfig() {
         return config;
     }
 
-    public List<String> getMessageNoItem() {
-        return config.getStringList("message.error-no-item");
-    }
-
-    public List<String> getMessageSuccessfullyBuyer() {
-        return config.getStringList("message.successfully-buyer");
-    }
-
-    public List<String> getMessageAutoBuyer() {
-        return config.getStringList("message.autobuyer-use");
-    }
-
-    public List<String> getMessageAutoBuyerStatus() {
-        return config.getStringList("message.autobuyer-status");
-    }
-
-    public List<String> getMessageNoPermission() {
-        return config.getStringList("message.error-permission");
-    }
-
-    public List<String> getMessageLevelUp() {
-        return config.getStringList("message.new-level");
-    }
-
-    public List<String> getConfigReloadMessage() {
-        return config.getStringList("message.config-reload");
-    }
-
-    public String getPlaceholderEnableAutobuyer() {
-        return config.getString("placeholder.enable-autobuyer");
-    }
-
-    public String getPlaceholderDisableAutobuyer() {
-        return config.getString("placeholder.disable-autobuyer");
-    }
-
+    @NotNull
     public String getSoundOpenMenu() {
         return config.getString("sound.sound_open_menu.sound");
     }
 
     public float getSoundOpenMenuPitch() {
-        return (float) config.getDouble("sound.sound_open_menu.pitch", 1.0);
+        return (float) config.getDouble("sound.sound_open_menu.pitch");
     }
 
     public float getSoundOpenMenuVolume() {
-        return (float) config.getDouble("sound.sound_open_menu.volume", 1.0);
+        return (float) config.getDouble("sound.sound_open_menu.volume");
     }
 
     public boolean isSoundOpenMenuEnabled() {
         return config.getBoolean("sound.sound_open_menu.enabled");
     }
 
+    @NotNull
     public String getSoundNoItem() {
         return config.getString("sound.no-item-sound.sound");
     }
 
     public float getSoundNoItemPitch() {
-        return (float) config.getDouble("sound.no-item-sound.pitch", 1.0);
+        return (float) config.getDouble("sound.no-item-sound.pitch");
     }
 
     public float getSoundNoItemVolume() {
-        return (float) config.getDouble("sound.no-item-sound.volume", 1.0);
+        return (float) config.getDouble("sound.no-item-sound.volume");
     }
 
     public boolean isSoundNoItemEnabled() {
         return config.getBoolean("sound.no-item-sound.enabled");
     }
 
+    @NotNull
     public String getSoundAutobuyer() {
         return config.getString("sound.autobuyer-sound.sound");
     }
 
     public float getSoundAutobuyerPitch() {
-        return (float) config.getDouble("sound.autobuyer-sound.pitch", 1.0);
+        return (float) config.getDouble("sound.autobuyer-sound.pitch");
     }
 
     public float getSoundAutobuyerVolume() {
-        return (float) config.getDouble("sound.autobuyer-sound.volume", 1.0);
+        return (float) config.getDouble("sound.autobuyer-sound.volume");
     }
 
     public boolean isSoundAutobuyerEnabled() {
         return config.getBoolean("sound.autobuyer-sound.enabled");
     }
 
+    @NotNull
     public String getDatabaseFileName() {
         String fileName = config.getString("database.file");
         return fileName != null ? fileName : "playerdata.db";
@@ -120,10 +91,12 @@ public class Configs {
         return config.getBoolean("bossbar-settings.bossbar");
     }
 
+    @NotNull
     public String getBossbarText() {
         return config.getString("bossbar-settings.text");
     }
 
+    @NotNull
     public String getBossbarColor() {
         return config.getString("bossbar-settings.color");
     }
@@ -140,6 +113,7 @@ public class Configs {
         return config.getInt("buyer-top.update-interval");
     }
 
+    @NotNull
     public List<String> getRegisterMenu() {
         return config.getStringList("register-menu");
     }

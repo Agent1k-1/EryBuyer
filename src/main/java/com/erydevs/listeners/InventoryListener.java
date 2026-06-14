@@ -54,7 +54,7 @@ public class InventoryListener implements Listener {
         int autobuyerSlot = plugin.getBuyerGUI().getAutobuyerSlot(title, menuCfg);
         if (autobuyerSlot >= 0 && slot == autobuyerSlot) {
             plugin.getAutoBuyerManager().toggleAutobuyer(p);
-            List<String> lines = plugin.getConfigManager().getMessageAutoBuyerStatus().stream()
+            List<String> lines = plugin.getMessagesConfig().getMessageAutoBuyerStatus().stream()
                     .map(line -> PlaceholderAPIHook.apply(line, p))
                     .collect(Collectors.toList());
             Actions.dispatch(plugin, p, lines);
@@ -72,6 +72,8 @@ public class InventoryListener implements Listener {
         BuyerSite.ClickType clickType;
         if (e.isShiftClick() && e.isLeftClick()) {
             clickType = BuyerSite.ClickType.SHIFT_LEFT;
+        } else if (e.isShiftClick() && e.isRightClick()) {
+            clickType = BuyerSite.ClickType.SHIFT_RIGHT;
         } else if (e.isLeftClick()) {
             clickType = BuyerSite.ClickType.LEFT;
         } else {
@@ -85,7 +87,7 @@ public class InventoryListener implements Listener {
         if (clickType == BuyerSite.ClickType.RIGHT) {
             int totalCount = countItemsInInventory(p, entry.material);
             if (totalCount == 0) {
-                List<String> lines = plugin.getConfigManager().getMessageNoItem().stream()
+                List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()
                         .map(line -> PlaceholderAPIHook.apply(line, p, entry, 64))
                         .collect(Collectors.toList());
                 Actions.dispatch(plugin, p, lines);
@@ -96,10 +98,10 @@ public class InventoryListener implements Listener {
             processSale(p, entry, 64, entry.priceX1);
             return;
         }
-        if (clickType == BuyerSite.ClickType.SHIFT_LEFT) {
+        if (clickType == BuyerSite.ClickType.SHIFT_LEFT || clickType == BuyerSite.ClickType.SHIFT_RIGHT) {
             int totalCount = countItemsInInventory(p, entry.material);
             if (totalCount == 0) {
-                List<String> lines = plugin.getConfigManager().getMessageNoItem().stream()
+                List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()
                         .map(line -> PlaceholderAPIHook.apply(line, p, entry, totalCount))
                         .collect(Collectors.toList());
                 Actions.dispatch(plugin, p, lines);
@@ -140,7 +142,7 @@ public class InventoryListener implements Listener {
         int actualAmount = removeItemsFromInventory(p, entry, requestedAmount);
 
         if (actualAmount == 0) {
-            List<String> lines = plugin.getConfigManager().getMessageNoItem().stream()
+            List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()
                     .map(line -> PlaceholderAPIHook.apply(line, p, entry, requestedAmount))
                     .collect(Collectors.toList());
             Actions.dispatch(plugin, p, lines);
@@ -164,7 +166,7 @@ public class InventoryListener implements Listener {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
                 () -> plugin.getDataBase().flushPlayerAsync(playerLevel));
 
-        List<String> lines = plugin.getConfigManager().getMessageSuccessfullyBuyer().stream()
+        List<String> lines = plugin.getMessagesConfig().getMessageSuccessfullyBuyer().stream()
                 .map(line -> PlaceholderAPIHook.apply(line, p, entry, actualAmount, totalPrice))
                 .collect(Collectors.toList());
         Actions.dispatch(plugin, p, lines);
@@ -180,7 +182,7 @@ public class InventoryListener implements Listener {
             if (plugin.getLevelConfig().getRequiredMoneyForLevel(nextLevel) <= totalEarned) {
                 playerLevel.setCurrentLevel(nextLevel);
                 leveled = true;
-                List<String> lines = plugin.getConfigManager().getMessageLevelUp().stream()
+                List<String> lines = plugin.getMessagesConfig().getMessageLevelUp().stream()
                         .map(line -> PlaceholderAPIHook.applyLevelUp(line, p, nextLevel))
                         .collect(Collectors.toList());
                 Actions.dispatch(plugin, p, lines);

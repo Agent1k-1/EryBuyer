@@ -139,7 +139,7 @@ public class BuyerGUI {
             int slot = cfg.getInt(path + ".slot");
             if (slot < 0) continue;
 
-            ParsedMaterial pm = MaterialHeadParser.parse(cfg.getString(path + ".material", ""));
+            ParsedMaterial pm = MaterialHeadParser.parse(cfg.getString(path + ".material"));
             if (pm == null) continue;
 
             String name = cfg.getString(path + ".name");
