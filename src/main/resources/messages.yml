@@ -8,7 +8,7 @@ message:
   autobuyer-status:
     - "[message] &x&F&0&9&8&1&9▌ &#EDDE5D Авто-скупщик &f%autobuyer_status%"
   error-permission:
-    - "[message] &x&F&0&9&8&1&9▌ &#EDDE5D FУ вас недостаточно прав"
+    - "[message] &x&F&0&9&8&1&9▌ &#EDDE5D У вас недостаточно прав"
   new-level:
     - "[message] &x&F&0&9&8&1&9▌ &#EDDE5D Вы достигли уровня &#FFCC00%new_level%"
 placeholder:

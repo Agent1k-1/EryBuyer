@@ -20,6 +20,11 @@ sound:
     pitch: 1.0
     volume: 1.0
     enabled: true
+  exchange-sound:
+    sound: BLOCK_NOTE_BLOCK_XYLOPHONE
+    pitch: 1.0
+    volume: 1.0
+    enabled: true
   autobuyer-sound:
     sound: BLOCK_NOTE_BLOCK_XYLOPHONE
     pitch: 1.0

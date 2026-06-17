@@ -10,6 +10,8 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
@@ -27,7 +29,7 @@ public class AutoBuyerManager {
     private int tickTaskId = -1;
     private int topPlayersTaskId = -1;
 
-    public AutoBuyerManager(EryBuyer plugin) {
+    public AutoBuyerManager(@NotNull EryBuyer plugin) {
         this.plugin = plugin;
         startTickTask();
         startTopPlayersUpdateTask();
@@ -60,11 +62,13 @@ public class AutoBuyerManager {
         }
     }
 
-    private void processPlayer(Player player, Collection<Entry> entries) {
+    private void processPlayer(@NotNull Player player, @NotNull Collection<Entry> entries) {
         UUID uuid = player.getUniqueId();
         long now = System.currentTimeMillis();
         long lastSell = lastSellTime.getOrDefault(uuid, 0L);
         if (now - lastSell < getAutobuyerDelay()) return;
+
+        boolean sold = false;
 
         for (Entry entry : entries) {
             if (!isSellable(entry)) continue;
@@ -72,14 +76,17 @@ public class AutoBuyerManager {
             int amount = countItems(player, entry);
             if (amount == 0) continue;
 
-            removeItems(player, entry, amount);
-            lastSellTime.put(uuid, now);
+            removeItems(player, entry);
             sell(player, entry, amount);
-            return;
+            sold = true;
+        }
+
+        if (sold) {
+            lastSellTime.put(uuid, now);
         }
     }
 
-    private boolean isSellable(Entry entry) {
+    private boolean isSellable(@Nullable Entry entry) {
         return entry != null && entry.material != null && entry.priceX1 > 0;
     }
 
@@ -87,11 +94,11 @@ public class AutoBuyerManager {
         return plugin.getConfigManager().getAutobuyerTime() * 50L;
     }
 
-    public void toggleAutobuyer(Player player) {
+    public void toggleAutobuyer(@NotNull Player player) {
         setAutobuyer(player, !isAutobuyerEnabled(player));
     }
 
-    public void setAutobuyer(Player player, boolean enabled) {
+    public void setAutobuyer(@NotNull Player player, boolean enabled) {
         UUID uuid = player.getUniqueId();
         autobuyers.put(uuid, enabled);
 
@@ -108,11 +115,11 @@ public class AutoBuyerManager {
         }
     }
 
-    public boolean isAutobuyerEnabled(Player player) {
+    public boolean isAutobuyerEnabled(@NotNull Player player) {
         return autobuyers.getOrDefault(player.getUniqueId(), false);
     }
 
-    public void removePlayer(Player player) {
+    public void removePlayer(@NotNull Player player) {
         UUID uuid = player.getUniqueId();
         autobuyers.remove(uuid);
         lastSellTime.remove(uuid);
@@ -124,7 +131,7 @@ public class AutoBuyerManager {
         plugin.getDataBase().evictPlayer(uuid);
     }
 
-    private int countItems(Player player, Entry entry) {
+    private int countItems(@NotNull Player player, @NotNull Entry entry) {
         int total = 0;
         for (ItemStack item : player.getInventory().getContents()) {
             if (item != null && item.getType() == entry.material) {
@@ -134,7 +141,7 @@ public class AutoBuyerManager {
         return total;
     }
 
-    private void removeItems(Player player, Entry entry, int amount) {
+    private void removeItems(@NotNull Player player, @NotNull Entry entry) {
         ItemStack[] contents = player.getInventory().getContents();
         for (int i = 0; i < contents.length; i++) {
             ItemStack item = contents[i];
@@ -144,7 +151,7 @@ public class AutoBuyerManager {
         }
     }
 
-    private void sell(Player player, Entry entry, int amount) {
+    private void sell(@NotNull Player player, @NotNull Entry entry, int amount) {
         PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(player.getUniqueId());
 
         double basePrice = entry.priceX1 * amount;
@@ -173,7 +180,7 @@ public class AutoBuyerManager {
         playSellSound(player);
     }
 
-    private void tryLevelUp(Player player, PlayerLevel playerLevel) {
+    private void tryLevelUp(@NotNull Player player, @NotNull PlayerLevel playerLevel) {
         int maxLevel = plugin.getLevelConfig().getMaxLevel();
         double totalEarned = playerLevel.getTotalEarned();
         boolean leveledUp = false;
@@ -197,7 +204,7 @@ public class AutoBuyerManager {
         }
     }
 
-    private void playSellSound(Player player) {
+    private void playSellSound(@NotNull Player player) {
         if (!plugin.getConfigManager().isSoundAutobuyerEnabled()) return;
 
         try {

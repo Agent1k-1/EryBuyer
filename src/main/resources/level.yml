@@ -4,7 +4,7 @@ levels:
     required-money: 0.0
   2:
     multiplier: 0.1
-    required-money: 25000.0
+    required-money: 35500.0
   3:
     multiplier: 0.2
     required-money: 50000.0

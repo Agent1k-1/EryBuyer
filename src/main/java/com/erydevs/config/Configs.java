@@ -65,6 +65,23 @@ public class Configs {
     }
 
     @NotNull
+    public String getSoundExchange() {
+        return config.getString("sound.exchange-sound.sound");
+    }
+
+    public float getSoundExchangePitch() {
+        return (float) config.getDouble("sound.exchange-sound.pitch");
+    }
+
+    public float getSoundExchangeVolume() {
+        return (float) config.getDouble("sound.exchange-sound.volume");
+    }
+
+    public boolean isSoundExchangeEnabled() {
+        return config.getBoolean("sound.exchange-sound.enabled");
+    }
+
+    @NotNull
     public String getSoundAutobuyer() {
         return config.getString("sound.autobuyer-sound.sound");
     }

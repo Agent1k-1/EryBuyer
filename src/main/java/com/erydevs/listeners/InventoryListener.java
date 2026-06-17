@@ -2,17 +2,20 @@ package com.erydevs.listeners;
 
 import com.erydevs.EryBuyer;
 import com.erydevs.action.Actions;
-import com.erydevs.gui.Entry;
 import com.erydevs.gui.BuyerSite;
+import com.erydevs.gui.Entry;
 import com.erydevs.levels.PlayerLevel;
 import com.erydevs.papi.PlaceholderAPIHook;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,16 +24,16 @@ public class InventoryListener implements Listener {
 
     private final EryBuyer plugin;
 
-    public InventoryListener(EryBuyer plugin) {
+    public InventoryListener(@NotNull EryBuyer plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent e) {
-        if (e.getView() == null) return;
+    public void onInventoryClick(@NotNull InventoryClickEvent e) {
         String title = e.getView().getTitle();
         if (!plugin.getBuyerGUI().isManagedTitle(title)) return;
         e.setCancelled(true);
+
         int slot = e.getRawSlot();
         if (slot < 0) return;
         if (!(e.getWhoClicked() instanceof Player)) return;
@@ -43,7 +46,7 @@ public class InventoryListener implements Listener {
         }
 
         String menuName = plugin.getBuyerGUI().getMenuNameByTitle(title);
-        org.bukkit.configuration.file.FileConfiguration menuCfg = plugin.getMenuRegistry().getMenuConfig(menuName);
+        FileConfiguration menuCfg = plugin.getMenuRegistry().getMenuConfig(menuName);
 
         int exitSlot = plugin.getBuyerGUI().getExitSlot(title, menuCfg);
         if (exitSlot >= 0 && slot == exitSlot) {
@@ -53,21 +56,14 @@ public class InventoryListener implements Listener {
 
         int autobuyerSlot = plugin.getBuyerGUI().getAutobuyerSlot(title, menuCfg);
         if (autobuyerSlot >= 0 && slot == autobuyerSlot) {
-            plugin.getAutoBuyerManager().toggleAutobuyer(p);
-            List<String> lines = plugin.getMessagesConfig().getMessageAutoBuyerStatus().stream()
-                    .map(line -> PlaceholderAPIHook.apply(line, p))
-                    .collect(Collectors.toList());
-            Actions.dispatch(plugin, p, lines);
-            p.openInventory(plugin.getBuyerGUI().createInventory(p, menuName));
-            playMenuOpenSound(p);
+            toggleAutobuyer(p, menuName);
             return;
         }
 
         if (plugin.getAutoBuyerManager().isAutobuyerEnabled(p)) return;
 
         Entry entry = plugin.getBuyerGUI().getEntry(title, slot);
-        if (entry == null) return;
-        if (entry.priceX1 <= 0) return;
+        if (entry == null || entry.priceX1 <= 0) return;
 
         BuyerSite.ClickType clickType;
         if (e.isShiftClick() && e.isLeftClick()) {
@@ -112,7 +108,22 @@ public class InventoryListener implements Listener {
         }
     }
 
-    private int countItemsInInventory(Player p, org.bukkit.Material material) {
+    private void toggleAutobuyer(@NotNull Player p, @NotNull String menuName) {
+        plugin.getAutoBuyerManager().toggleAutobuyer(p);
+
+        List<String> lines = plugin.getMessagesConfig().getMessageAutoBuyerStatus().stream()
+                .map(line -> PlaceholderAPIHook.apply(line, p))
+                .collect(Collectors.toList());
+        Actions.dispatch(plugin, p, lines);
+
+        p.openInventory(plugin.getBuyerGUI().createInventory(p, menuName));
+        playSound(p, plugin.getConfigManager().getSoundOpenMenu(),
+                plugin.getConfigManager().getSoundOpenMenuVolume(),
+                plugin.getConfigManager().getSoundOpenMenuPitch(),
+                plugin.getConfigManager().isSoundOpenMenuEnabled());
+    }
+
+    private int countItemsInInventory(@NotNull Player p, @NotNull Material material) {
         int total = 0;
         for (ItemStack is : p.getInventory().getContents()) {
             if (is != null && is.getType() == material) total += is.getAmount();
@@ -120,7 +131,7 @@ public class InventoryListener implements Listener {
         return total;
     }
 
-    private int removeItemsFromInventory(Player p, Entry entry, int amountNeeded) {
+    private int removeItemsFromInventory(@NotNull Player p, @NotNull Entry entry, int amountNeeded) {
         int removed = 0;
         ItemStack[] contents = p.getInventory().getContents();
         for (int i = 0; i < contents.length && removed < amountNeeded; i++) {
@@ -138,7 +149,7 @@ public class InventoryListener implements Listener {
         return removed;
     }
 
-    private void processSale(Player p, Entry entry, int requestedAmount, double unitPrice) {
+    private void processSale(@NotNull Player p, @NotNull Entry entry, int requestedAmount, double unitPrice) {
         int actualAmount = removeItemsFromInventory(p, entry, requestedAmount);
 
         if (actualAmount == 0) {
@@ -154,6 +165,7 @@ public class InventoryListener implements Listener {
         double basePrice = unitPrice * actualAmount;
         double multiplier = 1.0 + plugin.getLevelConfig().getMultiplierByLevel(playerLevel.getCurrentLevel());
         double totalPrice = basePrice * multiplier;
+
         Economy econ = plugin.getEconomyManager().getEconomy();
         if (econ != null) econ.depositPlayer(p, totalPrice);
 
@@ -170,25 +182,25 @@ public class InventoryListener implements Listener {
                 .map(line -> PlaceholderAPIHook.apply(line, p, entry, actualAmount, totalPrice))
                 .collect(Collectors.toList());
         Actions.dispatch(plugin, p, lines);
+        playExchangeSound(p);
     }
 
-    private void checkAndUpdateLevel(Player p, PlayerLevel playerLevel) {
+    private void checkAndUpdateLevel(@NotNull Player p, @NotNull PlayerLevel playerLevel) {
         int maxLevel = plugin.getLevelConfig().getMaxLevel();
         double totalEarned = playerLevel.getTotalEarned();
         boolean leveled = false;
 
         while (playerLevel.getCurrentLevel() < maxLevel) {
             int nextLevel = playerLevel.getCurrentLevel() + 1;
-            if (plugin.getLevelConfig().getRequiredMoneyForLevel(nextLevel) <= totalEarned) {
-                playerLevel.setCurrentLevel(nextLevel);
-                leveled = true;
-                List<String> lines = plugin.getMessagesConfig().getMessageLevelUp().stream()
-                        .map(line -> PlaceholderAPIHook.applyLevelUp(line, p, nextLevel))
-                        .collect(Collectors.toList());
-                Actions.dispatch(plugin, p, lines);
-            } else {
-                break;
-            }
+            if (plugin.getLevelConfig().getRequiredMoneyForLevel(nextLevel) > totalEarned) break;
+
+            playerLevel.setCurrentLevel(nextLevel);
+            leveled = true;
+
+            List<String> lines = plugin.getMessagesConfig().getMessageLevelUp().stream()
+                    .map(line -> PlaceholderAPIHook.applyLevelUp(line, p, nextLevel))
+                    .collect(Collectors.toList());
+            Actions.dispatch(plugin, p, lines);
         }
 
         if (leveled) {
@@ -197,23 +209,26 @@ public class InventoryListener implements Listener {
         }
     }
 
-    private void playMenuOpenSound(Player p) {
-        if (!plugin.getConfigManager().isSoundOpenMenuEnabled()) return;
+    private void playSound(@NotNull Player p, @NotNull String soundName, float volume, float pitch, boolean enabled) {
+        if (!enabled) return;
         try {
-            Sound sound = Sound.valueOf(plugin.getConfigManager().getSoundOpenMenu());
-            p.playSound(p.getLocation(), sound,
-                    plugin.getConfigManager().getSoundOpenMenuVolume(),
-                    plugin.getConfigManager().getSoundOpenMenuPitch());
-        } catch (Exception ignored) {}
+            Sound sound = Sound.valueOf(soundName);
+            p.playSound(p.getLocation(), sound, volume, pitch);
+        } catch (IllegalArgumentException ignored) {
+        }
     }
 
-    private void playNoItemSound(Player p) {
-        if (!plugin.getConfigManager().isSoundNoItemEnabled()) return;
-        try {
-            Sound sound = Sound.valueOf(plugin.getConfigManager().getSoundNoItem());
-            p.playSound(p.getLocation(), sound,
-                    plugin.getConfigManager().getSoundNoItemVolume(),
-                    plugin.getConfigManager().getSoundNoItemPitch());
-        } catch (Exception ignored) {}
+    private void playNoItemSound(@NotNull Player p) {
+        playSound(p, plugin.getConfigManager().getSoundNoItem(),
+                plugin.getConfigManager().getSoundNoItemVolume(),
+                plugin.getConfigManager().getSoundNoItemPitch(),
+                plugin.getConfigManager().isSoundNoItemEnabled());
+    }
+
+    private void playExchangeSound(@NotNull Player p) {
+        playSound(p, plugin.getConfigManager().getSoundExchange(),
+                plugin.getConfigManager().getSoundExchangeVolume(),
+                plugin.getConfigManager().getSoundExchangePitch(),
+                plugin.getConfigManager().isSoundExchangeEnabled());
     }
 }
