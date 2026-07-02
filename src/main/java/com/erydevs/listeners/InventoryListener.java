@@ -9,7 +9,6 @@ import com.erydevs.papi.PlaceholderAPIHook;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -42,15 +41,6 @@ public class InventoryListener implements Listener {
         List<String> acts = plugin.getBuyerGUI().getActions(title, slot);
         if (acts != null && !acts.isEmpty()) {
             Actions.dispatch(plugin, p, acts);
-            return;
-        }
-
-        String menuName = plugin.getBuyerGUI().getMenuNameByTitle(title);
-        FileConfiguration menuCfg = plugin.getMenuRegistry().getMenuConfig(menuName);
-
-        int exitSlot = plugin.getBuyerGUI().getExitSlot(title, menuCfg);
-        if (exitSlot >= 0 && slot == exitSlot) {
-            p.closeInventory();
             return;
         }
 

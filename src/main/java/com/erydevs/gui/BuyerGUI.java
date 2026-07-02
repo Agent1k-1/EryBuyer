@@ -5,7 +5,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import com.erydevs.EryBuyer;
 import com.erydevs.config.Configs;
 import com.erydevs.gui.button.ButtonConfig;
@@ -47,16 +46,6 @@ public class BuyerGUI {
         itemStackFactory.addPanels(inv, cfg, size);
 
         Map<Integer, ButtonConfig> buttons = loadButtons(cfg);
-
-        for (Map.Entry<Integer, ButtonConfig> entry : buttons.entrySet()) {
-            ButtonConfig btn = entry.getValue();
-            if (btn.getSlot() < 0 || btn.getSlot() >= size) continue;
-
-            if (btn.getId().equals("1")) {
-                inv.setItem(btn.getSlot(), itemStackFactory.createExitItem(btn));
-            }
-        }
-
         addItems(inv, cfg, title, size, player, buttons);
 
         return inv;
@@ -160,20 +149,8 @@ public class BuyerGUI {
                 .findFirst();
     }
 
-    public Optional<ButtonConfig> findButtonById(FileConfiguration cfg, String id) {
-        return loadButtons(cfg).values().stream()
-                .filter(btn -> btn.getId().equals(id))
-                .findFirst();
-    }
-
     public int findSlotByAction(FileConfiguration cfg, String actionFragment) {
         return findButtonByAction(cfg, actionFragment)
-                .map(ButtonConfig::getSlot)
-                .orElse(-1);
-    }
-
-    public int findSlotById(FileConfiguration cfg, String id) {
-        return findButtonById(cfg, id)
                 .map(ButtonConfig::getSlot)
                 .orElse(-1);
     }
@@ -185,10 +162,6 @@ public class BuyerGUI {
 
     public String getMenuNameByTitle(String title) {
         return menuNameByTitle.getOrDefault(title, "menu");
-    }
-
-    public int getExitSlot(String title, FileConfiguration cfg) {
-        return findSlotById(cfg, "1");
     }
 
     public void reloadMenus() {

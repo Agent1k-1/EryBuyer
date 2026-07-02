@@ -4,7 +4,6 @@ import com.erydevs.EryBuyer;
 import com.erydevs.gui.entry.Entry;
 import com.erydevs.papi.PlaceholderAPIHook;
 import com.erydevs.utils.HexUtils;
-import com.erydevs.gui.button.ButtonConfig;
 import com.erydevs.utils.head.MaterialHeadParser;
 import com.erydevs.utils.head.ParsedMaterial;
 import com.erydevs.utils.head.SkullUtils;
@@ -41,21 +40,6 @@ public class ItemStackService {
                     .map(line -> PlaceholderAPIHook.apply(line, player, entry, 1))
                     .collect(Collectors.toList()));
 
-            item.setItemMeta(meta);
-        }
-
-        return item;
-    }
-
-    public ItemStack createExitItem(ButtonConfig button) {
-        ItemStack item = createBaseItem(button.getMaterial(), button.getMaterialStr());
-
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(HexUtils.colorize(button.getName()));
-            meta.setLore(button.getLore().stream()
-                    .map(HexUtils::colorize)
-                    .collect(Collectors.toList()));
             item.setItemMeta(meta);
         }
 

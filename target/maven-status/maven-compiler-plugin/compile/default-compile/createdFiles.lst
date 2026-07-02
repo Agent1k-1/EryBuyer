@@ -24,12 +24,14 @@ com\erydevs\levels\LevelData.class
 com\erydevs\action\Actions.class
 com\erydevs\bstats\Metrics$JsonObjectBuilder.class
 com\erydevs\papi\PlaceholderAPIHook.class
+com\erydevs\gui\button\ButtonConfig.class
 com\erydevs\bstats\Metrics$JsonObjectBuilder$JsonObject.class
 com\erydevs\bstats\Metrics$AdvancedBarChart.class
 com\erydevs\bstats\Metrics$MultiLineChart.class
 com\erydevs\gui\menu\MenuLoaderService.class
 com\erydevs\gui\BuyerSite.class
 com\erydevs\gui\Entry.class
+com\erydevs\gui\entry\Entry.class
 com\erydevs\utils\head\SkullUtils.class
 com\erydevs\data\SQLite.class
 com\erydevs\EryBuyer.class
