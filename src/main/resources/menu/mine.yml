@@ -1,0 +1,149 @@
+name: "&#EDDE5D         Ресурсы с шахты          "
+size: 54
+panels:
+  - material: ORANGE_STAINED_GLASS_PANE
+    name: ""
+    lore:
+      - ""
+    slots:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 16
+      - 17
+      - 18
+      - 26
+      - 27
+      - 35
+      - 36
+      - 37
+      - 43
+      - 44
+      - 45
+      - 46
+      - 47
+      - 48
+      - 49
+      - 50
+      - 51
+      - 52
+knops-settings:
+  1:
+    name: "&#00FF00Выход"
+    lore:
+      - ""
+      - "&fНажмите для выхода"
+      - ""
+    slot: 53
+    material: SPECTRAL_ARROW
+    action:
+      - "[sound] BLOCK_ENDER_CHEST_CLOSE"
+      - "[openmenu] menu"
+item-settings:
+  1:
+    name: "&fАлмаз"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: DIAMOND
+    slot: 20
+    prince-x1: 250.00
+    prince-x64: 16000.00
+  2:
+    name: "&fИзумруд"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: EMERALD
+    slot: 21
+    prince-x1: 300.00
+    prince-x64: 19200.00
+  3:
+    name: "&fНезеритовый слиток"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: NETHERITE_INGOT
+    slot: 22
+    prince-x1: 1500.00
+    prince-x64: 96000.00
+  4:
+    name: "&fЗолотой слиток"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: GOLD_INGOT
+    slot: 23
+    prince-x1: 150.00
+    prince-x64: 9600.00
+  5:
+    name: "&fЖелезный слиток"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: IRON_INGOT
+    slot: 24
+    prince-x1: 80.00
+    prince-x64: 5120.00
+  25:
+    name: "&fУголь"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: COAL
+    slot: 12
+    prince-x1: 30.00
+    prince-x64: 1920.00
+  26:
+    name: "&fЛазурит"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: LAPIS_LAZULI
+    slot: 13
+    prince-x1: 60.00
+    prince-x64: 3840.00
+  27:
+    name: "&fРедстоун"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: REDSTONE
+    slot: 14
+    prince-x1: 60.00
+    prince-x64: 3840.00
+  28:
+    name: "&fРедстоун"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: REDSTONE
+    slot: 14
+    prince-x1: 6.00
+    prince-x64: 384.00

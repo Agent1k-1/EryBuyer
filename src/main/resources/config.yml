@@ -1,0 +1,47 @@
+# Описание плагина
+# поддерживаемые версии
+# 1.16-1.21+
+# Зависимости
+# Vault, PlaceholderAPI
+# актионы
+# [close] - закрытие меню
+# [openmenu] - открытие меню
+# [command] - выполнение команд
+# [sound] произведение звуков
+# Плагин разработан студией EryDev
+sound:
+  sound_open_menu:
+    sound: BLOCK_CHEST_OPEN
+    pitch: 1.0 # Высота тона звука
+    volume: 1.0 # Громкость звука
+    enabled: true
+  no-item-sound:
+    sound: ENTITY_VILLAGER_NO
+    pitch: 1.0
+    volume: 1.0
+    enabled: true
+  exchange-sound:
+    sound: BLOCK_NOTE_BLOCK_XYLOPHONE
+    pitch: 1.0
+    volume: 1.0
+    enabled: true
+  autobuyer-sound:
+    sound: BLOCK_NOTE_BLOCK_XYLOPHONE
+    pitch: 1.0
+    volume: 1.0
+    enabled: true
+database:
+  file: playerdata.db # название файла sqlite
+bossbar-settings:
+  bossbar: true
+  text: "&fУ вас &aвключён &cавто-скупщик"
+  color: RED
+  autobuyer-time: 40
+buyer-top:
+  update-money: 14000 # максимальная сумма от которой будет обновление топов
+  update-interval: 20 # время обновления топов
+register-menu:
+  - "menu/menu.yml"
+  - "menu/mine.yml"
+  - "menu/farma.yml"
+  - "menu/mob.yml"

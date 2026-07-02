@@ -1,0 +1,80 @@
+name: "&#EDDE5D              Скупщик            "
+size: 45
+panels:
+  - material: ORANGE_STAINED_GLASS_PANE
+    name: ""
+    lore:
+      - ""
+    slots:
+      - 0
+      - 1
+      - 7
+      - 8
+      - 9
+      - 17
+      - 27
+      - 35
+      - 36
+      - 37
+      - 43
+knops-settings:
+  1:
+    name: "&fЗакрыть"
+    lore:
+      - ""
+      - "&fНажмите для выхода"
+      - ""
+    slot: 44
+    material: SPECTRAL_ARROW
+    action:
+      - "[sound] BLOCK_ENDER_CHEST_CLOSE"
+      - "[close]"
+  2:
+    name: "&fСтатистика Скупщика"
+    lore:
+      - ""
+      - "&fОбщая сумма продаж &e%buyer_total_earned%"
+      - "&fТекущий уровень &a%buyer_current_level%&f/&a%max_level%"
+      - "&fДо следующего уровня &e%buyer_next_level%"
+    slot: 4
+    material: basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWViM2Y5MzJkNGM1ODJiOWY5ZjAyNjJhYTY3N2NiY2Y2NGE0MTIxNWNjYmYxODY2Y2Q3YjA2ZWJjN2UxZiJ9fX0
+  3:
+    name: "&fАвто-скупщик"
+    lore:
+      - ""
+      - "&FСтатус: %autobuyer_status%"
+    slot: 40
+    material: CLOCK
+    action:
+      - "[command] autobuyer"
+menu-settings:
+  1:
+    name: "&fРесурсы с шахты"
+    lore:
+      - ""
+      - "&6Нажмите для перехода"
+    slot: 20
+    material: DIAMOND
+    action:
+      - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
+      - "[openmenu] mine"
+  2:
+    name: "&fФермерство"
+    lore:
+      - ""
+      - "&6Нажмите для перехода"
+    slot: 24
+    material: WHEAT
+    action:
+      - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
+      - "[openmenu] farma"
+  3:
+    name: "&fЛут с мобов"
+    lore:
+      - ""
+      - "&6Нажмите для перехода"
+    slot: 31
+    material: ROTTEN_FLESH
+    action:
+      - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
+      - "[openmenu] mob"

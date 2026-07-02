@@ -1,0 +1,160 @@
+name: "&#EDDE5D            Фермерство            "
+size: 54
+panels:
+  - material: ORANGE_STAINED_GLASS_PANE
+    name: ""
+    lore:
+      - ""
+    slots:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 16
+      - 17
+      - 18
+      - 26
+      - 27
+      - 35
+      - 36
+      - 37
+      - 43
+      - 44
+      - 45
+      - 46
+      - 47
+      - 48
+      - 49
+      - 50
+      - 51
+      - 52
+knops-settings:
+  1:
+    name: "&#00FF00Выход"
+    lore:
+      - ""
+      - "&fНажмите для выхода"
+      - ""
+    slot: 53
+    material: SPECTRAL_ARROW
+    action:
+      - "[sound] BLOCK_ENDER_CHEST_CLOSE"
+      - "[openmenu] menu"
+item-settings:
+  6:
+    name: "&fКакао бобы"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: COCOA_BEANS
+    slot: 33
+    prince-x1: 80.00
+    prince-x64: 5120.00
+  7:
+    name: "&fТыква"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: PUMPKIN
+    slot: 13
+    prince-x1: 160.00
+    prince-x64: 10240.00
+  8:
+    name: "&fАрбуз"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: MELON
+    slot: 21
+    prince-x1: 140.00
+    prince-x64: 8960.00
+  9:
+    name: "&fКактус"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: CACTUS
+    slot: 22
+    prince-x1: 80.00
+    prince-x64: 5120.00
+  10:
+    name: "&fТростник"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: SUGAR_CANE
+    slot: 23
+    prince-x1: 130.00
+    prince-x64: 8320.00
+  11:
+    name: "&fПшеница"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: WHEAT
+    slot: 30
+    prince-x1: 120.00
+    prince-x64: 7680.00
+  12:
+    name: "&fКартофель"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: POTATO
+    slot: 32
+    prince-x1: 130.00
+    prince-x64: 8320.00
+  13:
+    name: "&fСвёкла"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: BEETROOT
+    slot: 40
+    prince-x1: 150.00
+    prince-x64: 9600.00
+  14:
+    name: "&fМорковь"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: CARROT
+    slot: 29
+    prince-x1: 120.00
+    prince-x64: 7680.00
+  15:
+    name: "&fСладкие ягоды"
+    lore:
+      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
+      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
+      - ""
+      - "&o&fПродать всё: &#00FF00СКМ"
+    material: SWEET_BERRIES
+    slot: 31
+    prince-x1: 30.00
+    prince-x64: 1920.00
