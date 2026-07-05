@@ -1,5 +1,4 @@
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\gui\menu\ItemStackService.java
-D:\UPlugin\EryBuyer\src\main\java\com\erydevs\gui\BuyerSite.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\action\CloseAction.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\action\MessageAction.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\utils\HexUtils.java
@@ -12,13 +11,12 @@ D:\UPlugin\EryBuyer\src\main\java\com\erydevs\action\SoundAction.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\EryBuyer.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\autobuyer\AutoBuyerManager.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\gui\entry\Entry.java
+D:\UPlugin\EryBuyer\src\main\java\com\erydevs\gui\ClickType.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\listeners\PlayerQuitListener.java
-D:\UPlugin\EryBuyer\src\main\java\com\erydevs\utils\button\ButtonConfig.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\commands\BuyerCommand.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\config\MessagesConfig.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\gui\BuyerGUI.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\papi\PlaceholderAPIHook.java
-D:\UPlugin\EryBuyer\src\main\java\com\erydevs\gui\Entry.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\bossbar\Bossbars.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\action\OpenMenuAction.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\utils\head\SkullUtils.java

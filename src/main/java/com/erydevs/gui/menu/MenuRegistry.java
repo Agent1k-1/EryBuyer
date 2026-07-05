@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 
@@ -31,6 +32,15 @@ public class MenuRegistry {
         File file = new File(plugin.getDataFolder(), "menu/" + name + ".yml");
         if (!file.exists()) return null;
         return YamlConfiguration.loadConfiguration(file);
+    }
+
+    public void saveDefaults(List<String> paths) {
+        if (paths == null) return;
+        for (String path : paths) {
+            if (path == null || path.trim().isEmpty()) continue;
+            File f = new File(plugin.getDataFolder(), path);
+            if (!f.exists()) plugin.saveResource(path, false);
+        }
     }
 
     public void reload() {

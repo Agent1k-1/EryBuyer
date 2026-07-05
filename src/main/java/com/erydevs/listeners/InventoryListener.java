@@ -2,7 +2,7 @@ package com.erydevs.listeners;
 
 import com.erydevs.EryBuyer;
 import com.erydevs.action.Actions;
-import com.erydevs.gui.BuyerSite;
+import com.erydevs.gui.ClickType;
 import com.erydevs.gui.entry.Entry;
 import com.erydevs.levels.PlayerLevel;
 import com.erydevs.papi.PlaceholderAPIHook;
@@ -49,22 +49,22 @@ public class InventoryListener implements Listener {
         Entry entry = plugin.getBuyerGUI().getEntry(title, slot);
         if (entry == null || entry.priceX1 <= 0) return;
 
-        BuyerSite.ClickType clickType;
+        ClickType clickType;
         if (e.isShiftClick() && e.isLeftClick()) {
-            clickType = BuyerSite.ClickType.SHIFT_LEFT;
+            clickType = ClickType.SHIFT_LEFT;
         } else if (e.isShiftClick() && e.isRightClick()) {
-            clickType = BuyerSite.ClickType.SHIFT_RIGHT;
+            clickType = ClickType.SHIFT_RIGHT;
         } else if (e.isLeftClick()) {
-            clickType = BuyerSite.ClickType.LEFT;
+            clickType = ClickType.LEFT;
         } else {
-            clickType = BuyerSite.ClickType.RIGHT;
+            clickType = ClickType.RIGHT;
         }
 
-        if (clickType == BuyerSite.ClickType.LEFT) {
+        if (clickType == ClickType.LEFT) {
             processSale(p, entry, 1, entry.priceX1);
             return;
         }
-        if (clickType == BuyerSite.ClickType.RIGHT) {
+        if (clickType == ClickType.RIGHT) {
             int totalCount = countItemsInInventory(p, entry.material);
             if (totalCount == 0) {
                 List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()
@@ -78,7 +78,7 @@ public class InventoryListener implements Listener {
             processSale(p, entry, 64, entry.priceX1);
             return;
         }
-        if (clickType == BuyerSite.ClickType.SHIFT_LEFT || clickType == BuyerSite.ClickType.SHIFT_RIGHT) {
+        if (clickType == ClickType.SHIFT_LEFT || clickType == ClickType.SHIFT_RIGHT) {
             int totalCount = countItemsInInventory(p, entry.material);
             if (totalCount == 0) {
                 List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()

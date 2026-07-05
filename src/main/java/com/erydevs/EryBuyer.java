@@ -19,8 +19,6 @@ import com.erydevs.bossbar.Bossbars;
 import com.erydevs.papi.PlaceholderAPIHook;
 
 import com.erydevs.bstats.Metrics;
-import java.io.File;
-import java.util.List;
 
 public class EryBuyer extends JavaPlugin {
 
@@ -44,18 +42,9 @@ public class EryBuyer extends JavaPlugin {
         messagesConfig = new MessagesConfig(this);
         messagesConfig.loadMessages();
 
-        File menuDir = new File(getDataFolder(), "menu");
-        if (!menuDir.exists()) menuDir.mkdirs();
-        List<String> register = configManager.getRegisterMenu();
-        for (String path : register) {
-            if (path == null || path.trim().isEmpty()) continue;
-            File f = new File(getDataFolder(), path);
-            if (!f.exists()) {
-                saveResource(path, false);
-            }
-        }
-
         menuRegistry = new MenuRegistry(this);
+        menuRegistry.saveDefaults(configManager.getRegisterMenu());
+
         levelConfig = new LevelConfig(this);
         SQLite = new SQLite(getDataFolder(), configManager.getDatabaseFileName(), getLogger());
 

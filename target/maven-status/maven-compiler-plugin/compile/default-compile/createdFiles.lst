@@ -7,7 +7,6 @@ com\erydevs\config\Configs.class
 com\erydevs\autobuyer\AutoBuyerManager.class
 com\erydevs\bstats\Metrics$SimpleBarChart.class
 com\erydevs\levels\LevelConfig.class
-com\erydevs\gui\BuyerSite$ClickType.class
 com\erydevs\action\MessageAction.class
 com\erydevs\action\CommandAction.class
 com\erydevs\action\OpenMenuAction.class
@@ -23,14 +22,13 @@ com\erydevs\action\SoundAction.class
 com\erydevs\levels\LevelData.class
 com\erydevs\action\Actions.class
 com\erydevs\bstats\Metrics$JsonObjectBuilder.class
+com\erydevs\gui\ClickType.class
 com\erydevs\papi\PlaceholderAPIHook.class
 com\erydevs\gui\button\ButtonConfig.class
 com\erydevs\bstats\Metrics$JsonObjectBuilder$JsonObject.class
 com\erydevs\bstats\Metrics$AdvancedBarChart.class
 com\erydevs\bstats\Metrics$MultiLineChart.class
 com\erydevs\gui\menu\MenuLoaderService.class
-com\erydevs\gui\BuyerSite.class
-com\erydevs\gui\Entry.class
 com\erydevs\gui\entry\Entry.class
 com\erydevs\utils\head\SkullUtils.class
 com\erydevs\data\SQLite.class
@@ -42,6 +40,5 @@ com\erydevs\bossbar\Bossbars.class
 com\erydevs\action\CloseAction.class
 com\erydevs\economy\VaultAPI.class
 com\erydevs\config\MessagesConfig.class
-com\erydevs\utils\button\ButtonConfig.class
 com\erydevs\levels\PlayerLevel.class
 com\erydevs\gui\BuyerGUI.class
