@@ -1,5 +1,7 @@
 package com.erydevs.levels;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.UUID;
 
 public class PlayerLevel {
@@ -7,12 +9,13 @@ public class PlayerLevel {
     private int currentLevel;
     private double totalEarned;
 
-    public PlayerLevel(UUID uuid, int currentLevel, double totalEarned) {
+    public PlayerLevel(@NotNull UUID uuid, int currentLevel, double totalEarned) {
         this.uuid = uuid;
         this.currentLevel = currentLevel;
         this.totalEarned = totalEarned;
     }
 
+    @NotNull
     public UUID getUuid() {
         return uuid;
     }

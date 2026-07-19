@@ -3,6 +3,8 @@ package com.erydevs.levels;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.HashMap;
@@ -15,7 +17,7 @@ public class LevelConfig {
     private File levelFile;
     private FileConfiguration levelConfiguration;
 
-    public LevelConfig(JavaPlugin plugin) {
+    public LevelConfig(@NotNull JavaPlugin plugin) {
         this.plugin = plugin;
         loadLevels();
     }
@@ -46,6 +48,7 @@ public class LevelConfig {
         loadLevels();
     }
 
+    @Nullable
     public LevelData getLevelData(int level) {
         return levels.get(level);
     }

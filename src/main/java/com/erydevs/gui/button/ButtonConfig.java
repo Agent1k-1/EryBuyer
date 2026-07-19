@@ -1,6 +1,9 @@
 package com.erydevs.gui.button;
 
 import org.bukkit.Material;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -15,22 +18,22 @@ public class ButtonConfig {
     private final List<String> lore;
     private final List<String> actions;
 
-    public ButtonConfig(String id,
+    public ButtonConfig(@NotNull String id,
                         int slot,
-                        Material material,
-                        String name,
-                        List<String> lore,
-                        List<String> actions) {
+                        @NotNull Material material,
+                        @Nullable String name,
+                        @Nullable List<String> lore,
+                        @Nullable List<String> actions) {
         this(id, slot, material, null, name, lore, actions);
     }
 
-    public ButtonConfig(String id,
+    public ButtonConfig(@NotNull String id,
                         int slot,
-                        Material material,
-                        String materialStr,
-                        String name,
-                        List<String> lore,
-                        List<String> actions) {
+                        @NotNull Material material,
+                        @Nullable String materialStr,
+                        @Nullable String name,
+                        @Nullable List<String> lore,
+                        @Nullable List<String> actions) {
         this.id = Objects.requireNonNull(id);
         this.slot = slot;
         this.material = Objects.requireNonNull(material);
@@ -40,6 +43,7 @@ public class ButtonConfig {
         this.actions = actions == null ? Collections.emptyList() : actions;
     }
 
+    @NotNull
     public String getId() {
         return id;
     }
@@ -48,27 +52,32 @@ public class ButtonConfig {
         return slot;
     }
 
+    @NotNull
     public Material getMaterial() {
         return material;
     }
 
+    @Nullable
     public String getMaterialStr() {
         return materialStr;
     }
 
+    @NotNull
     public String getName() {
         return name;
     }
 
+    @NotNull
     public List<String> getLore() {
         return lore;
     }
 
+    @NotNull
     public List<String> getActions() {
         return actions;
     }
 
-    public boolean hasAction(String fragment) {
+    public boolean hasAction(@NotNull String fragment) {
         return actions.stream().anyMatch(a -> a != null && a.contains(fragment));
     }
 

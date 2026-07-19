@@ -15,6 +15,8 @@ import com.erydevs.utils.head.MaterialHeadParser;
 import com.erydevs.utils.head.ParsedMaterial;
 import com.erydevs.utils.head.SkullUtils;
 import com.erydevs.utils.HexUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class BuyerGUI {
@@ -28,7 +30,7 @@ public class BuyerGUI {
     private final Map<String, Map<Integer, List<String>>> actionsByTitle = new HashMap<>();
     private final Map<String, String> menuNameByTitle = new HashMap<>();
 
-    public BuyerGUI(EryBuyer plugin, Configs configManager, MenuRegistry menuRegistry) {
+    public BuyerGUI(@NotNull EryBuyer plugin, @NotNull Configs configManager, @NotNull MenuRegistry menuRegistry) {
         this.plugin = plugin;
         this.configManager = configManager;
         this.menuRegistry = menuRegistry;
@@ -37,7 +39,8 @@ public class BuyerGUI {
         menuLoader.loadAllMenus();
     }
 
-    public Inventory createInventory(Player player, String menuName) {
+    @NotNull
+    public Inventory createInventory(@NotNull Player player, @NotNull String menuName) {
         FileConfiguration cfg = menuRegistry.getMenuConfig(menuName);
         String title = HexUtils.colorize(cfg.getString("name", menuName));
         int size = cfg.getInt("size");
@@ -51,7 +54,7 @@ public class BuyerGUI {
         return inv;
     }
 
-    private void addItems(Inventory inv, FileConfiguration cfg, String title, int size, Player player, Map<Integer, ButtonConfig> buttons) {
+    private void addItems(@NotNull Inventory inv, @NotNull FileConfiguration cfg, @NotNull String title, int size, @NotNull Player player, @NotNull Map<Integer, ButtonConfig> buttons) {
         Map<Integer, Entry> entries = MenuLoaderService.loadItemSettings(cfg, combinedSlotMap);
 
         for (Map.Entry<Integer, ButtonConfig> entry : buttons.entrySet()) {
@@ -73,19 +76,23 @@ public class BuyerGUI {
         entriesByTitle.put(title, entries);
     }
 
-    public Inventory createInventory(Player player) {
+    @NotNull
+    public Inventory createInventory(@NotNull Player player) {
         return createInventory(player, "menu");
     }
 
-    public Entry getEntry(String title, int slot) {
+    @Nullable
+    public Entry getEntry(@NotNull String title, int slot) {
         Map<Integer, Entry> m = entriesByTitle.get(title);
         return m != null ? m.get(slot) : null;
     }
 
+    @NotNull
     public Map<Integer, Entry> getSlotMap() {
         return combinedSlotMap;
     }
 
+    @NotNull
     public Collection<Entry> getAllEntries() {
         List<Entry> out = new ArrayList<>();
         for (Map<Integer, Entry> m : entriesByTitle.values()) {
@@ -94,22 +101,24 @@ public class BuyerGUI {
         return out;
     }
 
+    @NotNull
     public Collection<Entry> getBuyableEntries() {
         return combinedSlotMap.values();
     }
 
-    public boolean isManagedTitle(String title) {
+    public boolean isManagedTitle(@NotNull String title) {
         return entriesByTitle.containsKey(title);
     }
 
-    public Map<Integer, ButtonConfig> loadButtons(FileConfiguration cfg) {
+    @NotNull
+    public Map<Integer, ButtonConfig> loadButtons(@NotNull FileConfiguration cfg) {
         Map<Integer, ButtonConfig> buttons = new HashMap<>();
         loadButtonsSection(cfg, "menu-settings", buttons);
         loadButtonsSection(cfg, "knops-settings", buttons);
         return buttons;
     }
 
-    private void loadButtonsSection(FileConfiguration cfg, String section, Map<Integer, ButtonConfig> buttons) {
+    private void loadButtonsSection(@NotNull FileConfiguration cfg, @NotNull String section, @NotNull Map<Integer, ButtonConfig> buttons) {
         if (!cfg.isConfigurationSection(section)) return;
 
         org.bukkit.configuration.ConfigurationSection sect = cfg.getConfigurationSection(section);
@@ -143,24 +152,27 @@ public class BuyerGUI {
         }
     }
 
-    public Optional<ButtonConfig> findButtonByAction(FileConfiguration cfg, String actionFragment) {
+    @NotNull
+    public Optional<ButtonConfig> findButtonByAction(@NotNull FileConfiguration cfg, @NotNull String actionFragment) {
         return loadButtons(cfg).values().stream()
                 .filter(btn -> btn.hasAction(actionFragment))
                 .findFirst();
     }
 
-    public int findSlotByAction(FileConfiguration cfg, String actionFragment) {
+    public int findSlotByAction(@NotNull FileConfiguration cfg, @NotNull String actionFragment) {
         return findButtonByAction(cfg, actionFragment)
                 .map(ButtonConfig::getSlot)
                 .orElse(-1);
     }
 
-    public List<String> getActions(String title, int slot) {
+    @Nullable
+    public List<String> getActions(@NotNull String title, int slot) {
         Map<Integer, List<String>> m = actionsByTitle.get(title);
         return m != null ? m.get(slot) : null;
     }
 
-    public String getMenuNameByTitle(String title) {
+    @NotNull
+    public String getMenuNameByTitle(@NotNull String title) {
         return menuNameByTitle.getOrDefault(title, "menu");
     }
 

@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -23,11 +24,8 @@ import java.util.stream.Collectors;
 public class AutoBuyerManager {
 
     private final EryBuyer plugin;
-    private final Map<UUID, Boolean> autobuyers = new ConcurrentHashMap<>();
+    private final Set<UUID> autobuyers = ConcurrentHashMap.newKeySet();
     private final Map<UUID, Long> lastSellTime = new ConcurrentHashMap<>();
-
-    private int tickTaskId = -1;
-    private int topPlayersTaskId = -1;
 
     public AutoBuyerManager(@NotNull EryBuyer plugin) {
         this.plugin = plugin;
@@ -36,14 +34,13 @@ public class AutoBuyerManager {
     }
 
     private void startTickTask() {
-        BukkitScheduler scheduler = plugin.getServer().getScheduler();
-        tickTaskId = scheduler.scheduleSyncRepeatingTask(plugin, this::processOnlinePlayers, 0L, 40L);
+        plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this::processOnlinePlayers, 0L, 40L);
     }
 
     private void startTopPlayersUpdateTask() {
         BukkitScheduler scheduler = plugin.getServer().getScheduler();
         long interval = plugin.getConfigManager().getBuyerTopUpdateInterval() * 20L;
-        topPlayersTaskId = scheduler.scheduleSyncRepeatingTask(plugin, () ->
+        scheduler.scheduleSyncRepeatingTask(plugin, () ->
                 scheduler.runTaskAsynchronously(plugin, this::refreshTopPlayers), interval, interval);
     }
 
@@ -52,13 +49,15 @@ public class AutoBuyerManager {
     }
 
     private void processOnlinePlayers() {
+        if (autobuyers.isEmpty()) return;
+
         Collection<Entry> entries = plugin.getBuyerGUI().getBuyableEntries();
         if (entries.isEmpty()) return;
 
-        for (Player player : plugin.getServer().getOnlinePlayers()) {
-            if (isAutobuyerEnabled(player)) {
-                processPlayer(player, entries);
-            }
+        for (UUID uuid : autobuyers) {
+            Player player = plugin.getServer().getPlayer(uuid);
+            if (player == null || !player.isOnline()) continue;
+            processPlayer(player, entries);
         }
     }
 
@@ -100,14 +99,15 @@ public class AutoBuyerManager {
 
     public void setAutobuyer(@NotNull Player player, boolean enabled) {
         UUID uuid = player.getUniqueId();
-        autobuyers.put(uuid, enabled);
 
         if (enabled) {
+            autobuyers.add(uuid);
             lastSellTime.put(uuid, System.currentTimeMillis());
             if (plugin.getConfigManager().isBossbarEnabled() && plugin.getBossBarManager() != null) {
                 plugin.getBossBarManager().createBossBar(player);
             }
         } else {
+            autobuyers.remove(uuid);
             lastSellTime.remove(uuid);
             if (plugin.getBossBarManager() != null) {
                 plugin.getBossBarManager().removeBossBar(player);
@@ -116,7 +116,7 @@ public class AutoBuyerManager {
     }
 
     public boolean isAutobuyerEnabled(@NotNull Player player) {
-        return autobuyers.getOrDefault(player.getUniqueId(), false);
+        return autobuyers.contains(player.getUniqueId());
     }
 
     public void removePlayer(@NotNull Player player) {
@@ -183,24 +183,17 @@ public class AutoBuyerManager {
     private void tryLevelUp(@NotNull Player player, @NotNull PlayerLevel playerLevel) {
         int maxLevel = plugin.getLevelConfig().getMaxLevel();
         double totalEarned = playerLevel.getTotalEarned();
-        boolean leveledUp = false;
 
         while (playerLevel.getCurrentLevel() < maxLevel) {
             int nextLevel = playerLevel.getCurrentLevel() + 1;
             if (plugin.getLevelConfig().getRequiredMoneyForLevel(nextLevel) > totalEarned) break;
 
             playerLevel.setCurrentLevel(nextLevel);
-            leveledUp = true;
 
             List<String> lines = plugin.getMessagesConfig().getMessageLevelUp().stream()
                     .map(line -> PlaceholderAPIHook.applyLevelUp(line, player, nextLevel))
                     .collect(Collectors.toList());
             Actions.dispatch(plugin, player, lines);
-        }
-
-        if (leveledUp) {
-            plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
-                    () -> plugin.getDataBase().savePlayerData(playerLevel));
         }
     }
 
@@ -217,9 +210,6 @@ public class AutoBuyerManager {
     }
 
     public void shutdown() {
-        plugin.getServer().getScheduler().cancelTask(tickTaskId);
-        plugin.getServer().getScheduler().cancelTask(topPlayersTaskId);
-
         for (Player player : plugin.getServer().getOnlinePlayers()) {
             removePlayer(player);
         }

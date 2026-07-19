@@ -7,6 +7,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -36,14 +38,16 @@ public final class SkullUtils {
         CACHE.clear();
     }
 
-    public static String getEncoded(String textureHash) {
+    @NotNull
+    public static String getEncoded(@NotNull String textureHash) {
         byte[] encoded = Base64.getEncoder().encode(String
                 .format("{textures:{SKIN:{url:\"%s\"}}}", "https://textures.minecraft.net/texture/" + textureHash)
                 .getBytes(StandardCharsets.UTF_8));
         return new String(encoded, StandardCharsets.UTF_8);
     }
 
-    public static ItemStack getSkullByBase64(EryBuyer plugin, String base64TextureValue) {
+    @NotNull
+    public static ItemStack getSkullByBase64(@NotNull EryBuyer plugin, @Nullable String base64TextureValue) {
         if (base64TextureValue == null || base64TextureValue.isEmpty()) {
             return new ItemStack(Material.PLAYER_HEAD);
         }

@@ -16,12 +16,13 @@ import org.bukkit.ChatColor;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class PlaceholderAPIHook extends PlaceholderExpansion {
 
     private final EryBuyer plugin;
 
-    public PlaceholderAPIHook(EryBuyer plugin) {
+    public PlaceholderAPIHook(@NotNull EryBuyer plugin) {
         this.plugin = plugin;
     }
 
@@ -78,6 +79,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         }
     }
 
+    @NotNull
     private String getTopPlayerByPosition(int position) {
         List<Map.Entry<String, Double>> topPlayers = plugin.getDataBase().getTopPlayers(position, plugin.getConfigManager().getBuyerTopUpdateMoney());
         if (topPlayers == null || topPlayers.size() < position) {
@@ -96,7 +98,8 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         return playerName + " " + formatDouble(entry.getValue());
     }
 
-    private static String applyPlaceholders(String input, Player player, Entry entry, int amount, double customPrice) {
+    @NotNull
+    private static String applyPlaceholders(@Nullable String input, @NotNull Player player, @Nullable Entry entry, int amount, double customPrice) {
         if (input == null) return "";
         EryBuyer plugin = EryBuyer.getInstance();
         String itemName = entry != null ? stripColors(entry.name) : "";
@@ -132,7 +135,8 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         return HexUtils.colorize(result);
     }
 
-    public static String apply(String input, Player player, Entry entry, int amount, double customPrice) {
+    @NotNull
+    public static String apply(@Nullable String input, @Nullable Player player, @Nullable Entry entry, int amount, double customPrice) {
         if (input == null) return "";
         if (!isAvailable()) return input;
         if (player == null) return HexUtils.colorize(input);
@@ -143,15 +147,18 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         return result;
     }
 
-    public static String apply(String input, Player player, Entry entry, int amount) {
+    @NotNull
+    public static String apply(@Nullable String input, @Nullable Player player, @Nullable Entry entry, int amount) {
         return apply(input, player, entry, amount, entry != null ? entry.priceX1 : 0.0);
     }
 
-    public static String apply(String input, Player player) {
+    @NotNull
+    public static String apply(@Nullable String input, @Nullable Player player) {
         return apply(input, player, null, 0, 0.0);
     }
 
-    public static String applyLevelUp(String input, Player player, int newLevel) {
+    @NotNull
+    public static String applyLevelUp(@Nullable String input, @Nullable Player player, int newLevel) {
         if (input == null) return "";
         if (!isAvailable()) return input;
         if (player == null) return HexUtils.colorize(input);
@@ -163,26 +170,30 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         return result;
     }
 
-    public static List<String> applyList(List<String> list, Player player, Entry entry, int amount) {
+    @NotNull
+    public static List<String> applyList(@NotNull List<String> list, @Nullable Player player, @Nullable Entry entry, int amount) {
         return list.stream().map(l -> apply(l, player, entry, amount)).collect(Collectors.toList());
     }
 
-    public static List<String> applyList(List<String> list, Player player) {
+    @NotNull
+    public static List<String> applyList(@NotNull List<String> list, @Nullable Player player) {
         return applyList(list, player, null, 0);
     }
 
-    private static double getBalance(Player player) {
+    private static double getBalance(@NotNull Player player) {
         EryBuyer plugin = EryBuyer.getInstance();
         Economy econ = plugin.getEconomyManager().getEconomy();
         if (econ == null) return 0.0;
         return econ.getBalance(player);
     }
 
+    @NotNull
     private static String formatDouble(double d) {
         return String.format("%.2f", d);
     }
 
-    private static String stripColors(String s) {
+    @NotNull
+    private static String stripColors(@Nullable String s) {
         if (s == null) return "";
         return ChatColor.stripColor(HexUtils.colorize(s)).trim();
     }

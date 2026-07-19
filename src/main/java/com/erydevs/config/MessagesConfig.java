@@ -72,11 +72,11 @@ public class MessagesConfig {
 
     @NotNull
     public String getPlaceholderEnableAutobuyer() {
-        return messages.getString("placeholder.enable-autobuyer", "");
+        return messages.getString("placeholder.enable-autobuyer");
     }
 
     @NotNull
     public String getPlaceholderDisableAutobuyer() {
-        return messages.getString("placeholder.disable-autobuyer", "");
+        return messages.getString("placeholder.disable-autobuyer");
     }
 }

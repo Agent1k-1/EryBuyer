@@ -1,6 +1,7 @@
 package com.erydevs.data;
 
 import com.erydevs.levels.PlayerLevel;
+import org.jetbrains.annotations.NotNull;
 import org.sqlite.SQLiteConfig;
 
 import java.io.File;
@@ -30,7 +31,7 @@ public class SQLite {
 
     private Connection connection;
 
-    public SQLite(File dataFolder, String fileName, Logger logger) {
+    public SQLite(@NotNull File dataFolder, @NotNull String fileName, @NotNull Logger logger) {
         this.logger = logger;
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
@@ -92,7 +93,8 @@ public class SQLite {
         }
     }
 
-    public PlayerLevel getPlayerData(UUID uuid) {
+    @NotNull
+    public PlayerLevel getPlayerData(@NotNull UUID uuid) {
         PlayerLevel cached = cache.get(uuid);
         if (cached != null) return cached;
 
@@ -117,23 +119,24 @@ public class SQLite {
         return cacheDefault(uuid);
     }
 
-    private PlayerLevel cacheDefault(UUID uuid) {
+    @NotNull
+    private PlayerLevel cacheDefault(@NotNull UUID uuid) {
         PlayerLevel playerLevel = new PlayerLevel(uuid, 1, 0.0);
         cache.put(uuid, playerLevel);
         return playerLevel;
     }
 
-    public void savePlayerData(PlayerLevel player) {
+    public void savePlayerData(@NotNull PlayerLevel player) {
         cache.put(player.getUuid(), player);
         persist(player, true);
     }
 
-    public void flushPlayerAsync(PlayerLevel player) {
+    public void flushPlayerAsync(@NotNull PlayerLevel player) {
         cache.put(player.getUuid(), player);
         persist(player, false);
     }
 
-    private void persist(PlayerLevel player, boolean logErrors) {
+    private void persist(@NotNull PlayerLevel player, boolean logErrors) {
         if (!isConnected()) return;
 
         String sql = "INSERT INTO " + TABLE_PLAYERS + " (uuid, current_level, total_earned) VALUES (?, ?, ?) " +
@@ -151,20 +154,21 @@ public class SQLite {
         }
     }
 
-    public void addPlayerEarnings(UUID uuid, double amount) {
+    public void addPlayerEarnings(@NotNull UUID uuid, double amount) {
         PlayerLevel cached = cache.get(uuid);
         if (cached != null) {
             cached.addEarnings(amount);
         }
     }
 
-    public void evictPlayer(UUID uuid) {
+    public void evictPlayer(@NotNull UUID uuid) {
         PlayerLevel player = cache.remove(uuid);
         if (player != null) {
             persist(player, true);
         }
     }
 
+    @NotNull
     public List<Map.Entry<String, Double>> getTopPlayers(int limit, double minEarned) {
         return topPlayersCache;
     }

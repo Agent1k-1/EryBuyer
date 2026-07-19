@@ -3,6 +3,8 @@ package com.erydevs;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.erydevs.config.Configs;
 import com.erydevs.config.MessagesConfig;
 import com.erydevs.gui.BuyerGUI;
@@ -59,10 +61,8 @@ public class EryBuyer extends JavaPlugin {
         bossbars = new Bossbars(this);
         autoBuyerManager = new AutoBuyerManager(this);
 
-        if (getCommand("buyer") != null)
-            getCommand("buyer").setExecutor(new BuyerCommand(this));
-        if (getCommand("autobuyer") != null)
-            getCommand("autobuyer").setExecutor(new AutoBuyerCommand(this));
+        getCommand("buyer").setExecutor(new BuyerCommand(this));
+        getCommand("autobuyer").setExecutor(new AutoBuyerCommand(this));
 
         getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), this);
@@ -116,42 +116,52 @@ public class EryBuyer extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Ядро: " + ChatColor.YELLOW + Bukkit.getVersion());
     }
 
+    @Nullable
     public static EryBuyer getInstance() {
         return instance;
     }
 
+    @NotNull
     public VaultAPI getEconomyManager() {
         return vaultAPI;
     }
 
+    @NotNull
     public Configs getConfigManager() {
         return configManager;
     }
 
+    @NotNull
     public MessagesConfig getMessagesConfig() {
         return messagesConfig;
     }
 
+    @NotNull
     public MenuRegistry getMenuRegistry() {
         return menuRegistry;
     }
 
+    @NotNull
     public BuyerGUI getBuyerGUI() {
         return buyerGUI;
     }
 
+    @NotNull
     public AutoBuyerManager getAutoBuyerManager() {
         return autoBuyerManager;
     }
 
+    @NotNull
     public Bossbars getBossBarManager() {
         return bossbars;
     }
 
+    @NotNull
     public LevelConfig getLevelConfig() {
         return levelConfig;
     }
 
+    @NotNull
     public SQLite getDataBase() {
         return SQLite;
     }

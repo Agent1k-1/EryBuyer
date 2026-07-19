@@ -3,16 +3,17 @@ package com.erydevs.action;
 import com.erydevs.EryBuyer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class SoundAction implements Actions {
 
     @Override
-    public boolean canHandle(String actionLine) {
+    public boolean canHandle(@NotNull String actionLine) {
         return actionLine.toLowerCase().startsWith("[sound]");
     }
 
     @Override
-    public void execute(String actionLine, EryBuyer plugin, Player player) {
+    public void execute(@NotNull String actionLine, @NotNull EryBuyer plugin, @NotNull Player player) {
         String soundName = parseArgument(actionLine);
         if (soundName.isEmpty()) return;
         try {

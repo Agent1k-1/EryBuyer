@@ -4,6 +4,8 @@ import com.erydevs.utils.head.MaterialHeadParser;
 import com.erydevs.utils.head.ParsedMaterial;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.erydevs.EryBuyer;
 import com.erydevs.utils.HexUtils;
 import com.erydevs.gui.entry.Entry;
@@ -21,10 +23,11 @@ public class MenuLoaderService {
     private final Map<String, Map<Integer, List<String>>> actionsByTitle;
     private final Map<String, String> menuNameByTitle;
 
-    public MenuLoaderService(EryBuyer plugin, Map<Integer, Entry> combinedSlotMap,
-                      Map<String, Map<Integer, Entry>> entriesByTitle,
-                      Map<String, Map<Integer, List<String>>> actionsByTitle,
-                      Map<String, String> menuNameByTitle) {
+    public MenuLoaderService(@NotNull EryBuyer plugin,
+                             @NotNull Map<Integer, Entry> combinedSlotMap,
+                             @NotNull Map<String, Map<Integer, Entry>> entriesByTitle,
+                             @NotNull Map<String, Map<Integer, List<String>>> actionsByTitle,
+                             @NotNull Map<String, String> menuNameByTitle) {
         this.plugin = plugin;
         this.combinedSlotMap = combinedSlotMap;
         this.entriesByTitle = entriesByTitle;
@@ -43,7 +46,7 @@ public class MenuLoaderService {
         }
     }
 
-    private void loadMenu(File f) {
+    private void loadMenu(@NotNull File f) {
         FileConfiguration cfg = YamlConfiguration.loadConfiguration(f);
         String menuName = f.getName().replace(".yml", "");
         String title = HexUtils.colorize(cfg.getString("name", menuName));
@@ -63,7 +66,8 @@ public class MenuLoaderService {
         actionsByTitle.put(title, actions);
     }
 
-    public static Map<Integer, Entry> loadItemSettings(FileConfiguration cfg, Map<Integer, Entry> combinedSlotMap) {
+    @NotNull
+    public static Map<Integer, Entry> loadItemSettings(@NotNull FileConfiguration cfg, @Nullable Map<Integer, Entry> combinedSlotMap) {
         Map<Integer, Entry> entries = new HashMap<>();
         if (!cfg.isConfigurationSection("item-settings")) return entries;
 
@@ -90,21 +94,21 @@ public class MenuLoaderService {
         return entries;
     }
 
-    private void loadMenuSettings(FileConfiguration cfg, Map<Integer, Entry> entries, Map<Integer, List<String>> actions) {
+    private void loadMenuSettings(@NotNull FileConfiguration cfg, @NotNull Map<Integer, Entry> entries, @NotNull Map<Integer, List<String>> actions) {
         if (!cfg.isConfigurationSection("menu-settings")) return;
         for (String key : cfg.getConfigurationSection("menu-settings").getKeys(false)) {
             loadMenuOrKnopsItem(cfg, entries, actions, "menu-settings." + key, "menu-" + key);
         }
     }
 
-    private void loadKnopsSettings(FileConfiguration cfg, Map<Integer, Entry> entries, Map<Integer, List<String>> actions) {
+    private void loadKnopsSettings(@NotNull FileConfiguration cfg, @NotNull Map<Integer, Entry> entries, @NotNull Map<Integer, List<String>> actions) {
         if (!cfg.isConfigurationSection("knops-settings")) return;
         for (String key : cfg.getConfigurationSection("knops-settings").getKeys(false)) {
             loadMenuOrKnopsItem(cfg, entries, actions, "knops-settings." + key, "knop-" + key);
         }
     }
 
-    private void loadMenuOrKnopsItem(FileConfiguration cfg, Map<Integer, Entry> entries, Map<Integer, List<String>> actions, String path, String id) {
+    private void loadMenuOrKnopsItem(@NotNull FileConfiguration cfg, @NotNull Map<Integer, Entry> entries, @NotNull Map<Integer, List<String>> actions, @NotNull String path, @NotNull String id) {
         int slot = cfg.getInt(path + ".slot");
         if (slot < 0) return;
 

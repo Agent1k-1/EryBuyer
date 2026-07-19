@@ -1,6 +1,7 @@
 package com.erydevs.utils.head;
 
 import org.bukkit.Material;
+import org.jetbrains.annotations.Nullable;
 
 public final class MaterialHeadParser {
 
@@ -10,7 +11,8 @@ public final class MaterialHeadParser {
     private MaterialHeadParser() {
     }
 
-    public static com.erydevs.utils.head.ParsedMaterial parse(String raw) {
+    @Nullable
+    public static ParsedMaterial parse(@Nullable String raw) {
         if (raw == null) {
             return null;
         }

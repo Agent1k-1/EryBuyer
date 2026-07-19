@@ -13,6 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,11 +26,12 @@ public class ItemStackService {
 
     private final EryBuyer plugin;
 
-    public ItemStackService(EryBuyer plugin) {
+    public ItemStackService(@NotNull EryBuyer plugin) {
         this.plugin = plugin;
     }
 
-    public ItemStack createItemStack(Entry entry, Player player) {
+    @NotNull
+    public ItemStack createItemStack(@NotNull Entry entry, @NotNull Player player) {
         ItemStack item = createBaseItem(entry.material, entry.materialData);
 
         ItemMeta meta = item.getItemMeta();
@@ -46,14 +49,15 @@ public class ItemStackService {
         return item;
     }
 
-    private ItemStack createBaseItem(Material material, String headTextureBase64) {
+    @NotNull
+    private ItemStack createBaseItem(@NotNull Material material, @Nullable String headTextureBase64) {
         if (material == Material.PLAYER_HEAD && headTextureBase64 != null && !headTextureBase64.isEmpty()) {
             return SkullUtils.getSkullByBase64(plugin, headTextureBase64);
         }
         return new ItemStack(material);
     }
 
-    public void addPanels(Inventory inv, FileConfiguration cfg, int size) {
+    public void addPanels(@NotNull Inventory inv, @NotNull FileConfiguration cfg, int size) {
         if (!cfg.isList("panels")) return;
 
         List<?> panelsList = cfg.getList("panels");
@@ -68,7 +72,7 @@ public class ItemStackService {
         }
     }
 
-    private void addPanel(Inventory inv, Map<String, Object> panelMap, int size) {
+    private void addPanel(@NotNull Inventory inv, @NotNull Map<String, Object> panelMap, int size) {
         String material = (String) panelMap.get("material");
         String name = (String) panelMap.get("name");
         List<?> lore = (List<?>) panelMap.get("lore");
