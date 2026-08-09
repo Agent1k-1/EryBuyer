@@ -80,9 +80,9 @@ public class BuyerGUI {
             if (btn.getSlot() >= size) continue;
             if (bestSlots.contains(btn.getSlot())) continue;
 
-            Entry it = btn.getMaterialStr() != null && !btn.getMaterialStr().isEmpty()
-                    ? new Entry(btn.getId(), btn.getMaterial(), btn.getMaterialStr(), btn.getName(), btn.getLore(), 0.0, 0.0, btn.getSlot())
-                    : new Entry(btn.getId(), btn.getMaterial(), btn.getName(), btn.getLore(), 0.0, 0.0, btn.getSlot());
+            Entry it = new Entry(btn.getId(), btn.getMaterial(), btn.getMaterialStr(),
+                    btn.getName(), btn.getLore(),
+                    btn.getPriceX1(), btn.getPriceX64(), btn.getPointsX1(), btn.getSlot());
 
             entries.put(it.slot, it);
         }
@@ -164,9 +164,12 @@ public class BuyerGUI {
                 }
             }
 
-            ButtonConfig btn = pm.isCustomHead()
-                    ? new ButtonConfig(key, slot, pm.getMaterial(), pm.getHeadTextureBase64(), name, lore, actions)
-                    : new ButtonConfig(key, slot, pm.getMaterial(), name, lore, actions);
+            double priceX1 = cfg.getDouble(path + ".prince-x1");
+            double priceX64 = cfg.getDouble(path + ".prince-x64");
+            int pointsX1 = cfg.getInt(path + ".points-from-the-buyer-x1");
+
+            ButtonConfig btn = new ButtonConfig(key, slot, pm.getMaterial(), pm.getHeadTextureBase64(),
+                    name, lore, actions, priceX1, priceX64, pointsX1);
             buttons.put(slot, btn);
         }
     }
@@ -225,9 +228,9 @@ public class BuyerGUI {
             if (btn.getSlot() >= size) continue;
             if (bestSlots.contains(btn.getSlot())) continue;
 
-            Entry it = btn.getMaterialStr() != null && !btn.getMaterialStr().isEmpty()
-                    ? new Entry(btn.getId(), btn.getMaterial(), btn.getMaterialStr(), btn.getName(), btn.getLore(), 0.0, 0.0, btn.getSlot())
-                    : new Entry(btn.getId(), btn.getMaterial(), btn.getName(), btn.getLore(), 0.0, 0.0, btn.getSlot());
+            Entry it = new Entry(btn.getId(), btn.getMaterial(), btn.getMaterialStr(),
+                    btn.getName(), btn.getLore(),
+                    btn.getPriceX1(), btn.getPriceX64(), btn.getPointsX1(), btn.getSlot());
 
             inv.setItem(btn.getSlot(), itemStackFactory.createItemStack(it, player));
         }

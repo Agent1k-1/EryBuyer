@@ -17,15 +17,9 @@ public class ButtonConfig {
     private final String name;
     private final List<String> lore;
     private final List<String> actions;
-
-    public ButtonConfig(@NotNull String id,
-                        int slot,
-                        @NotNull Material material,
-                        @Nullable String name,
-                        @Nullable List<String> lore,
-                        @Nullable List<String> actions) {
-        this(id, slot, material, null, name, lore, actions);
-    }
+    private final double priceX1;
+    private final double priceX64;
+    private final int pointsX1;
 
     public ButtonConfig(@NotNull String id,
                         int slot,
@@ -33,7 +27,10 @@ public class ButtonConfig {
                         @Nullable String materialStr,
                         @Nullable String name,
                         @Nullable List<String> lore,
-                        @Nullable List<String> actions) {
+                        @Nullable List<String> actions,
+                        double priceX1,
+                        double priceX64,
+                        int pointsX1) {
         this.id = Objects.requireNonNull(id);
         this.slot = slot;
         this.material = Objects.requireNonNull(material);
@@ -41,6 +38,9 @@ public class ButtonConfig {
         this.name = name == null ? "" : name;
         this.lore = lore == null ? Collections.emptyList() : lore;
         this.actions = actions == null ? Collections.emptyList() : actions;
+        this.priceX1 = priceX1;
+        this.priceX64 = priceX64;
+        this.pointsX1 = pointsX1;
     }
 
     @NotNull
@@ -75,6 +75,18 @@ public class ButtonConfig {
     @NotNull
     public List<String> getActions() {
         return actions;
+    }
+
+    public double getPriceX1() {
+        return priceX1;
+    }
+
+    public double getPriceX64() {
+        return priceX64;
+    }
+
+    public int getPointsX1() {
+        return pointsX1;
     }
 
     public boolean hasAction(@NotNull String fragment) {

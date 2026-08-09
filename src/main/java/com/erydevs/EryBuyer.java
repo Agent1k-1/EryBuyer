@@ -1,6 +1,5 @@
 package com.erydevs;
 
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -79,8 +78,6 @@ public class EryBuyer extends JavaPlugin {
 
         startMenuRefreshTask();
 
-        printStartupMessage();
-
         int pluginId = 31977;
         Metrics metrics = new Metrics(this, pluginId);
         metrics.addCustomChart(new Metrics.SimplePie("chart_id", () -> "My value"));
@@ -92,7 +89,6 @@ public class EryBuyer extends JavaPlugin {
         if (bestManager != null) bestManager.shutdown();
         if (SQLite != null) SQLite.closeConnection();
         instance = null;
-        printShutdownMessage();
     }
 
     private void startMenuRefreshTask() {
@@ -103,35 +99,6 @@ public class EryBuyer extends JavaPlugin {
         }, 20L, 20L);
     }
 
-    private void printStartupMessage() {
-        Bukkit.getConsoleSender().sendMessage(ChatColor.BLUE + "\n" +
-                "███████╗██████╗░██╗░░░██╗██████╗░██╗░░░██╗██╗░░░██╗███████╗██████╗░\n" +
-                "██╔════╝██╔══██╗╚██╗░██╔╝██╔══██╗██║░░░██║╚██╗░██╔╝██╔════╝██╔══██╗\n" +
-                "█████╗░░██████╔╝░╚████╔╝░██████╦╝██║░░░██║░╚████╔╝░█████╗░░██████╔╝\n" +
-                "██╔══╝░░██╔══██╗░░╚██╔╝░░██╔══██╗██║░░░██║░░╚██╔╝░░██╔══╝░░██╔══██╗\n" +
-                "███████╗██║░░██║░░░██║░░░██████╦╝╚██████╔╝░░░██║░░░███████╗██║░░██║\n" +
-                "╚══════╝╚═╝░░╚═╝░░░╚═╝░░░╚═════╝░░╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚═╝");
-        Bukkit.getConsoleSender().sendMessage();
-        Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Плагин: " + ChatColor.GREEN + "включен");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Версия плагина: " + ChatColor.YELLOW + getDescription().getVersion());
-        Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Ядро: " + ChatColor.YELLOW + Bukkit.getVersion());
-        Bukkit.getConsoleSender().sendMessage(vaultAPI.getStatus());
-    }
-
-
-    private void printShutdownMessage() {
-        Bukkit.getConsoleSender().sendMessage(ChatColor.BLUE + "\n" +
-                "███████╗██████╗░██╗░░░██╗██████╗░██╗░░░██╗██╗░░░██╗███████╗██████╗░\n" +
-                "██╔════╝██╔══██╗╚██╗░██╔╝██╔══██╗██║░░░██║╚██╗░██╔╝██╔════╝██╔══██╗\n" +
-                "█████╗░░██████╔╝░╚████╔╝░██████╦╝██║░░░██║░╚████╔╝░█████╗░░██████╔╝\n" +
-                "██╔══╝░░██╔══██╗░░╚██╔╝░░██╔══██╗██║░░░██║░░╚██╔╝░░██╔══╝░░██╔══██╗\n" +
-                "███████╗██║░░██║░░░██║░░░██████╦╝╚██████╔╝░░░██║░░░███████╗██║░░██║\n" +
-                "╚══════╝╚═╝░░╚═╝░░░╚═╝░░░╚═════╝░░╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚═╝");
-        Bukkit.getConsoleSender().sendMessage();
-        Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Плагин: " + ChatColor.RED + "выключен");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Версия плагина: " + ChatColor.YELLOW + getDescription().getVersion());
-        Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + "Ядро: " + ChatColor.YELLOW + Bukkit.getVersion());
-    }
 
     @Nullable
     public static EryBuyer getInstance() {

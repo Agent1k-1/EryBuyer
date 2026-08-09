@@ -1,22 +1,23 @@
 message:
   error-no-item:
-    - "[message] &x&F&0&9&8&1&9▌ &#EDDE5D У вас нет предмета &f%item_name%"
+    - "[message] &#E73F3F▌ &fУ вас нет предмета &#DB2339%item_name%"
   successfully-buyer:
-    - "[message] &x&F&0&9&8&1&9▌ &#EDDE5D Вы успешно продали &f%item_name% &#EDDE5Dза &f%prince%"
+    - "[message] &#E73F3F▌ &fВы успешно продали &#DB2339%item_name% &fза &#DB2339$%prince%"
   autobuyer-use:
-    - "[message] &x&F&0&9&8&1&9▌ &#EDDE5D Вы продали скупщику &f%item_sell% &#EDDE5Dштук баланс &f%vault_eco_balance%"
+    - "[message] &#E73F3F▌ &fВы продали скупщику &#DB2339%item_sell% &fшт. — баланс &#DB2339$%vault_eco_balance%"
   autobuyer-status:
-    - "[message] &x&F&0&9&8&1&9▌ &#EDDE5D Авто-скупщик &f%autobuyer_status%"
+    - "[message] &#E73F3F▌ &fАвто-скупщик: %autobuyer_status%"
   error-permission:
-    - "[message] &x&F&0&9&8&1&9▌ &#EDDE5D У вас недостаточно прав"
+    - "[message] &#E73F3F▌ &fУ вас недостаточно прав"
   new-booster:
-    - "[message] &6[⭐] &fВы достигли &cнового уровня скупщика \n&fТеперь вам доступен &cбустер x%buyer_new_booster%"
+    - "[message] &#E73F3F▌ &fВы достигли &#DB2339нового уровня скупщика"
+    - "[message] &#E73F3F▌ &fТеперь вам доступен бустер &#DB2339x%buyer_new_booster%"
   less-than-64-items:
-    - "[message] &x&F&0&9&8&1&9 &fВы не можете сдать 64 предмета, так как до лимита осталось менее 64 штук."  # будет писать когда до лимита осталось менее 64 штуки
+    - "[message] &#E73F3F▌ &fВы не можете сдать 64 предмета — до лимита осталось &#DB2339менее 64 штук"
   limit-completed:
-    - "[message] &x&F&0&9&8&1&9 &fВы уже §x§E§7§3§F§3§Fдостигли лимита &fна сдачу данного предмета." # будет писать когда достигнут лимит
+    - "[message] &#E73F3F▌ &fВы уже &#DB2339достигли лимита &fна сдачу данного предмета"
   update-best-item:
-    - "[message] &fПредметы &#F00303П&#F00F0Bо&#F01B13в&#EF261Bы&#EF3224ш&#EF3E2Cе&#EF4A34н&#EF563Cн&#EF6244о&#EE6D4Cг&#EE7954о &#EE855Cс&#EE9165п&#EE9D6Dр&#EDA875о&#EDB47Dс&#EDC085а &aобновлены"
+    - "[message] &#E73F3F▌ &fПредметы &#DB2339повышенного спроса &fбыли &#E73F3Fобновлены"
 placeholder:
-  enable-autobuyer: "&aВключен"
-  disable-autobuyer: "&cВыключен"
+  enable-autobuyer: "&#E73F3FВключен"
+  disable-autobuyer: "&7Выключен"
