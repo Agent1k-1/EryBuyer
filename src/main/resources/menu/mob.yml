@@ -1,48 +1,30 @@
-name: "&#EDDE5D             Лут с мобов            "
-size: 54
+name: "&#E73F3F             Лут с мобов            "
+size: 45
 panels:
-  - material: ORANGE_STAINED_GLASS_PANE
+  - material: RED_STAINED_GLASS_PANE
     name: ""
     lore:
       - ""
     slots:
       - 0
       - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
       - 7
       - 8
       - 9
-      - 10
-      - 16
       - 17
-      - 18
-      - 26
       - 27
       - 35
       - 36
       - 37
       - 43
-      - 44
-      - 45
-      - 46
-      - 47
-      - 48
-      - 49
-      - 50
-      - 51
-      - 52
 knops-settings:
   1:
-    name: "&#00FF00Выход"
+    name: "&#E73F3FВыход"
     lore:
       - ""
-      - "&fНажмите для выхода"
+      - " &c▪ &fНажмите для &#DB2339выхода"
       - ""
-    slot: 53
+    slot: 44
     material: SPECTRAL_ARROW
     action:
       - "[sound] BLOCK_ENDER_CHEST_CLOSE"
@@ -51,99 +33,126 @@ item-settings:
   1:
     name: "&fПорох"
     lore:
-      - "&o&fЦена за &o&6x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &o&6x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: GUNPOWDER
-    slot: 41
+    slot: 24
     prince-x1: 300.00
     prince-x64: 19200.00
+    points-from-the-buyer-x1: 12
   2:
     name: "&fОгненный стержень"
     lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: BLAZE_ROD
     slot: 21
     prince-x1: 160.00
     prince-x64: 10240.00
+    points-from-the-buyer-x1: 8
   3:
     name: "&fКость"
     lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: BONE
     slot: 22
     prince-x1: 80.00
     prince-x64: 5120.00
+    points-from-the-buyer-x1: 4
   4:
     name: "&fНить"
     lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: STRING
     slot: 23
     prince-x1: 80.00
     prince-x64: 5120.00
+    points-from-the-buyer-x1: 4
   5:
     name: "&fЭндер-Жемчуг"
     lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: ENDER_PEARL
     slot: 13
     prince-x1: 160.00
     prince-x64: 10240.00
+    points-from-the-buyer-x1: 8
   6:
     name: "&fМаринованный Паучий Глаз"
     lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: FERMENTED_SPIDER_EYE
     slot: 30
     prince-x1: 500.00
     prince-x64: 32000.00
+    points-from-the-buyer-x1: 20
   7:
     name: "&fСветокаменная Пыль"
     lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: GLOWSTONE_DUST
     slot: 31
     prince-x1: 100.00
     prince-x64: 6400.00
+    points-from-the-buyer-x1: 5
   8:
     name: "&fСгусток магмы"
     lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: MAGMA_CREAM
     slot: 32
     prince-x1: 180.00
     prince-x64: 11520.00
+    points-from-the-buyer-x1: 9
   9:
     name: "&fТотем"
     lore:
-      - "&o&fЦена за &o&6x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &o&6x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: TOTEM_OF_UNDYING
-    slot: 39
+    slot: 20
     prince-x1: 3000.00
     prince-x64: 192000.00
+    points-from-the-buyer-x1: 100

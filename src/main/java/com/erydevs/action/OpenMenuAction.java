@@ -4,12 +4,7 @@ import com.erydevs.EryBuyer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class OpenMenuAction implements Actions {
-
-    @Override
-    public boolean canHandle(@NotNull String actionLine) {
-        return actionLine.toLowerCase().startsWith("[openmenu]");
-    }
+public class OpenMenuAction implements Action {
 
     @Override
     public void execute(@NotNull String actionLine, @NotNull EryBuyer plugin, @NotNull Player player) {

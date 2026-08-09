@@ -8,8 +8,10 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.Bukkit;
 import com.erydevs.EryBuyer;
+import com.erydevs.buyer.best.BestItem;
+import com.erydevs.buyer.boosters.BoosterManager;
+import com.erydevs.buyer.boosters.PlayerBooster;
 import com.erydevs.gui.entry.Entry;
-import com.erydevs.levels.PlayerLevel;
 import com.erydevs.utils.HexUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
@@ -49,53 +51,117 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
     public String onPlaceholderRequest(Player player, @NotNull String params) {
         if (player == null) return null;
 
-        if (params.startsWith("money_player_")) {
+        if (params.startsWith("best_")) {
+            return handleBestPlaceholder(player, params.substring(5));
+        }
+
+        if (params.startsWith("points_player_")) {
             try {
-                int position = Integer.parseInt(params.substring(13));
-                return getTopPlayerByPosition(position);
+                int position = Integer.parseInt(params.substring("points_player_".length()));
+                return getTopPointsByPosition(position);
             } catch (NumberFormatException e) {
                 return "--- ---";
             }
         }
+
+        BoosterManager boosterManager = plugin.getBoosterManager();
+        PlayerBooster booster = plugin.getDataBase().getPlayerData(player.getUniqueId());
 
         switch (params) {
             case "autobuyer_status":
                 return plugin.getAutoBuyerManager().isAutobuyerEnabled(player) ?
                         plugin.getMessagesConfig().getPlaceholderEnableAutobuyer() :
                         plugin.getMessagesConfig().getPlaceholderDisableAutobuyer();
-            case "buyer_current_level":
-                return String.valueOf(plugin.getDataBase().getPlayerData(player.getUniqueId()).getCurrentLevel());
-            case "buyer_total_earned":
-                return String.valueOf((long) plugin.getDataBase().getPlayerData(player.getUniqueId()).getTotalEarned());
-            case "buyer_next_level":
-                PlayerLevel plNext = plugin.getDataBase().getPlayerData(player.getUniqueId());
-                int nextLevel = plNext.getCurrentLevel() + 1;
-                double requiredForNext = plugin.getLevelConfig().getRequiredMoneyForLevel(nextLevel);
-                return String.valueOf((long) Math.max(0, requiredForNext - plNext.getTotalEarned()));
-            case "buyer_max_level":
-                return String.valueOf(plugin.getLevelConfig().getMaxLevel());
+            case "booster_lvl":
+                return String.valueOf(booster.getCurrentLevel());
+            case "booster_max_lvl":
+                return String.valueOf(boosterManager.getConfig().getMaxLevel());
+            case "factor":
+                return BoosterManager.formatMultiplier(boosterManager.getMoneyMultiplier(booster));
+            case "booster_multiplier":
+                return BoosterManager.formatMultiplier(boosterManager.getBoosterMultiplier(booster));
+            case "points":
+                return String.valueOf(booster.getTotalPoints());
+            case "points_next_lvl":
+                if (boosterManager.isMaxLevel(booster)) return String.valueOf(booster.getTotalPoints());
+                return String.valueOf(boosterManager.getPointsRequiredForNext(booster));
+            case "points_remaining":
+                if (boosterManager.isMaxLevel(booster)) return "0";
+                return String.valueOf(Math.max(0L, boosterManager.getPointsRequiredForNext(booster) - booster.getTotalPoints()));
+            case "update_bestitem":
+                return plugin.getBestManager() != null
+                        ? formatDuration(plugin.getBestManager().getSecondsUntilNextRotation())
+                        : "00:00:00";
             default:
                 return null;
         }
     }
 
     @NotNull
-    private String getTopPlayerByPosition(int position) {
-        List<Map.Entry<String, Double>> topPlayers = plugin.getDataBase().getTopPlayers(position, plugin.getConfigManager().getBuyerTopUpdateMoney());
-        if (topPlayers == null || topPlayers.size() < position) {
-            return "--- ---";
-        }
-        Map.Entry<String, Double> entry = topPlayers.get(position - 1);
+    private static String formatDuration(long totalSeconds) {
+        if (totalSeconds < 0) totalSeconds = 0;
+        long hours = totalSeconds / 3600;
+        long minutes = (totalSeconds % 3600) / 60;
+        long seconds = totalSeconds % 60;
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
+
+    @NotNull
+    private String getTopPointsByPosition(int position) {
+        if (position <= 0) return "--- ---";
+        List<Map.Entry<String, Long>> top = plugin.getDataBase().getTopPoints();
+        if (top == null || top.size() < position) return "--- ---";
+
+        Map.Entry<String, Long> entry = top.get(position - 1);
         String playerName = entry.getKey();
         try {
             UUID uuid = UUID.fromString(entry.getKey());
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-            if (offlinePlayer != null && offlinePlayer.getName() != null && !offlinePlayer.getName().isEmpty()) {
-                playerName = offlinePlayer.getName();
+            OfflinePlayer off = Bukkit.getOfflinePlayer(uuid);
+            if (off != null && off.getName() != null && !off.getName().isEmpty()) {
+                playerName = off.getName();
             }
         } catch (IllegalArgumentException ignored) {
         }
-        return playerName + " " + formatDouble(entry.getValue());
+        return playerName + " " + entry.getValue();
+    }
+
+    @Nullable
+    private String handleBestPlaceholder(@NotNull Player player, @NotNull String key) {
+        if (plugin.getBestManager() == null) return "0";
+        int idx = key.lastIndexOf('_');
+        if (idx <= 0 || idx >= key.length() - 1) return null;
+
+        String field = key.substring(0, idx);
+        String slotStr = key.substring(idx + 1);
+        int slot;
+        try {
+            slot = Integer.parseInt(slotStr);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+
+        BestItem item = plugin.getBestManager().getActiveBySlot(slot);
+        if (item == null) return "0";
+
+        int sold = plugin.getDataBase().getSoldAmount(player.getUniqueId(), item.getMaterialName());
+        switch (field) {
+            case "custom_price_x1":
+                return formatDouble(item.getCustomPrice());
+            case "custom_price_x64":
+                return formatDouble(item.getCustomPrice64());
+            case "default_price":
+                return formatDouble(item.getDefaultPrice());
+            case "default_price_64":
+                return formatDouble(item.getDefaultPrice64());
+            case "limit":
+                return String.valueOf(item.getLimit());
+            case "limit_now":
+                return String.valueOf(sold);
+            case "material":
+                return item.getMaterialName();
+            default:
+                return null;
+        }
     }
 
     @NotNull
@@ -110,14 +176,6 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
                 plugin.getMessagesConfig().getPlaceholderEnableAutobuyer() :
                 plugin.getMessagesConfig().getPlaceholderDisableAutobuyer();
 
-        PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(player.getUniqueId());
-        double totalEarned = playerLevel.getTotalEarned();
-        int currentLevel = playerLevel.getCurrentLevel();
-        int nextLevel = currentLevel + 1;
-        double requiredForNext = plugin.getLevelConfig().getRequiredMoneyForLevel(nextLevel);
-        double remaining = Math.max(0, requiredForNext - totalEarned);
-        int maxLevel = plugin.getLevelConfig().getMaxLevel();
-
         String result = input
                 .replace("%item_name%", itemName)
                 .replace("%prince-x1%", formatDouble(priceX1))
@@ -125,12 +183,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
                 .replace("%price%", formatDouble(priceX1))
                 .replace("%prince%", formatDouble(customPrice))
                 .replace("%item_sell%", String.valueOf(amount))
-                .replace("%autobuyer_status%", autobuyerStatus)
-                .replace("%buyer_current_level%", String.valueOf(currentLevel))
-                .replace("%buyer_total_earned%", String.valueOf((long) totalEarned))
-                .replace("%buyer_next_level%", String.valueOf((long) remaining))
-                .replace("%max_level%", String.valueOf(maxLevel))
-                .replace("%new_level%", String.valueOf(nextLevel));
+                .replace("%autobuyer_status%", autobuyerStatus);
 
         return HexUtils.colorize(result);
     }
@@ -158,16 +211,19 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
     }
 
     @NotNull
-    public static String applyLevelUp(@Nullable String input, @Nullable Player player, int newLevel) {
+    public static String applyBest(@Nullable String input, @NotNull BestItem item, int soldNow) {
         if (input == null) return "";
-        if (!isAvailable()) return input;
-        if (player == null) return HexUtils.colorize(input);
-
-        String withLevel = input.replace("%new_level%", String.valueOf(newLevel));
-        String result = applyPlaceholders(withLevel, player, null, 0, 0.0);
-        result = PlaceholderAPI.setPlaceholders(player, result);
-
-        return result;
+        int remaining = Math.max(0, item.getLimit() - soldNow);
+        return input
+                .replace("%custom-item-price-x1%", formatDouble(item.getCustomPrice()))
+                .replace("%custom-item-price-x64%", formatDouble(item.getCustomPrice64()))
+                .replace("%default-price%", formatDouble(item.getDefaultPrice()))
+                .replace("%default-price-64%", formatDouble(item.getDefaultPrice64()))
+                .replace("%buyer_limit_max%", String.valueOf(item.getLimit()))
+                .replace("%buyer_limit_now%", String.valueOf(soldNow))
+                .replace("%buyer_limit_remaining%", String.valueOf(remaining))
+                .replace("%best_material%", item.getMaterialName())
+                .replace("%item_name%", item.getMaterialName());
     }
 
     @NotNull

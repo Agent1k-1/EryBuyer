@@ -98,12 +98,6 @@ public class Configs {
         return config.getBoolean("sound.autobuyer-sound.enabled");
     }
 
-    @NotNull
-    public String getDatabaseFileName() {
-        String fileName = config.getString("database.file");
-        return fileName != null ? fileName : "playerdata.db";
-    }
-
     public boolean isBossbarEnabled() {
         return config.getBoolean("bossbar-settings.bossbar");
     }
@@ -122,12 +116,16 @@ public class Configs {
         return config.getLong("bossbar-settings.autobuyer-time");
     }
 
-    public double getBuyerTopUpdateMoney() {
-        return config.getDouble("buyer-top.update-money");
+    public boolean isBestMenuEnabled() {
+        return config.getBoolean("buyer-settings.enable-best-menu");
+    }
+
+    public long getUpdateCustomItems() {
+        return config.getLong("buyer-settings.update-custom-items");
     }
 
     public int getBuyerTopUpdateInterval() {
-        return config.getInt("buyer-top.update-interval");
+        return config.getInt("buyer-top.update-interval", 30);
     }
 
     @NotNull

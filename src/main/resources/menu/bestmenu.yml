@@ -1,0 +1,96 @@
+name: '&#E73F3FПовышенный спрос &3'
+size: 45
+panels:
+  - material: RED_STAINED_GLASS_PANE
+    name: ""
+    lore:
+      - ""
+    slots:
+      - 0
+      - 1
+      - 7
+      - 8
+      - 9
+      - 17
+      - 27
+      - 35
+      - 36
+      - 37
+      - 43
+menu-settings:
+  1:
+    name: "&#E73F3FВыход"
+    lore:
+      - ""
+      - " &c▪ &fНажмите для &#DB2339выхода"
+      - ""
+    slot: 44
+    material: SPECTRAL_ARROW
+    action:
+      - "[sound] BLOCK_ENDER_CHEST_CLOSE"
+      - "[openmenu] menu"
+  2:
+    name: "&#DB3535П&#D93533о&#D83432в&#D63430ы&#D4342Fш&#D2342Dе&#D1332Bн&#CF332Aн&#CD3328ы&#CB3327й &#C83223с&#C63222п&#C43220р&#C3311Fо&#C1311Dс "
+    lore:
+      - ""
+      - "&fНа данные предметы &#DB2339повышен спрос!"
+      - "&fИх стоимость &#DB2339выше"
+      - "&fЧем у обычных предметов"
+      - "&fОднако сдать их можно"
+      - "&fТолько в течение &#DB2339указанного времени "
+      - "&fИ в &#DB2339ограниченном количестве"
+      - ""
+      - "&fОбновление через &#DB2339%buyer_update_bestitem%"
+    slot: 40
+    material: REDSTONE
+  3:
+    name: '&f'
+    lore:
+      - ' &#DB3535П&#D93533о&#D83432в&#D63430ы&#D4342Fш&#D2342Dе&#D1332Bн&#CF332Aн&#CD3328ы&#CB3327й &#C83223с&#C63222п&#C43220р&#C3311Fо&#C1311Dс'
+      - ' '
+      - ' &c▪ &fЦена за &#E98980x1: &#B76262&m%default-price%&r &#DB2339$%custom-item-price-x1% &7(ЛКМ) '
+      - ' &c▪ &fЦена за &#E98980x64: &#B76262&m%default-price-64%&r &#DB2339$%custom-item-price-x64% &7(ПКМ) '
+      - ''
+      - ' &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ) '
+      - ''
+      - ' &c▪ &fЛимит: &#E73F3F%buyer_limit_now%&f/&#DB2339%buyer_limit_max%'
+      - ''
+    min-custom-item-factor: 1.14
+    max-custom-item-factor: 1.41
+    slot:
+      - 21
+      - 22
+      - 23
+tem-settings:
+  custom-items:
+    available-materials:
+      DIAMOND:
+        material: DIAMOND
+        default-price: 500.0
+        limit: 64
+        points-from-the-buyer-x1: 40
+      EMERALD:
+        material: EMERALD
+        default-price: 400.0
+        limit: 32
+        points-from-the-buyer-x1: 30
+      NETHER_WART:
+        material: NETHER_WART
+        default-price: 75.0
+        limit: 159
+        points-from-the-buyer-x1: 7
+      SWEET_BERRIES:
+        material: SWEET_BERRIES
+        default-price: 30.0
+        limit: 345
+        points-from-the-buyer-x1: 3
+      LAPIS_LAZULI:
+        material: LAPIS_LAZULI
+        default-price: 50.0
+        limit: 315
+        points-from-the-buyer-x1: 5
+      COCOA_BEANS:
+        material: COCOA_BEANS
+        default-price: 25.0
+        limit: 340
+        points-from-the-buyer-x1: 3

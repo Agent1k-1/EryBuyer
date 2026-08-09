@@ -1,7 +1,7 @@
 package com.erydevs.commands;
 
 import com.erydevs.EryBuyer;
-import com.erydevs.action.Actions;
+import com.erydevs.action.ActionType;
 import com.erydevs.papi.PlaceholderAPIHook;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -26,7 +26,7 @@ public class AutoBuyerCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         if (!player.hasPermission("erybuyer.autobuyer")) {
-            Actions.dispatch(plugin, player, plugin.getMessagesConfig().getMessageNoPermission());
+            ActionType.dispatchAll(plugin, player,plugin.getMessagesConfig().getMessageNoPermission());
             return true;
         }
 
@@ -35,7 +35,7 @@ public class AutoBuyerCommand implements CommandExecutor {
         List<String> lines = plugin.getMessagesConfig().getMessageAutoBuyerStatus().stream()
                 .map(line -> PlaceholderAPIHook.apply(line, player))
                 .collect(Collectors.toList());
-        Actions.dispatch(plugin, player, lines);
+        ActionType.dispatchAll(plugin, player,lines);
         return true;
     }
 }

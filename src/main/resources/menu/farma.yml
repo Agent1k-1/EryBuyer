@@ -1,48 +1,30 @@
-name: "&#EDDE5D            Фермерство            "
-size: 54
+name: "&#E73F3F            Фермерство            "
+size: 45
 panels:
-  - material: ORANGE_STAINED_GLASS_PANE
+  - material: RED_STAINED_GLASS_PANE
     name: ""
     lore:
       - ""
     slots:
       - 0
       - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
       - 7
       - 8
       - 9
-      - 10
-      - 16
       - 17
-      - 18
-      - 26
       - 27
       - 35
       - 36
       - 37
       - 43
-      - 44
-      - 45
-      - 46
-      - 47
-      - 48
-      - 49
-      - 50
-      - 51
-      - 52
 knops-settings:
   1:
-    name: "&#00FF00Выход"
+    name: "&#E73F3FВыход"
     lore:
       - ""
-      - "&fНажмите для выхода"
+      - " &c▪ &fНажмите для &#DB2339выхода"
       - ""
-    slot: 53
+    slot: 44
     material: SPECTRAL_ARROW
     action:
       - "[sound] BLOCK_ENDER_CHEST_CLOSE"
@@ -51,110 +33,140 @@ item-settings:
   6:
     name: "&fКакао бобы"
     lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: COCOA_BEANS
     slot: 33
     prince-x1: 80.00
     prince-x64: 5120.00
+    points-from-the-buyer-x1: 3
   7:
     name: "&fТыква"
     lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: PUMPKIN
     slot: 13
     prince-x1: 160.00
     prince-x64: 10240.00
+    points-from-the-buyer-x1: 5
   8:
     name: "&fАрбуз"
     lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: MELON
     slot: 21
     prince-x1: 140.00
     prince-x64: 8960.00
+    points-from-the-buyer-x1: 5
   9:
     name: "&fКактус"
     lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: CACTUS
     slot: 22
     prince-x1: 80.00
     prince-x64: 5120.00
+    points-from-the-buyer-x1: 3
   10:
     name: "&fТростник"
     lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: SUGAR_CANE
     slot: 23
     prince-x1: 130.00
     prince-x64: 8320.00
+    points-from-the-buyer-x1: 4
   11:
     name: "&fПшеница"
     lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: WHEAT
     slot: 30
     prince-x1: 120.00
     prince-x64: 7680.00
+    points-from-the-buyer-x1: 4
   12:
     name: "&fКартофель"
     lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: POTATO
     slot: 32
     prince-x1: 130.00
     prince-x64: 8320.00
+    points-from-the-buyer-x1: 4
   13:
     name: "&fСвёкла"
     lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: BEETROOT
-    slot: 40
+    slot: 34
     prince-x1: 150.00
     prince-x64: 9600.00
+    points-from-the-buyer-x1: 5
   14:
     name: "&fМорковь"
     lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: CARROT
     slot: 29
     prince-x1: 120.00
     prince-x64: 7680.00
+    points-from-the-buyer-x1: 4
   15:
     name: "&fСладкие ягоды"
     lore:
-      - "&o&fЦена за &#00FF00x1: &o&c%prince-x1% &o&7ЛКМ"
-      - "&o&fЦена за &#00FF00x64: &o&c%prince-x64% &o&7ПКМ"
       - ""
-      - "&o&fПродать всё: &#00FF00СКМ"
+      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
+      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
+      - ""
+      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
+      - ""
     material: SWEET_BERRIES
     slot: 31
     prince-x1: 30.00
     prince-x64: 1920.00
+    points-from-the-buyer-x1: 1

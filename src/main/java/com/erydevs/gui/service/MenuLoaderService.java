@@ -1,4 +1,4 @@
-package com.erydevs.gui.menu;
+package com.erydevs.gui.service;
 
 import com.erydevs.utils.head.MaterialHeadParser;
 import com.erydevs.utils.head.ParsedMaterial;
@@ -77,13 +77,14 @@ public class MenuLoaderService {
             int slot = cfg.getInt(path + ".slot");
             if (pm == null || slot < 0) continue;
 
+            int pointsX1 = cfg.getInt(path + ".points-from-the-buyer-x1");
             Entry entry = pm.isCustomHead()
                     ? new Entry(key, pm.getMaterial(), pm.getHeadTextureBase64(), cfg.getString(path + ".name"),
                     cfg.getStringList(path + ".lore"), cfg.getDouble(path + ".prince-x1"),
-                    cfg.getDouble(path + ".prince-x64"), slot)
-                    : new Entry(key, pm.getMaterial(), cfg.getString(path + ".name"),
+                    cfg.getDouble(path + ".prince-x64"), pointsX1, slot)
+                    : new Entry(key, pm.getMaterial(), null, cfg.getString(path + ".name"),
                     cfg.getStringList(path + ".lore"), cfg.getDouble(path + ".prince-x1"),
-                    cfg.getDouble(path + ".prince-x64"), slot);
+                    cfg.getDouble(path + ".prince-x64"), pointsX1, slot);
 
             entries.put(slot, entry);
             if (combinedSlotMap != null) {

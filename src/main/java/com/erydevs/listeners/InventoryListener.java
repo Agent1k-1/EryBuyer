@@ -1,10 +1,10 @@
 package com.erydevs.listeners;
 
 import com.erydevs.EryBuyer;
-import com.erydevs.action.Actions;
-import com.erydevs.gui.ClickType;
+import com.erydevs.action.ActionType;
+import com.erydevs.buyer.boosters.PlayerBooster;
+import com.erydevs.gui.click.ClickType;
 import com.erydevs.gui.entry.Entry;
-import com.erydevs.levels.PlayerLevel;
 import com.erydevs.papi.PlaceholderAPIHook;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Material;
@@ -40,7 +40,15 @@ public class InventoryListener implements Listener {
 
         List<String> acts = plugin.getBuyerGUI().getActions(title, slot);
         if (acts != null && !acts.isEmpty()) {
-            Actions.dispatch(plugin, p, acts);
+            ActionType.dispatchAll(plugin, p,acts);
+            return;
+        }
+
+        boolean bestTitle = plugin.getBestManager() != null && plugin.getBestManager().isBestTitle(title);
+        if (bestTitle && plugin.getBestManager().getActiveBySlot(slot) != null) {
+            if (plugin.getAutoBuyerManager().isAutobuyerEnabled(p)) return;
+            ClickType bestClick = resolveClickType(e);
+            plugin.getBestManager().handleClick(p, slot, bestClick);
             return;
         }
 
@@ -49,16 +57,7 @@ public class InventoryListener implements Listener {
         Entry entry = plugin.getBuyerGUI().getEntry(title, slot);
         if (entry == null || entry.priceX1 <= 0) return;
 
-        ClickType clickType;
-        if (e.isShiftClick() && e.isLeftClick()) {
-            clickType = ClickType.SHIFT_LEFT;
-        } else if (e.isShiftClick() && e.isRightClick()) {
-            clickType = ClickType.SHIFT_RIGHT;
-        } else if (e.isLeftClick()) {
-            clickType = ClickType.LEFT;
-        } else {
-            clickType = ClickType.RIGHT;
-        }
+        ClickType clickType = resolveClickType(e);
 
         if (clickType == ClickType.LEFT) {
             processSale(p, entry, 1, entry.priceX1);
@@ -70,7 +69,7 @@ public class InventoryListener implements Listener {
                 List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()
                         .map(line -> PlaceholderAPIHook.apply(line, p, entry, 64))
                         .collect(Collectors.toList());
-                Actions.dispatch(plugin, p, lines);
+                ActionType.dispatchAll(plugin, p,lines);
                 playNoItemSound(p);
                 return;
             }
@@ -84,12 +83,20 @@ public class InventoryListener implements Listener {
                 List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()
                         .map(line -> PlaceholderAPIHook.apply(line, p, entry, totalCount))
                         .collect(Collectors.toList());
-                Actions.dispatch(plugin, p, lines);
+                ActionType.dispatchAll(plugin, p,lines);
                 playNoItemSound(p);
                 return;
             }
             processSale(p, entry, totalCount, entry.priceX1);
         }
+    }
+
+    @NotNull
+    private ClickType resolveClickType(@NotNull InventoryClickEvent e) {
+        if (e.isShiftClick() && e.isLeftClick()) return ClickType.SHIFT_LEFT;
+        if (e.isShiftClick() && e.isRightClick()) return ClickType.SHIFT_RIGHT;
+        if (e.isLeftClick()) return ClickType.LEFT;
+        return ClickType.RIGHT;
     }
 
     private int countItemsInInventory(@NotNull Player p, @NotNull Material material) {
@@ -125,57 +132,30 @@ public class InventoryListener implements Listener {
             List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()
                     .map(line -> PlaceholderAPIHook.apply(line, p, entry, requestedAmount))
                     .collect(Collectors.toList());
-            Actions.dispatch(plugin, p, lines);
+            ActionType.dispatchAll(plugin, p,lines);
             playNoItemSound(p);
             return;
         }
 
-        PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(p.getUniqueId());
+        PlayerBooster booster = plugin.getDataBase().getPlayerData(p.getUniqueId());
         double basePrice = unitPrice * actualAmount;
-        double multiplier = 1.0 + plugin.getLevelConfig().getMultiplierByLevel(playerLevel.getCurrentLevel());
+        double multiplier = plugin.getBoosterManager().getMoneyMultiplier(booster);
         double totalPrice = basePrice * multiplier;
 
         Economy econ = plugin.getEconomyManager().getEconomy();
         if (econ != null) econ.depositPlayer(p, totalPrice);
 
-        int maxLevel = plugin.getLevelConfig().getMaxLevel();
-        if (playerLevel.getCurrentLevel() < maxLevel) {
-            playerLevel.addEarnings(basePrice);
-            checkAndUpdateLevel(p, playerLevel);
-        }
+        long pointsEarned = (long) entry.pointsX1 * actualAmount;
+        plugin.getBoosterManager().addPointsAndCheckLevelUp(p, booster, pointsEarned);
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
-                () -> plugin.getDataBase().flushPlayerAsync(playerLevel));
+                () -> plugin.getDataBase().save(booster));
 
         List<String> lines = plugin.getMessagesConfig().getMessageSuccessfullyBuyer().stream()
                 .map(line -> PlaceholderAPIHook.apply(line, p, entry, actualAmount, totalPrice))
                 .collect(Collectors.toList());
-        Actions.dispatch(plugin, p, lines);
+        ActionType.dispatchAll(plugin, p,lines);
         playExchangeSound(p);
-    }
-
-    private void checkAndUpdateLevel(@NotNull Player p, @NotNull PlayerLevel playerLevel) {
-        int maxLevel = plugin.getLevelConfig().getMaxLevel();
-        double totalEarned = playerLevel.getTotalEarned();
-        boolean leveled = false;
-
-        while (playerLevel.getCurrentLevel() < maxLevel) {
-            int nextLevel = playerLevel.getCurrentLevel() + 1;
-            if (plugin.getLevelConfig().getRequiredMoneyForLevel(nextLevel) > totalEarned) break;
-
-            playerLevel.setCurrentLevel(nextLevel);
-            leveled = true;
-
-            List<String> lines = plugin.getMessagesConfig().getMessageLevelUp().stream()
-                    .map(line -> PlaceholderAPIHook.applyLevelUp(line, p, nextLevel))
-                    .collect(Collectors.toList());
-            Actions.dispatch(plugin, p, lines);
-        }
-
-        if (leveled) {
-            plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
-                    () -> plugin.getDataBase().savePlayerData(playerLevel));
-        }
     }
 
     private void playSound(@NotNull Player p, @NotNull String soundName, float volume, float pitch, boolean enabled) {

@@ -8,15 +8,16 @@ import org.jetbrains.annotations.Nullable;
 import com.erydevs.config.Configs;
 import com.erydevs.config.MessagesConfig;
 import com.erydevs.gui.BuyerGUI;
-import com.erydevs.gui.menu.MenuRegistry;
+import com.erydevs.gui.loader.MenuLoader;
 import com.erydevs.commands.BuyerCommand;
 import com.erydevs.commands.AutoBuyerCommand;
-import com.erydevs.levels.LevelConfig;
+import com.erydevs.buyer.boosters.BoosterManager;
 import com.erydevs.data.SQLite;
 import com.erydevs.listeners.InventoryListener;
 import com.erydevs.listeners.PlayerQuitListener;
 import com.erydevs.economy.VaultAPI;
-import com.erydevs.autobuyer.AutoBuyerManager;
+import com.erydevs.buyer.autobuyer.AutoBuyerManager;
+import com.erydevs.buyer.best.BestManager;
 import com.erydevs.bossbar.Bossbars;
 import com.erydevs.papi.PlaceholderAPIHook;
 
@@ -28,12 +29,13 @@ public class EryBuyer extends JavaPlugin {
     private VaultAPI vaultAPI;
     private Configs configManager;
     private MessagesConfig messagesConfig;
-    private MenuRegistry menuRegistry;
+    private MenuLoader menuLoader;
     private BuyerGUI buyerGUI;
     private AutoBuyerManager autoBuyerManager;
     private Bossbars bossbars;
-    private LevelConfig levelConfig;
+    private BoosterManager boosterManager;
     private SQLite SQLite;
+    private BestManager bestManager;
 
     public void onEnable() {
         instance = this;
@@ -44,11 +46,12 @@ public class EryBuyer extends JavaPlugin {
         messagesConfig = new MessagesConfig(this);
         messagesConfig.loadMessages();
 
-        menuRegistry = new MenuRegistry(this);
-        menuRegistry.saveDefaults(configManager.getRegisterMenu());
+        menuLoader = new MenuLoader(this);
+        menuLoader.saveDefaults(configManager.getRegisterMenu());
 
-        levelConfig = new LevelConfig(this);
-        SQLite = new SQLite(getDataFolder(), configManager.getDatabaseFileName(), getLogger());
+        boosterManager = new BoosterManager(this);
+        boosterManager.enable();
+        SQLite = new SQLite(this);
 
         vaultAPI = new VaultAPI(this);
         Bukkit.getConsoleSender().sendMessage(vaultAPI.getStatus());
@@ -57,7 +60,10 @@ public class EryBuyer extends JavaPlugin {
             return;
         }
 
-        buyerGUI = new BuyerGUI(this, configManager, menuRegistry);
+        bestManager = new BestManager(this);
+        bestManager.enable();
+
+        buyerGUI = new BuyerGUI(this, configManager, menuLoader);
         bossbars = new Bossbars(this);
         autoBuyerManager = new AutoBuyerManager(this);
 
@@ -71,6 +77,8 @@ public class EryBuyer extends JavaPlugin {
             new PlaceholderAPIHook(this).register();
         }
 
+        startMenuRefreshTask();
+
         printStartupMessage();
 
         int pluginId = 31977;
@@ -81,9 +89,18 @@ public class EryBuyer extends JavaPlugin {
     public void onDisable() {
         if (autoBuyerManager != null) autoBuyerManager.shutdown();
         if (bossbars != null) bossbars.shutdown();
+        if (bestManager != null) bestManager.shutdown();
         if (SQLite != null) SQLite.closeConnection();
         instance = null;
         printShutdownMessage();
+    }
+
+    private void startMenuRefreshTask() {
+        getServer().getScheduler().runTaskTimer(this, () -> {
+            for (org.bukkit.entity.Player player : getServer().getOnlinePlayers()) {
+                buyerGUI.refreshOpenInventory(player);
+            }
+        }, 20L, 20L);
     }
 
     private void printStartupMessage() {
@@ -137,8 +154,8 @@ public class EryBuyer extends JavaPlugin {
     }
 
     @NotNull
-    public MenuRegistry getMenuRegistry() {
-        return menuRegistry;
+    public MenuLoader getMenuRegistry() {
+        return menuLoader;
     }
 
     @NotNull
@@ -157,12 +174,17 @@ public class EryBuyer extends JavaPlugin {
     }
 
     @NotNull
-    public LevelConfig getLevelConfig() {
-        return levelConfig;
+    public BoosterManager getBoosterManager() {
+        return boosterManager;
     }
 
     @NotNull
     public SQLite getDataBase() {
         return SQLite;
+    }
+
+    @NotNull
+    public BestManager getBestManager() {
+        return bestManager;
     }
 }

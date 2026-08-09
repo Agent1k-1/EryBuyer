@@ -1,0 +1,21 @@
+booster-settings: # система бустеров
+  1-lvl:
+    booster: 1.1
+    money: 1.1 # множитель монет при каждом новом уровне бустера множитель увиличивается
+    points: 1000 # сколько надо поинтов чтобы прокачать на новый уровень бустера
+  2-lvl:
+    booster: 1.2
+    money: 1.2
+    points: 3000
+  3-lvl:
+    booster: 1.3
+    money: 1.3
+    points: 5000
+  4-lvl:
+    booster: 1.4
+    money: 1.4
+    points: 10000
+  5-lvl:
+    booster: 1.5
+    money: 1.5
+    points: 30000

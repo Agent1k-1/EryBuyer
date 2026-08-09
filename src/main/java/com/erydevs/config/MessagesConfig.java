@@ -66,8 +66,23 @@ public class MessagesConfig {
     }
 
     @NotNull
-    public List<String> getMessageLevelUp() {
-        return messages.getStringList("message.new-level");
+    public List<String> getMessageNewBooster() {
+        return messages.getStringList("message.new-booster");
+    }
+
+    @NotNull
+    public List<String> getMessageLessThan64Items() {
+        return messages.getStringList("message.less-than-64-items");
+    }
+
+    @NotNull
+    public List<String> getMessageLimitCompleted() {
+        return messages.getStringList("message.limit-completed");
+    }
+
+    @NotNull
+    public List<String> getMessageUpdateBestItem() {
+        return messages.getStringList("message.update-best-item");
     }
 
     @NotNull

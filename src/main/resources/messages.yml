@@ -9,8 +9,14 @@ message:
     - "[message] &x&F&0&9&8&1&9▌ &#EDDE5D Авто-скупщик &f%autobuyer_status%"
   error-permission:
     - "[message] &x&F&0&9&8&1&9▌ &#EDDE5D У вас недостаточно прав"
-  new-level:
-    - "[message] &x&F&0&9&8&1&9▌ &#EDDE5D Вы достигли уровня &#FFCC00%new_level%"
+  new-booster:
+    - "[message] &6[⭐] &fВы достигли &cнового уровня скупщика \n&fТеперь вам доступен &cбустер x%buyer_new_booster%"
+  less-than-64-items:
+    - "[message] &x&F&0&9&8&1&9 &fВы не можете сдать 64 предмета, так как до лимита осталось менее 64 штук."  # будет писать когда до лимита осталось менее 64 штуки
+  limit-completed:
+    - "[message] &x&F&0&9&8&1&9 &fВы уже §x§E§7§3§F§3§Fдостигли лимита &fна сдачу данного предмета." # будет писать когда достигнут лимит
+  update-best-item:
+    - "[message] &fПредметы &#F00303П&#F00F0Bо&#F01B13в&#EF261Bы&#EF3224ш&#EF3E2Cе&#EF4A34н&#EF563Cн&#EF6244о&#EE6D4Cг&#EE7954о &#EE855Cс&#EE9165п&#EE9D6Dр&#EDA875о&#EDB47Dс&#EDC085а &aобновлены"
 placeholder:
   enable-autobuyer: "&aВключен"
   disable-autobuyer: "&cВыключен"

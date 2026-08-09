@@ -1,4 +1,4 @@
-package com.erydevs.gui.menu;
+package com.erydevs.gui.loader;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 
-public class MenuRegistry {
+public class MenuLoader {
 
     private final JavaPlugin plugin;
     private final Map<String, FileConfiguration> cache = new ConcurrentHashMap<>();
 
-    public MenuRegistry(@NotNull JavaPlugin plugin) {
+    public MenuLoader(@NotNull JavaPlugin plugin) {
         this.plugin = plugin;
     }
 

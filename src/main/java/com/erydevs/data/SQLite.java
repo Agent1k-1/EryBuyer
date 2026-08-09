@@ -1,6 +1,7 @@
 package com.erydevs.data;
 
-import com.erydevs.levels.PlayerLevel;
+import com.erydevs.EryBuyer;
+import com.erydevs.buyer.boosters.PlayerBooster;
 import org.jetbrains.annotations.NotNull;
 import org.sqlite.SQLiteConfig;
 
@@ -22,24 +23,30 @@ import java.util.logging.Logger;
 
 public class SQLite {
 
-    private static final String TABLE_PLAYERS = "buyer_players";
+    private static final String DB_FILE = "playerdata.db";
+    private static final String TABLE = "buyer_players";
+    private static final String LIMITS_TABLE = "buyer_limits";
 
+    private final EryBuyer plugin;
     private final Logger logger;
     private final File dbFile;
-    private final Map<UUID, PlayerLevel> cache = new ConcurrentHashMap<>();
-    private volatile List<Map.Entry<String, Double>> topPlayersCache = new ArrayList<>();
+    private final Map<UUID, PlayerBooster> cache = new ConcurrentHashMap<>();
+    private final Map<String, Integer> limitCache = new ConcurrentHashMap<>();
+    private volatile List<Map.Entry<String, Long>> topPointsCache = new ArrayList<>();
 
     private Connection connection;
 
-    public SQLite(@NotNull File dataFolder, @NotNull String fileName, @NotNull Logger logger) {
-        this.logger = logger;
-        if (!dataFolder.exists()) {
-            dataFolder.mkdirs();
-        }
-        this.dbFile = new File(dataFolder, fileName);
+    public SQLite(@NotNull EryBuyer plugin) {
+        this.plugin = plugin;
+        this.logger = plugin.getLogger();
+        File folder = plugin.getDataFolder();
+        if (!folder.exists()) folder.mkdirs();
+        this.dbFile = new File(folder, DB_FILE);
+
         connect();
         if (isConnected()) {
             createTable();
+            refreshTopPointsCache();
         }
     }
 
@@ -48,10 +55,9 @@ public class SQLite {
             SQLiteConfig config = new SQLiteConfig();
             config.setJournalMode(SQLiteConfig.JournalMode.DELETE);
             config.setSynchronous(SQLiteConfig.SynchronousMode.NORMAL);
-            config.enforceForeignKeys(true);
 
             connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile.getAbsolutePath(), config.toProperties());
-            logger.info("База данных SQLite успешно подключена: " + dbFile.getName());
+            logger.info("База данных SQLite подключена: " + DB_FILE);
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Ошибка подключения к базе данных", e);
         }
@@ -59,9 +65,7 @@ public class SQLite {
 
     private synchronized Connection getConnection() {
         try {
-            if (connection == null || connection.isClosed()) {
-                connect();
-            }
+            if (connection == null || connection.isClosed()) connect();
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Ошибка проверки соединения с базой данных", e);
         }
@@ -77,132 +81,177 @@ public class SQLite {
     }
 
     private void createTable() {
-        String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_PLAYERS + " (" +
+        String create = "CREATE TABLE IF NOT EXISTS " + TABLE + " (" +
                 "uuid TEXT PRIMARY KEY NOT NULL, " +
-                "current_level INTEGER NOT NULL DEFAULT 1, " +
-                "total_earned REAL NOT NULL DEFAULT 0.0" +
-                ")";
-        String index = "CREATE INDEX IF NOT EXISTS idx_buyer_players_total_earned " +
-                "ON " + TABLE_PLAYERS + " (total_earned DESC)";
+                "booster_level INTEGER NOT NULL DEFAULT 0, " +
+                "total_points INTEGER NOT NULL DEFAULT 0)";
 
-        try (Statement statement = getConnection().createStatement()) {
-            statement.executeUpdate(sql);
-            statement.executeUpdate(index);
+        String createLimits = "CREATE TABLE IF NOT EXISTS " + LIMITS_TABLE + " (" +
+                "uuid TEXT NOT NULL, " +
+                "material TEXT NOT NULL, " +
+                "sold INTEGER NOT NULL DEFAULT 0, " +
+                "PRIMARY KEY(uuid, material))";
+
+        try (Statement st = getConnection().createStatement()) {
+            st.executeUpdate(create);
+            st.executeUpdate(createLimits);
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Ошибка создания таблицы базы данных", e);
         }
     }
 
-    @NotNull
-    public PlayerLevel getPlayerData(@NotNull UUID uuid) {
-        PlayerLevel cached = cache.get(uuid);
+    public int getSoldAmount(@NotNull UUID uuid, @NotNull String material) {
+        String key = uuid + ":" + material;
+        Integer cached = limitCache.get(key);
         if (cached != null) return cached;
-
         if (!isConnected()) {
-            return cacheDefault(uuid);
+            limitCache.put(key, 0);
+            return 0;
         }
 
-        String sql = "SELECT current_level, total_earned FROM " + TABLE_PLAYERS + " WHERE uuid = ?";
-        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
-            statement.setString(1, uuid.toString());
-            try (ResultSet result = statement.executeQuery()) {
-                if (result.next()) {
-                    PlayerLevel playerLevel = new PlayerLevel(uuid, result.getInt("current_level"), result.getDouble("total_earned"));
-                    cache.put(uuid, playerLevel);
-                    return playerLevel;
+        String sql = "SELECT sold FROM " + LIMITS_TABLE + " WHERE uuid = ? AND material = ?";
+        try (PreparedStatement st = getConnection().prepareStatement(sql)) {
+            st.setString(1, uuid.toString());
+            st.setString(2, material);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    int value = rs.getInt("sold");
+                    limitCache.put(key, value);
+                    return value;
                 }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.WARNING, "Ошибка загрузки лимита " + uuid + ":" + material, e);
+        }
+        limitCache.put(key, 0);
+        return 0;
+    }
+
+    public void addSoldAmount(@NotNull UUID uuid, @NotNull String material, int amount) {
+        String key = uuid + ":" + material;
+        int current = getSoldAmount(uuid, material);
+        int updated = current + amount;
+        limitCache.put(key, updated);
+
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
+                () -> writeSoldAmount(uuid, material, updated));
+    }
+
+    private void writeSoldAmount(@NotNull UUID uuid, @NotNull String material, int value) {
+        if (!isConnected()) return;
+
+        String sql = "INSERT INTO " + LIMITS_TABLE + " (uuid, material, sold) VALUES (?, ?, ?) " +
+                "ON CONFLICT(uuid, material) DO UPDATE SET sold = excluded.sold";
+        try (PreparedStatement st = getConnection().prepareStatement(sql)) {
+            st.setString(1, uuid.toString());
+            st.setString(2, material);
+            st.setInt(3, value);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.WARNING, "Ошибка сохранения лимита " + uuid + ":" + material, e);
+        }
+    }
+
+    public void resetAllLimits() {
+        limitCache.clear();
+        if (!isConnected()) return;
+
+        try (Statement st = getConnection().createStatement()) {
+            st.executeUpdate("DELETE FROM " + LIMITS_TABLE);
+        } catch (SQLException e) {
+            logger.log(Level.WARNING, "Ошибка сброса лимитов", e);
+        }
+    }
+
+    public void resetLimitsForMaterial(@NotNull String material) {
+        limitCache.entrySet().removeIf(e -> e.getKey().endsWith(":" + material));
+        if (!isConnected()) return;
+
+        String sql = "DELETE FROM " + LIMITS_TABLE + " WHERE material = ?";
+        try (PreparedStatement st = getConnection().prepareStatement(sql)) {
+            st.setString(1, material);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.WARNING, "Ошибка сброса лимита для " + material, e);
+        }
+    }
+
+    @NotNull
+    public PlayerBooster getPlayerData(@NotNull UUID uuid) {
+        PlayerBooster cached = cache.get(uuid);
+        if (cached != null) return cached;
+        if (!isConnected()) return cacheDefault(uuid);
+
+        String sql = "SELECT booster_level, total_points FROM " + TABLE + " WHERE uuid = ?";
+        try (PreparedStatement st = getConnection().prepareStatement(sql)) {
+            st.setString(1, uuid.toString());
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    PlayerBooster pb = new PlayerBooster(uuid, rs.getInt("booster_level"), rs.getLong("total_points"));
+                    cache.put(uuid, pb);
+                    return pb;
+                }
+
             }
         } catch (SQLException e) {
             logger.log(Level.WARNING, "Ошибка загрузки данных игрока " + uuid, e);
         }
-
         return cacheDefault(uuid);
     }
 
     @NotNull
-    private PlayerLevel cacheDefault(@NotNull UUID uuid) {
-        PlayerLevel playerLevel = new PlayerLevel(uuid, 1, 0.0);
-        cache.put(uuid, playerLevel);
-        return playerLevel;
+    private PlayerBooster cacheDefault(@NotNull UUID uuid) {
+        PlayerBooster pb = new PlayerBooster(uuid, 0, 0L);
+        cache.put(uuid, pb);
+        return pb;
     }
 
-    public void savePlayerData(@NotNull PlayerLevel player) {
-        cache.put(player.getUuid(), player);
-        persist(player, true);
-    }
-
-    public void flushPlayerAsync(@NotNull PlayerLevel player) {
-        cache.put(player.getUuid(), player);
-        persist(player, false);
-    }
-
-    private void persist(@NotNull PlayerLevel player, boolean logErrors) {
+    public void save(@NotNull PlayerBooster booster) {
+        cache.put(booster.getUuid(), booster);
         if (!isConnected()) return;
 
-        String sql = "INSERT INTO " + TABLE_PLAYERS + " (uuid, current_level, total_earned) VALUES (?, ?, ?) " +
-                "ON CONFLICT(uuid) DO UPDATE SET current_level = excluded.current_level, total_earned = excluded.total_earned";
-
-        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
-            statement.setString(1, player.getUuid().toString());
-            statement.setInt(2, player.getCurrentLevel());
-            statement.setDouble(3, player.getTotalEarned());
-            statement.executeUpdate();
+        String sql = "INSERT INTO " + TABLE + " (uuid, booster_level, total_points) VALUES (?, ?, ?) " +
+                "ON CONFLICT(uuid) DO UPDATE SET booster_level = excluded.booster_level, total_points = excluded.total_points";
+        try (PreparedStatement st = getConnection().prepareStatement(sql)) {
+            st.setString(1, booster.getUuid().toString());
+            st.setInt(2, booster.getCurrentLevel());
+            st.setLong(3, booster.getTotalPoints());
+            st.executeUpdate();
         } catch (SQLException e) {
-            if (logErrors) {
-                logger.log(Level.WARNING, "Ошибка сохранения данных игрока " + player.getUuid(), e);
-            }
-        }
-    }
-
-    public void addPlayerEarnings(@NotNull UUID uuid, double amount) {
-        PlayerLevel cached = cache.get(uuid);
-        if (cached != null) {
-            cached.addEarnings(amount);
+            logger.log(Level.WARNING, "Ошибка сохранения данных игрока " + booster.getUuid(), e);
         }
     }
 
     public void evictPlayer(@NotNull UUID uuid) {
-        PlayerLevel player = cache.remove(uuid);
-        if (player != null) {
-            persist(player, true);
-        }
+        PlayerBooster booster = cache.remove(uuid);
+        if (booster != null) save(booster);
     }
 
     @NotNull
-    public List<Map.Entry<String, Double>> getTopPlayers(int limit, double minEarned) {
-        return topPlayersCache;
+    public List<Map.Entry<String, Long>> getTopPoints() {
+        return topPointsCache;
     }
 
-    public void refreshTopPlayersCache(double minEarned) {
+    public void refreshTopPointsCache() {
         if (!isConnected()) return;
 
-        String sql = "SELECT uuid, total_earned FROM " + TABLE_PLAYERS +
-                " WHERE total_earned >= ? ORDER BY total_earned DESC LIMIT 100";
-
-        List<Map.Entry<String, Double>> result = new ArrayList<>();
-        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
-            statement.setDouble(1, minEarned);
-            try (ResultSet rs = statement.executeQuery()) {
-                while (rs.next()) {
-                    result.add(new AbstractMap.SimpleEntry<>(rs.getString("uuid"), rs.getDouble("total_earned")));
-                }
+        String sql = "SELECT uuid, total_points FROM " + TABLE +
+                " WHERE total_points > 0 ORDER BY total_points DESC LIMIT 100";
+        List<Map.Entry<String, Long>> result = new ArrayList<>();
+        try (PreparedStatement st = getConnection().prepareStatement(sql);
+             ResultSet rs = st.executeQuery()) {
+            while (rs.next()) {
+                result.add(new AbstractMap.SimpleEntry<>(rs.getString("uuid"), rs.getLong("total_points")));
             }
         } catch (SQLException e) {
-            logger.log(Level.WARNING, "Ошибка обновления таблицы лидеров", e);
+            logger.log(Level.WARNING, "Ошибка обновления топа по поинтам", e);
             return;
         }
-
-        topPlayersCache = result;
-    }
-
-    public void updateTopPlayers(double minEarned) {
-        refreshTopPlayersCache(minEarned);
+        topPointsCache = result;
     }
 
     public void closeConnection() {
-        for (PlayerLevel player : cache.values()) {
-            persist(player, true);
-        }
+        for (PlayerBooster booster : cache.values()) save(booster);
         cache.clear();
 
         try {

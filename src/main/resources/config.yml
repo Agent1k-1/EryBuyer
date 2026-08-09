@@ -30,18 +30,19 @@ sound:
     pitch: 1.0
     volume: 1.0
     enabled: true
-database:
-  file: playerdata.db # название файла sqlite
 bossbar-settings:
   bossbar: true
   text: "&fУ вас &aвключён &cавто-скупщик"
   color: RED
   autobuyer-time: 40
+buyer-settings:
+  enable-best-menu: true # Включить ли предметы повышенного спроса?
+  update-custom-items: 14400 # время обновления предметов повышенного спроса
 buyer-top:
-  update-money: 14000 # максимальная сумма от которой будет обновление топов
-  update-interval: 20 # время обновления топов
+  update-interval: 30 # секунд между обновлением топа игроков по поинтам
 register-menu:
   - "menu/menu.yml"
   - "menu/mine.yml"
   - "menu/farma.yml"
   - "menu/mob.yml"
+  - "menu/bestmenu.yml"

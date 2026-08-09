@@ -4,12 +4,7 @@ import com.erydevs.EryBuyer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class CloseAction implements Actions {
-
-    @Override
-    public boolean canHandle(@NotNull String actionLine) {
-        return actionLine.equalsIgnoreCase("[close]");
-    }
+public class CloseAction implements Action {
 
     @Override
     public void execute(@NotNull String actionLine, @NotNull EryBuyer plugin, @NotNull Player player) {

@@ -1,15 +1,14 @@
-package com.erydevs.autobuyer;
+package com.erydevs.buyer.autobuyer;
 
 import com.erydevs.EryBuyer;
-import com.erydevs.action.Actions;
+import com.erydevs.action.ActionType;
+import com.erydevs.buyer.boosters.PlayerBooster;
 import com.erydevs.gui.entry.Entry;
-import com.erydevs.levels.PlayerLevel;
 import com.erydevs.papi.PlaceholderAPIHook;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,22 +29,18 @@ public class AutoBuyerManager {
     public AutoBuyerManager(@NotNull EryBuyer plugin) {
         this.plugin = plugin;
         startTickTask();
-        startTopPlayersUpdateTask();
+        startTopPointsUpdateTask();
     }
 
     private void startTickTask() {
         plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this::processOnlinePlayers, 0L, 40L);
     }
 
-    private void startTopPlayersUpdateTask() {
-        BukkitScheduler scheduler = plugin.getServer().getScheduler();
-        long interval = plugin.getConfigManager().getBuyerTopUpdateInterval() * 20L;
-        scheduler.scheduleSyncRepeatingTask(plugin, () ->
-                scheduler.runTaskAsynchronously(plugin, this::refreshTopPlayers), interval, interval);
-    }
-
-    private void refreshTopPlayers() {
-        plugin.getDataBase().refreshTopPlayersCache(plugin.getConfigManager().getBuyerTopUpdateMoney());
+    private void startTopPointsUpdateTask() {
+        long intervalTicks = Math.max(20L, plugin.getConfigManager().getBuyerTopUpdateInterval() * 20L);
+        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin,
+                () -> plugin.getDataBase().refreshTopPointsCache(),
+                intervalTicks, intervalTicks);
     }
 
     private void processOnlinePlayers() {
@@ -152,10 +147,10 @@ public class AutoBuyerManager {
     }
 
     private void sell(@NotNull Player player, @NotNull Entry entry, int amount) {
-        PlayerLevel playerLevel = plugin.getDataBase().getPlayerData(player.getUniqueId());
+        PlayerBooster booster = plugin.getDataBase().getPlayerData(player.getUniqueId());
 
         double basePrice = entry.priceX1 * amount;
-        double multiplier = 1.0 + plugin.getLevelConfig().getMultiplierByLevel(playerLevel.getCurrentLevel());
+        double multiplier = plugin.getBoosterManager().getMoneyMultiplier(booster);
         double totalPrice = basePrice * multiplier;
 
         Economy economy = plugin.getEconomyManager().getEconomy();
@@ -163,38 +158,18 @@ public class AutoBuyerManager {
             economy.depositPlayer(player, totalPrice);
         }
 
-        int maxLevel = plugin.getLevelConfig().getMaxLevel();
-        if (playerLevel.getCurrentLevel() < maxLevel) {
-            playerLevel.addEarnings(basePrice);
-            tryLevelUp(player, playerLevel);
-        }
+        long pointsEarned = (long) entry.pointsX1 * amount;
+        plugin.getBoosterManager().addPointsAndCheckLevelUp(player, booster, pointsEarned);
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
-                () -> plugin.getDataBase().flushPlayerAsync(playerLevel));
+                () -> plugin.getDataBase().save(booster));
 
         List<String> lines = plugin.getMessagesConfig().getMessageAutoBuyer().stream()
                 .map(line -> PlaceholderAPIHook.apply(line, player, entry, amount, totalPrice))
                 .collect(Collectors.toList());
-        Actions.dispatch(plugin, player, lines);
+        ActionType.dispatchAll(plugin, player, lines);
 
         playSellSound(player);
-    }
-
-    private void tryLevelUp(@NotNull Player player, @NotNull PlayerLevel playerLevel) {
-        int maxLevel = plugin.getLevelConfig().getMaxLevel();
-        double totalEarned = playerLevel.getTotalEarned();
-
-        while (playerLevel.getCurrentLevel() < maxLevel) {
-            int nextLevel = playerLevel.getCurrentLevel() + 1;
-            if (plugin.getLevelConfig().getRequiredMoneyForLevel(nextLevel) > totalEarned) break;
-
-            playerLevel.setCurrentLevel(nextLevel);
-
-            List<String> lines = plugin.getMessagesConfig().getMessageLevelUp().stream()
-                    .map(line -> PlaceholderAPIHook.applyLevelUp(line, player, nextLevel))
-                    .collect(Collectors.toList());
-            Actions.dispatch(plugin, player, lines);
-        }
     }
 
     private void playSellSound(@NotNull Player player) {

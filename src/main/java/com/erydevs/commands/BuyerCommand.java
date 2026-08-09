@@ -1,7 +1,7 @@
 package com.erydevs.commands;
 
 import com.erydevs.EryBuyer;
-import com.erydevs.action.Actions;
+import com.erydevs.action.ActionType;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,7 +23,7 @@ public class BuyerCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         if (!player.hasPermission("erybuyer.open")) {
-            Actions.dispatch(plugin, player, plugin.getMessagesConfig().getMessageNoPermission());
+            ActionType.dispatchAll(plugin, player,plugin.getMessagesConfig().getMessageNoPermission());
             return true;
         }
 

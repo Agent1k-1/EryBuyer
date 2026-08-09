@@ -1,4 +1,4 @@
-package com.erydevs.gui.menu;
+package com.erydevs.gui.service;
 
 import com.erydevs.EryBuyer;
 import com.erydevs.gui.entry.Entry;
