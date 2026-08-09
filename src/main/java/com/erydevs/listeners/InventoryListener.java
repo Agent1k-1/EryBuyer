@@ -6,14 +6,13 @@ import com.erydevs.buyer.boosters.PlayerBooster;
 import com.erydevs.gui.click.ClickType;
 import com.erydevs.gui.entry.Entry;
 import com.erydevs.papi.PlaceholderAPIHook;
+import com.erydevs.utils.inventory.InventoryUtils;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -64,7 +63,7 @@ public class InventoryListener implements Listener {
             return;
         }
         if (clickType == ClickType.RIGHT) {
-            int totalCount = countItemsInInventory(p, entry.material);
+            int totalCount = InventoryUtils.count(p, entry.material);
             if (totalCount == 0) {
                 List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()
                         .map(line -> PlaceholderAPIHook.apply(line, p, entry, 64))
@@ -78,7 +77,7 @@ public class InventoryListener implements Listener {
             return;
         }
         if (clickType == ClickType.SHIFT_LEFT || clickType == ClickType.SHIFT_RIGHT) {
-            int totalCount = countItemsInInventory(p, entry.material);
+            int totalCount = InventoryUtils.count(p, entry.material);
             if (totalCount == 0) {
                 List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()
                         .map(line -> PlaceholderAPIHook.apply(line, p, entry, totalCount))
@@ -99,34 +98,8 @@ public class InventoryListener implements Listener {
         return ClickType.RIGHT;
     }
 
-    private int countItemsInInventory(@NotNull Player p, @NotNull Material material) {
-        int total = 0;
-        for (ItemStack is : p.getInventory().getContents()) {
-            if (is != null && is.getType() == material) total += is.getAmount();
-        }
-        return total;
-    }
-
-    private int removeItemsFromInventory(@NotNull Player p, @NotNull Entry entry, int amountNeeded) {
-        int removed = 0;
-        ItemStack[] contents = p.getInventory().getContents();
-        for (int i = 0; i < contents.length && removed < amountNeeded; i++) {
-            ItemStack is = contents[i];
-            if (is == null || is.getType() != entry.material) continue;
-            int canRemove = Math.min(is.getAmount(), amountNeeded - removed);
-            if (is.getAmount() > canRemove) {
-                is.setAmount(is.getAmount() - canRemove);
-                p.getInventory().setItem(i, is);
-            } else {
-                p.getInventory().setItem(i, null);
-            }
-            removed += canRemove;
-        }
-        return removed;
-    }
-
     private void processSale(@NotNull Player p, @NotNull Entry entry, int requestedAmount, double unitPrice) {
-        int actualAmount = removeItemsFromInventory(p, entry, requestedAmount);
+        int actualAmount = InventoryUtils.remove(p, entry.material, requestedAmount);
 
         if (actualAmount == 0) {
             List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()

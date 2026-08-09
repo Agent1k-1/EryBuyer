@@ -5,10 +5,10 @@ import com.erydevs.action.ActionType;
 import com.erydevs.buyer.boosters.PlayerBooster;
 import com.erydevs.gui.entry.Entry;
 import com.erydevs.papi.PlaceholderAPIHook;
+import com.erydevs.utils.inventory.InventoryUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -67,10 +67,9 @@ public class AutoBuyerManager {
         for (Entry entry : entries) {
             if (!isSellable(entry)) continue;
 
-            int amount = countItems(player, entry);
+            int amount = InventoryUtils.remove(player, entry.material, InventoryUtils.count(player, entry.material));
             if (amount == 0) continue;
 
-            removeItems(player, entry);
             sell(player, entry, amount);
             sold = true;
         }
@@ -124,26 +123,6 @@ public class AutoBuyerManager {
         }
 
         plugin.getDataBase().evictPlayer(uuid);
-    }
-
-    private int countItems(@NotNull Player player, @NotNull Entry entry) {
-        int total = 0;
-        for (ItemStack item : player.getInventory().getContents()) {
-            if (item != null && item.getType() == entry.material) {
-                total += item.getAmount();
-            }
-        }
-        return total;
-    }
-
-    private void removeItems(@NotNull Player player, @NotNull Entry entry) {
-        ItemStack[] contents = player.getInventory().getContents();
-        for (int i = 0; i < contents.length; i++) {
-            ItemStack item = contents[i];
-            if (item != null && item.getType() == entry.material) {
-                player.getInventory().setItem(i, null);
-            }
-        }
     }
 
     private void sell(@NotNull Player player, @NotNull Entry entry, int amount) {

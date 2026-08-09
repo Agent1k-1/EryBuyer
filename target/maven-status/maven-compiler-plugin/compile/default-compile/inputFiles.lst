@@ -32,6 +32,7 @@ D:\UPlugin\EryBuyer\src\main\java\com\erydevs\buyer\autobuyer\AutoBuyerManager.j
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\buyer\best\BestConfig.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\data\SQLite.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\gui\service\ItemStackService.java
+D:\UPlugin\EryBuyer\src\main\java\com\erydevs\utils\InventoryUtils.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\gui\service\MenuLoaderService.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\bstats\Metrics.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\config\Configs.java

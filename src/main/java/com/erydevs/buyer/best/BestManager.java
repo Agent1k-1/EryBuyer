@@ -7,6 +7,7 @@ import com.erydevs.gui.click.ClickType;
 import com.erydevs.gui.entry.Entry;
 import com.erydevs.papi.PlaceholderAPIHook;
 import com.erydevs.utils.HexUtils;
+import com.erydevs.utils.inventory.InventoryUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -236,7 +237,7 @@ public class BestManager {
                 playNoItemSound(player);
                 return;
             }
-            int inInv = countItems(player, item.getMaterial());
+            int inInv = InventoryUtils.count(player, item.getMaterial());
             if (inInv < 64) {
                 sendNoItem(player, item, 64);
                 playNoItemSound(player);
@@ -244,7 +245,7 @@ public class BestManager {
             }
             requested = 64;
         } else {
-            int inInv = countItems(player, item.getMaterial());
+            int inInv = InventoryUtils.count(player, item.getMaterial());
             requested = Math.min(remaining, inInv);
             if (requested <= 0) {
                 sendNoItem(player, item, remaining);
@@ -264,7 +265,7 @@ public class BestManager {
             return;
         }
 
-        int actual = removeItems(player, item.getMaterial(), cappedRequest);
+        int actual = InventoryUtils.remove(player, item.getMaterial(), cappedRequest);
         if (actual <= 0) {
             sendNoItem(player, item, cappedRequest);
             playNoItemSound(player);
@@ -307,32 +308,6 @@ public class BestManager {
                 populate(player.getOpenInventory().getTopInventory(), player);
             }
         });
-    }
-
-    private int countItems(@NotNull Player player, @NotNull Material material) {
-        int total = 0;
-        for (ItemStack stack : player.getInventory().getContents()) {
-            if (stack != null && stack.getType() == material) total += stack.getAmount();
-        }
-        return total;
-    }
-
-    private int removeItems(@NotNull Player player, @NotNull Material material, int amount) {
-        int removed = 0;
-        ItemStack[] contents = player.getInventory().getContents();
-        for (int i = 0; i < contents.length && removed < amount; i++) {
-            ItemStack stack = contents[i];
-            if (stack == null || stack.getType() != material) continue;
-            int canRemove = Math.min(stack.getAmount(), amount - removed);
-            if (stack.getAmount() > canRemove) {
-                stack.setAmount(stack.getAmount() - canRemove);
-                player.getInventory().setItem(i, stack);
-            } else {
-                player.getInventory().setItem(i, null);
-            }
-            removed += canRemove;
-        }
-        return removed;
     }
 
     private void sendNoItem(@NotNull Player player, @NotNull BestItem item, int amount) {

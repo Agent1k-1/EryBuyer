@@ -36,6 +36,7 @@ com\erydevs\bstats\Metrics$AdvancedBarChart.class
 com\erydevs\bstats\Metrics$MultiLineChart.class
 com\erydevs\gui\entry\Entry.class
 com\erydevs\utils\head\SkullUtils.class
+com\erydevs\utils\InventoryUtils.class
 com\erydevs\data\SQLite.class
 com\erydevs\EryBuyer.class
 com\erydevs\utils\head\ParsedMaterial.class
