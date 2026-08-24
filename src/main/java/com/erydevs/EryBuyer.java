@@ -10,9 +10,13 @@ import com.erydevs.gui.BuyerGUI;
 import com.erydevs.gui.loader.MenuLoader;
 import com.erydevs.commands.BuyerCommand;
 import com.erydevs.commands.AutoBuyerCommand;
+import com.erydevs.commands.AdbuyerCommand;
+import com.erydevs.commands.tab.AdbuyerTabCompleter;
+import com.erydevs.commands.sub.ReloadCMD;
 import com.erydevs.buyer.boosters.BoosterManager;
 import com.erydevs.data.SQLite;
 import com.erydevs.listeners.InventoryListener;
+import com.erydevs.listeners.InventoryChangeListener;
 import com.erydevs.listeners.PlayerQuitListener;
 import com.erydevs.economy.VaultAPI;
 import com.erydevs.buyer.autobuyer.AutoBuyerManager;
@@ -69,7 +73,13 @@ public class EryBuyer extends JavaPlugin {
         getCommand("buyer").setExecutor(new BuyerCommand(this));
         getCommand("autobuyer").setExecutor(new AutoBuyerCommand(this));
 
+        AdbuyerCommand adbuyerCommand = new AdbuyerCommand(this);
+        adbuyerCommand.register(new ReloadCMD(this, adbuyerCommand));
+        getCommand("adbuyer").setExecutor(adbuyerCommand);
+        getCommand("adbuyer").setTabCompleter(new AdbuyerTabCompleter(adbuyerCommand));
+
         getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
+        getServer().getPluginManager().registerEvents(new InventoryChangeListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), this);
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {

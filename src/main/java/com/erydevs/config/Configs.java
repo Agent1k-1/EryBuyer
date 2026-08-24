@@ -125,7 +125,7 @@ public class Configs {
     }
 
     public int getBuyerTopUpdateInterval() {
-        return config.getInt("buyer-top.update-interval", 30);
+        return config.getInt("buyer-top.update-interval");
     }
 
     @NotNull

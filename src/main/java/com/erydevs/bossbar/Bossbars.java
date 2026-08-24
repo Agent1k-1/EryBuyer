@@ -1,7 +1,7 @@
 package com.erydevs.bossbar;
 
 import com.erydevs.EryBuyer;
-import com.erydevs.papi.PlaceholderAPIHook;
+import com.erydevs.papi.Placeholders;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -28,7 +28,7 @@ public class Bossbars {
         UUID id = player.getUniqueId();
         if (bossbars.containsKey(id)) return;
 
-        String text = PlaceholderAPIHook.apply(plugin.getConfigManager().getBossbarText(), player);
+        String text = Placeholders.apply(plugin.getConfigManager().getBossbarText(), player);
         BossBar bar = plugin.getServer().createBossBar(text, barColor, BarStyle.SOLID);
         bar.addPlayer(player);
         bar.setProgress(1.0);
@@ -50,7 +50,7 @@ public class Bossbars {
         String rawText = plugin.getConfigManager().getBossbarText();
         for (Map.Entry<UUID, BossBar> e : bossbars.entrySet()) {
             Player p = plugin.getServer().getPlayer(e.getKey());
-            if (p != null && p.isOnline()) e.getValue().setTitle(PlaceholderAPIHook.apply(rawText, p));
+            if (p != null && p.isOnline()) e.getValue().setTitle(Placeholders.apply(rawText, p));
         }
     }
 

@@ -86,6 +86,16 @@ public class MessagesConfig {
     }
 
     @NotNull
+    public List<String> getMessageAdminBuyer() {
+        return messages.getStringList("message.admin-buyer");
+    }
+
+    @NotNull
+    public List<String> getMessageConfigReload() {
+        return messages.getStringList("message.config-reload");
+    }
+
+    @NotNull
     public String getPlaceholderEnableAutobuyer() {
         return messages.getString("placeholder.enable-autobuyer");
     }

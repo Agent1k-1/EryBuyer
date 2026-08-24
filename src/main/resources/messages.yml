@@ -18,6 +18,12 @@ message:
     - "[message] &#E73F3F▌ &fВы уже &#DB2339достигли лимита &fна сдачу данного предмета"
   update-best-item:
     - "[message] &#E73F3F▌ &fПредметы &#DB2339повышенного спроса &fбыли &#E73F3Fобновлены"
+  admin-buyer:
+    - "[message] &fАдмин команды &cскупщика"
+    - ""
+    - "[message] &7/adbuyer reload &f- перезагрузить плагин"
+  config-reload:
+    - "[message] &fПлагин перезагружен все конфиги сохранены"
 placeholder:
   enable-autobuyer: "&#E73F3FВключен"
   disable-autobuyer: "&7Выключен"

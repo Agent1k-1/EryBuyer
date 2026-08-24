@@ -8,11 +8,10 @@ import org.bukkit.inventory.Inventory;
 import com.erydevs.EryBuyer;
 import com.erydevs.config.Configs;
 import com.erydevs.gui.button.ButtonConfig;
+import com.erydevs.gui.button.ButtonLoader;
 import com.erydevs.gui.loader.MenuLoader;
 import com.erydevs.gui.service.MenuLoaderService;
 import com.erydevs.gui.service.ItemStackService;
-import com.erydevs.utils.head.MaterialHeadParser;
-import com.erydevs.utils.head.ParsedMaterial;
 import com.erydevs.utils.head.SkullUtils;
 import com.erydevs.utils.HexUtils;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +28,7 @@ public class BuyerGUI {
     private final Map<String, Map<Integer, Entry>> entriesByTitle = new HashMap<>();
     private final Map<String, Map<Integer, List<String>>> actionsByTitle = new HashMap<>();
     private final Map<String, String> menuNameByTitle = new HashMap<>();
+    private final Map<String, Map<Integer, Entry>> templateByMenu = new HashMap<>();
 
     public BuyerGUI(@NotNull EryBuyer plugin, @NotNull Configs configManager, @NotNull MenuLoader menuLoader) {
         this.plugin = plugin;
@@ -54,8 +54,12 @@ public class BuyerGUI {
 
         itemStackFactory.addPanels(inv, cfg, size);
 
-        Map<Integer, ButtonConfig> buttons = loadButtons(cfg);
-        addItems(inv, cfg, title, size, player, buttons, isBest);
+        Map<Integer, Entry> entries = getTemplate(cfg, menuName, size, isBest);
+        entriesByTitle.put(title, entries);
+
+        for (Entry it : entries.values()) {
+            if (it.slot < size) inv.setItem(it.slot, itemStackFactory.createItemStack(it, player));
+        }
 
         if (isBest) {
             plugin.getBestManager().populate(inv, player);
@@ -64,8 +68,12 @@ public class BuyerGUI {
         return inv;
     }
 
-    private void addItems(@NotNull Inventory inv, @NotNull FileConfiguration cfg, @NotNull String title, int size, @NotNull Player player, @NotNull Map<Integer, ButtonConfig> buttons, boolean isBest) {
-        Map<Integer, Entry> entries = MenuLoaderService.loadItemSettings(cfg, combinedSlotMap);
+    @NotNull
+    private Map<Integer, Entry> getTemplate(@NotNull FileConfiguration cfg, @NotNull String menuName, int size, boolean isBest) {
+        Map<Integer, Entry> cached = templateByMenu.get(menuName);
+        if (cached != null) return cached;
+
+        Map<Integer, Entry> entries = MenuLoaderService.loadItemSettings(cfg, null);
 
         Set<Integer> bestSlots = isBest
                 ? new HashSet<>(plugin.getBestManager().getBestConfig().getSlots())
@@ -75,24 +83,17 @@ public class BuyerGUI {
             entries.keySet().removeAll(bestSlots);
         }
 
-        for (Map.Entry<Integer, ButtonConfig> entry : buttons.entrySet()) {
-            ButtonConfig btn = entry.getValue();
+        for (ButtonConfig btn : ButtonLoader.load(cfg).values()) {
             if (btn.getSlot() >= size) continue;
             if (bestSlots.contains(btn.getSlot())) continue;
 
-            Entry it = new Entry(btn.getId(), btn.getMaterial(), btn.getMaterialStr(),
+            entries.put(btn.getSlot(), new Entry(btn.getId(), btn.getMaterial(), btn.getMaterialStr(),
                     btn.getName(), btn.getLore(),
-                    btn.getPriceX1(), btn.getPriceX64(), btn.getPointsX1(), btn.getSlot());
-
-            entries.put(it.slot, it);
+                    btn.getPriceX1(), btn.getPriceX64(), btn.getPointsX1(), btn.getSlot()));
         }
 
-        for (Map.Entry<Integer, Entry> e : entries.entrySet()) {
-            Entry it = e.getValue();
-            if (it.slot < size) inv.setItem(it.slot, itemStackFactory.createItemStack(it, player));
-        }
-
-        entriesByTitle.put(title, entries);
+        templateByMenu.put(menuName, entries);
+        return entries;
     }
 
     @NotNull
@@ -129,64 +130,6 @@ public class BuyerGUI {
         return entriesByTitle.containsKey(title);
     }
 
-    @NotNull
-    public Map<Integer, ButtonConfig> loadButtons(@NotNull FileConfiguration cfg) {
-        Map<Integer, ButtonConfig> buttons = new HashMap<>();
-        loadButtonsSection(cfg, "menu-settings", buttons);
-        loadButtonsSection(cfg, "knops-settings", buttons);
-        return buttons;
-    }
-
-    private void loadButtonsSection(@NotNull FileConfiguration cfg, @NotNull String section, @NotNull Map<Integer, ButtonConfig> buttons) {
-        if (!cfg.isConfigurationSection(section)) return;
-
-        org.bukkit.configuration.ConfigurationSection sect = cfg.getConfigurationSection(section);
-        if (sect == null) return;
-
-        for (String key : sect.getKeys(false)) {
-            String path = section + "." + key;
-            if (!cfg.contains(path + ".slot")) continue;
-
-            int slot = cfg.getInt(path + ".slot");
-            if (slot < 0) continue;
-
-            ParsedMaterial pm = MaterialHeadParser.parse(cfg.getString(path + ".material"));
-            if (pm == null) continue;
-
-            String name = cfg.getString(path + ".name");
-            List<String> lore = cfg.getStringList(path + ".lore");
-            List<String> actions = cfg.getStringList(path + ".action");
-
-            if ((actions == null || actions.isEmpty()) && cfg.contains(path + ".action")) {
-                String single = cfg.getString(path + ".action");
-                if (single != null) {
-                    actions = Collections.singletonList(single);
-                }
-            }
-
-            double priceX1 = cfg.getDouble(path + ".prince-x1");
-            double priceX64 = cfg.getDouble(path + ".prince-x64");
-            int pointsX1 = cfg.getInt(path + ".points-from-the-buyer-x1");
-
-            ButtonConfig btn = new ButtonConfig(key, slot, pm.getMaterial(), pm.getHeadTextureBase64(),
-                    name, lore, actions, priceX1, priceX64, pointsX1);
-            buttons.put(slot, btn);
-        }
-    }
-
-    @NotNull
-    public Optional<ButtonConfig> findButtonByAction(@NotNull FileConfiguration cfg, @NotNull String actionFragment) {
-        return loadButtons(cfg).values().stream()
-                .filter(btn -> btn.hasAction(actionFragment))
-                .findFirst();
-    }
-
-    public int findSlotByAction(@NotNull FileConfiguration cfg, @NotNull String actionFragment) {
-        return findButtonByAction(cfg, actionFragment)
-                .map(ButtonConfig::getSlot)
-                .orElse(-1);
-    }
-
     @Nullable
     public List<String> getActions(@NotNull String title, int slot) {
         Map<Integer, List<String>> m = actionsByTitle.get(title);
@@ -200,42 +143,19 @@ public class BuyerGUI {
 
     public void refreshOpenInventory(@NotNull Player player) {
         String title = player.getOpenInventory().getTitle();
-        if (!isManagedTitle(title)) return;
-
-        String menuName = getMenuNameByTitle(title);
-        FileConfiguration cfg = menuLoader.getMenuConfig(menuName);
-        if (cfg == null) return;
-
-        Inventory inv = player.getOpenInventory().getTopInventory();
-        int size = cfg.getInt("size");
-
-        boolean isBest = plugin.getBestManager() != null && plugin.getBestManager().isBestMenu(menuName);
-        Set<Integer> bestSlots = isBest
-                ? new HashSet<>(plugin.getBestManager().getBestConfig().getSlots())
-                : Collections.emptySet();
 
         Map<Integer, Entry> entries = entriesByTitle.get(title);
-        if (entries != null) {
-            for (Entry it : entries.values()) {
-                if (it.slot >= size) continue;
-                if (bestSlots.contains(it.slot)) continue;
-                inv.setItem(it.slot, itemStackFactory.createItemStack(it, player));
-            }
+        if (entries == null) return;
+
+        Inventory inv = player.getOpenInventory().getTopInventory();
+        int size = inv.getSize();
+
+        for (Entry it : entries.values()) {
+            if (it.slot < size) inv.setItem(it.slot, itemStackFactory.createItemStack(it, player));
         }
 
-        for (Map.Entry<Integer, ButtonConfig> e : loadButtons(cfg).entrySet()) {
-            ButtonConfig btn = e.getValue();
-            if (btn.getSlot() >= size) continue;
-            if (bestSlots.contains(btn.getSlot())) continue;
-
-            Entry it = new Entry(btn.getId(), btn.getMaterial(), btn.getMaterialStr(),
-                    btn.getName(), btn.getLore(),
-                    btn.getPriceX1(), btn.getPriceX64(), btn.getPointsX1(), btn.getSlot());
-
-            inv.setItem(btn.getSlot(), itemStackFactory.createItemStack(it, player));
-        }
-
-        if (isBest) {
+        String menuName = getMenuNameByTitle(title);
+        if (plugin.getBestManager() != null && plugin.getBestManager().isBestMenu(menuName)) {
             plugin.getBestManager().populate(inv, player);
         }
     }
@@ -246,6 +166,7 @@ public class BuyerGUI {
         entriesByTitle.clear();
         actionsByTitle.clear();
         menuNameByTitle.clear();
+        templateByMenu.clear();
         menuLoaderService.loadAllMenus();
         SkullUtils.clearCache();
     }

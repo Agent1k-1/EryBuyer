@@ -6,14 +6,21 @@ author: Agent1k
 depend: [Vault]
 softdepend:
   - PlaceholderAPI
+libraries:
+  - org.xerial:sqlite-jdbc:3.44.0.0
 commands:
   buyer:
     aliases:
       - seller
       - скупщик
   autobuyer:
+  adbuyer:
+    aliases:
+      - buyeradmin
 permission:
   erybuyer.open:
     default: op
   erybuyer.autobuyer:
+    default: op
+  erybuyer.adbuyer:
     default: op

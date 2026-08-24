@@ -2,7 +2,7 @@ package com.erydevs.buyer.boosters;
 
 import com.erydevs.EryBuyer;
 import com.erydevs.action.ActionType;
-import com.erydevs.papi.PlaceholderAPIHook;
+import com.erydevs.papi.Placeholders;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -81,7 +81,7 @@ public class BoosterManager {
         double booster = boosterConfig.getBoosterMultiplier(newLevel);
         List<String> lines = plugin.getMessagesConfig().getMessageNewBooster().stream()
                 .map(line -> line.replace("%buyer_new_booster%", formatMultiplier(booster)))
-                .map(line -> PlaceholderAPIHook.apply(line, player))
+                .map(line -> Placeholders.apply(line, player))
                 .collect(Collectors.toList());
         ActionType.dispatchAll(plugin, player, lines);
     }

@@ -5,7 +5,7 @@ import com.erydevs.action.ActionType;
 import com.erydevs.buyer.boosters.PlayerBooster;
 import com.erydevs.gui.click.ClickType;
 import com.erydevs.gui.entry.Entry;
-import com.erydevs.papi.PlaceholderAPIHook;
+import com.erydevs.papi.Placeholders;
 import com.erydevs.utils.HexUtils;
 import com.erydevs.utils.inventory.InventoryUtils;
 import net.milkbowl.vault.economy.Economy;
@@ -154,7 +154,7 @@ public class BestManager {
 
         for (Player player : plugin.getServer().getOnlinePlayers()) {
             List<String> lines = template.stream()
-                    .map(line -> PlaceholderAPIHook.apply(line, player))
+                    .map(line -> Placeholders.apply(line, player))
                     .collect(Collectors.toList());
             ActionType.dispatchAll(plugin, player, lines);
         }
@@ -211,8 +211,8 @@ public class BestManager {
         if (input == null) return "";
         UUID uuid = player.getUniqueId();
         int soldNow = plugin.getDataBase().getSoldAmount(uuid, item.getMaterialName());
-        String withBest = PlaceholderAPIHook.applyBest(input, item, soldNow);
-        return PlaceholderAPIHook.apply(withBest, player);
+        String withBest = Placeholders.applyBest(input, item, soldNow);
+        return Placeholders.apply(withBest, player);
     }
 
     public void handleClick(@NotNull Player player, int slot, @NotNull ClickType clickType) {
@@ -290,8 +290,8 @@ public class BestManager {
         List<String> lines = plugin.getMessagesConfig().getMessageSuccessfullyBuyer().stream()
                 .map(line -> {
                     int soldNow = plugin.getDataBase().getSoldAmount(player.getUniqueId(), item.getMaterialName());
-                    String withBest = PlaceholderAPIHook.applyBest(line, item, soldNow);
-                    return PlaceholderAPIHook.apply(withBest, player, pseudoEntry, actual, totalPrice);
+                    String withBest = Placeholders.applyBest(line, item, soldNow);
+                    return Placeholders.apply(withBest, player, pseudoEntry, actual, totalPrice);
                 })
                 .collect(Collectors.toList());
         ActionType.dispatchAll(plugin, player, lines);
@@ -315,8 +315,8 @@ public class BestManager {
         List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()
                 .map(line -> {
                     int soldNow = plugin.getDataBase().getSoldAmount(player.getUniqueId(), item.getMaterialName());
-                    String withBest = PlaceholderAPIHook.applyBest(line, item, soldNow);
-                    return PlaceholderAPIHook.apply(withBest, player, pseudoEntry, amount);
+                    String withBest = Placeholders.applyBest(line, item, soldNow);
+                    return Placeholders.apply(withBest, player, pseudoEntry, amount);
                 })
                 .collect(Collectors.toList());
         ActionType.dispatchAll(plugin, player, lines);
@@ -327,8 +327,8 @@ public class BestManager {
         List<String> lines = template.stream()
                 .map(line -> {
                     int soldNow = plugin.getDataBase().getSoldAmount(player.getUniqueId(), item.getMaterialName());
-                    String withBest = PlaceholderAPIHook.applyBest(line, item, soldNow);
-                    return PlaceholderAPIHook.apply(withBest, player, pseudoEntry, amount);
+                    String withBest = Placeholders.applyBest(line, item, soldNow);
+                    return Placeholders.apply(withBest, player, pseudoEntry, amount);
                 })
                 .collect(Collectors.toList());
         ActionType.dispatchAll(plugin, player, lines);

@@ -5,7 +5,7 @@ import com.erydevs.action.ActionType;
 import com.erydevs.buyer.boosters.PlayerBooster;
 import com.erydevs.gui.click.ClickType;
 import com.erydevs.gui.entry.Entry;
-import com.erydevs.papi.PlaceholderAPIHook;
+import com.erydevs.papi.Placeholders;
 import com.erydevs.utils.inventory.InventoryUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Sound;
@@ -66,7 +66,7 @@ public class InventoryListener implements Listener {
             int totalCount = InventoryUtils.count(p, entry.material);
             if (totalCount == 0) {
                 List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()
-                        .map(line -> PlaceholderAPIHook.apply(line, p, entry, 64))
+                        .map(line -> Placeholders.apply(line, p, entry, 64))
                         .collect(Collectors.toList());
                 ActionType.dispatchAll(plugin, p,lines);
                 playNoItemSound(p);
@@ -80,7 +80,7 @@ public class InventoryListener implements Listener {
             int totalCount = InventoryUtils.count(p, entry.material);
             if (totalCount == 0) {
                 List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()
-                        .map(line -> PlaceholderAPIHook.apply(line, p, entry, totalCount))
+                        .map(line -> Placeholders.apply(line, p, entry, totalCount))
                         .collect(Collectors.toList());
                 ActionType.dispatchAll(plugin, p,lines);
                 playNoItemSound(p);
@@ -103,7 +103,7 @@ public class InventoryListener implements Listener {
 
         if (actualAmount == 0) {
             List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()
-                    .map(line -> PlaceholderAPIHook.apply(line, p, entry, requestedAmount))
+                    .map(line -> Placeholders.apply(line, p, entry, requestedAmount))
                     .collect(Collectors.toList());
             ActionType.dispatchAll(plugin, p,lines);
             playNoItemSound(p);
@@ -125,7 +125,7 @@ public class InventoryListener implements Listener {
                 () -> plugin.getDataBase().save(booster));
 
         List<String> lines = plugin.getMessagesConfig().getMessageSuccessfullyBuyer().stream()
-                .map(line -> PlaceholderAPIHook.apply(line, p, entry, actualAmount, totalPrice))
+                .map(line -> Placeholders.apply(line, p, entry, actualAmount, totalPrice))
                 .collect(Collectors.toList());
         ActionType.dispatchAll(plugin, p,lines);
         playExchangeSound(p);
