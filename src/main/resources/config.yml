@@ -1,14 +1,3 @@
-# Описание плагина
-# поддерживаемые версии
-# 1.16-1.21+
-# Зависимости
-# Vault, PlaceholderAPI
-# актионы
-# [close] - закрытие меню
-# [openmenu] - открытие меню
-# [command] - выполнение команд
-# [sound] произведение звуков
-# Плагин разработан студией EryDev
 sound:
   sound_open_menu:
     sound: BLOCK_CHEST_OPEN

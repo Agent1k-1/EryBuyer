@@ -52,7 +52,7 @@ knops-settings:
       - "[close]"
 menu-settings:
   1:
-    name: "&#E73F3FРесурсы с шахты"
+    name: "&fРесурсы с шахты"
     lore:
       - ""
       - " &c▪ &fНажмите для &#DB2339перехода"
@@ -63,7 +63,7 @@ menu-settings:
       - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
       - "[openmenu] mine"
   2:
-    name: "&#E73F3FФермерство"
+    name: "&fФермерство"
     lore:
       - ""
       - " &c▪ &fНажмите для &#DB2339перехода"
@@ -74,7 +74,7 @@ menu-settings:
       - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
       - "[openmenu] farma"
   3:
-    name: "&#E73F3FЛут с мобов"
+    name: "&fЛут с мобов"
     lore:
       - ""
       - " &c▪ &fНажмите для &#DB2339перехода"
@@ -85,7 +85,7 @@ menu-settings:
       - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
       - "[openmenu] mob"
   4:
-    name: "&#E73F3FПовышенный спрос"
+    name: "&fПовышенный спрос"
     lore:
       - ""
       - " &c▪ &fНажмите для &#DB2339перехода"

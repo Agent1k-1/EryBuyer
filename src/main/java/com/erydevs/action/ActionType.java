@@ -26,7 +26,10 @@ public enum ActionType {
     public static void dispatch(@NotNull EryBuyer plugin, @NotNull Player player, @Nullable String actionLine) {
         if (actionLine == null) return;
         String line = actionLine.trim();
-        if (line.isEmpty()) return;
+        if (line.isEmpty()) {
+            player.sendMessage("");
+            return;
+        }
 
         String lower = line.toLowerCase();
         for (ActionType type : values()) {
