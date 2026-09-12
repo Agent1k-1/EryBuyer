@@ -25,6 +25,7 @@ import com.erydevs.bossbar.Bossbars;
 import com.erydevs.papi.PlaceholderAPIHook;
 import com.erydevs.api.EryBuyerAPI;
 import com.erydevs.api.impl.BuyerAPIImpl;
+import com.erydevs.addon.AddonManager;
 
 import com.erydevs.bstats.Metrics;
 
@@ -41,6 +42,7 @@ public class EryBuyer extends JavaPlugin {
     private BoosterManager boosterManager;
     private SQLite SQLite;
     private BestManager bestManager;
+    private AddonManager addonManager;
 
     public void onEnable() {
         instance = this;
@@ -90,6 +92,9 @@ public class EryBuyer extends JavaPlugin {
             new PlaceholderAPIHook(this).register();
         }
 
+        addonManager = new AddonManager(this);
+        addonManager.enable();
+
         startMenuRefreshTask();
 
         int pluginId = 31977;
@@ -98,6 +103,7 @@ public class EryBuyer extends JavaPlugin {
     }
 
     public void onDisable() {
+        if (addonManager != null) addonManager.disable();
         if (autoBuyerManager != null) autoBuyerManager.shutdown();
         if (bossbars != null) bossbars.shutdown();
         if (bestManager != null) bestManager.shutdown();
@@ -168,5 +174,10 @@ public class EryBuyer extends JavaPlugin {
     @NotNull
     public BestManager getBestManager() {
         return bestManager;
+    }
+
+    @NotNull
+    public AddonManager getAddonManager() {
+        return addonManager;
     }
 }
