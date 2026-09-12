@@ -23,6 +23,8 @@ import com.erydevs.buyer.autobuyer.AutoBuyerManager;
 import com.erydevs.buyer.best.BestManager;
 import com.erydevs.bossbar.Bossbars;
 import com.erydevs.papi.PlaceholderAPIHook;
+import com.erydevs.api.EryBuyerAPI;
+import com.erydevs.api.impl.BuyerAPIImpl;
 
 import com.erydevs.bstats.Metrics;
 
@@ -70,6 +72,8 @@ public class EryBuyer extends JavaPlugin {
         bossbars = new Bossbars(this);
         autoBuyerManager = new AutoBuyerManager(this);
 
+        EryBuyerAPI.register(new BuyerAPIImpl(this));
+
         getCommand("buyer").setExecutor(new BuyerCommand(this));
         getCommand("autobuyer").setExecutor(new AutoBuyerCommand(this));
 
@@ -98,6 +102,7 @@ public class EryBuyer extends JavaPlugin {
         if (bossbars != null) bossbars.shutdown();
         if (bestManager != null) bestManager.shutdown();
         if (SQLite != null) SQLite.closeConnection();
+        EryBuyerAPI.unregister();
         instance = null;
     }
 

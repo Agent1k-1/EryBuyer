@@ -2,12 +2,14 @@ package com.erydevs.listeners;
 
 import com.erydevs.EryBuyer;
 import com.erydevs.action.ActionType;
+import com.erydevs.api.event.PlayerSellEvent;
 import com.erydevs.buyer.boosters.PlayerBooster;
 import com.erydevs.gui.click.ClickType;
 import com.erydevs.gui.entry.Entry;
 import com.erydevs.papi.Placeholders;
 import com.erydevs.utils.inventory.InventoryUtils;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -123,6 +125,9 @@ public class InventoryListener implements Listener {
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
                 () -> plugin.getDataBase().save(booster));
+
+        Bukkit.getPluginManager().callEvent(
+                new PlayerSellEvent(p, entry.material, actualAmount, totalPrice, pointsEarned));
 
         List<String> lines = plugin.getMessagesConfig().getMessageSuccessfullyBuyer().stream()
                 .map(line -> Placeholders.apply(line, p, entry, actualAmount, totalPrice))

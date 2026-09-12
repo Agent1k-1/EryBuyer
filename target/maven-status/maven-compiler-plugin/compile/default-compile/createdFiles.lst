@@ -4,6 +4,7 @@ com\erydevs\gui\button\ButtonLoader.class
 com\erydevs\papi\PlaceholderApiBridge.class
 com\erydevs\buyer\best\BestManager.class
 com\erydevs\bstats\Metrics$SimplePie.class
+com\erydevs\api\event\PlayerSellEvent.class
 com\erydevs\commands\tab\AdbuyerTabCompleter.class
 com\erydevs\gui\service\ItemStackService.class
 com\erydevs\commands\BuyerCommand.class
@@ -14,6 +15,7 @@ com\erydevs\action\MessageAction.class
 com\erydevs\buyer\autobuyer\task\AutoBuyerTask.class
 com\erydevs\action\CommandAction.class
 com\erydevs\action\OpenMenuAction.class
+com\erydevs\api\BuyerAPI.class
 com\erydevs\bstats\Metrics$CustomChart.class
 com\erydevs\gui\panel\PanelLoader.class
 com\erydevs\bstats\Metrics.class
@@ -24,8 +26,10 @@ com\erydevs\buyer\best\BestConfig.class
 com\erydevs\listeners\InventoryChangeListener.class
 com\erydevs\listeners\InventoryListener.class
 com\erydevs\bstats\Metrics$DrilldownPie.class
+com\erydevs\api\impl\BuyerAPIImpl.class
 com\erydevs\buyer\best\BestItem.class
 com\erydevs\gui\service\MenuLoaderService.class
+com\erydevs\api\EryBuyerAPI.class
 com\erydevs\utils\head\MaterialHeadParser.class
 com\erydevs\bstats\Metrics$SingleLineChart.class
 com\erydevs\action\SoundAction.class
@@ -48,6 +52,7 @@ com\erydevs\gui\panel\PanelConfig.class
 com\erydevs\gui\entry\Entry.class
 com\erydevs\utils\head\SkullUtils.class
 com\erydevs\utils\inventory\InventoryUtils.class
+com\erydevs\api\event\PlayerLevelUpEvent.class
 com\erydevs\data\SQLite.class
 com\erydevs\EryBuyer.class
 com\erydevs\utils\head\ParsedMaterial.class

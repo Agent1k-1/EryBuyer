@@ -2,7 +2,9 @@ package com.erydevs.buyer.boosters;
 
 import com.erydevs.EryBuyer;
 import com.erydevs.action.ActionType;
+import com.erydevs.api.event.PlayerLevelUpEvent;
 import com.erydevs.papi.Placeholders;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -59,6 +61,7 @@ public class BoosterManager {
 
     private void checkLevelUp(@NotNull Player player, @NotNull PlayerBooster booster) {
         int maxLevel = boosterConfig.getMaxLevel();
+        int oldLevel = booster.getCurrentLevel();
         boolean leveled = false;
 
         while (booster.getCurrentLevel() < maxLevel) {
@@ -74,6 +77,8 @@ public class BoosterManager {
         if (leveled) {
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
                     () -> plugin.getDataBase().save(booster));
+            Bukkit.getPluginManager().callEvent(
+                    new PlayerLevelUpEvent(player, oldLevel, booster.getCurrentLevel()));
         }
     }
 
