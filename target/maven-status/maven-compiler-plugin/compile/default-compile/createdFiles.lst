@@ -23,6 +23,7 @@ com\erydevs\gui\click\ClickType.class
 com\erydevs\commands\AutoBuyerCommand.class
 com\erydevs\bstats\Metrics$MetricsBase.class
 com\erydevs\buyer\best\BestConfig.class
+com\erydevs\api\addon\Addon.class
 com\erydevs\listeners\InventoryChangeListener.class
 com\erydevs\listeners\InventoryListener.class
 com\erydevs\bstats\Metrics$DrilldownPie.class
