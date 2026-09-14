@@ -1,9 +1,11 @@
 com\erydevs\listeners\PlayerQuitListener.class
 com\erydevs\utils\HexUtils.class
+com\erydevs\addon\AddonLoader.class
 com\erydevs\gui\button\ButtonLoader.class
 com\erydevs\papi\PlaceholderApiBridge.class
 com\erydevs\buyer\best\BestManager.class
 com\erydevs\bstats\Metrics$SimplePie.class
+com\erydevs\addon\Addon.class
 com\erydevs\api\event\PlayerSellEvent.class
 com\erydevs\commands\tab\AdbuyerTabCompleter.class
 com\erydevs\gui\service\ItemStackService.class
@@ -39,6 +41,7 @@ com\erydevs\commands\AdbuyerCommand.class
 com\erydevs\commands\sub\ReloadCMD.class
 com\erydevs\bstats\Metrics$JsonObjectBuilder.class
 com\erydevs\gui\loader\MenuLoader.class
+com\erydevs\addon\AddonManager.class
 com\erydevs\commands\subcommand.class
 com\erydevs\action\Action.class
 com\erydevs\papi\PlaceholderAPIHook.class
@@ -48,8 +51,10 @@ com\erydevs\gui\button\ButtonConfig.class
 com\erydevs\bstats\Metrics$JsonObjectBuilder$JsonObject.class
 com\erydevs\action\ActionType.class
 com\erydevs\bstats\Metrics$AdvancedBarChart.class
+com\erydevs\addon\JarLoader.class
 com\erydevs\bstats\Metrics$MultiLineChart.class
 com\erydevs\gui\panel\PanelConfig.class
+com\erydevs\addon\AddonDescription.class
 com\erydevs\gui\entry\Entry.class
 com\erydevs\utils\head\SkullUtils.class
 com\erydevs\utils\inventory\InventoryUtils.class
@@ -61,6 +66,7 @@ com\erydevs\bstats\Metrics$AdvancedPie.class
 com\erydevs\buyer\autobuyer\AutoBuyerManager.class
 com\erydevs\buyer\best\BestPoolEntry.class
 com\erydevs\bossbar\Bossbars.class
+com\erydevs\addon\exception\AddonLoadException.class
 com\erydevs\action\CloseAction.class
 com\erydevs\economy\VaultAPI.class
 com\erydevs\buyer\boosters\BoosterConfig.class
