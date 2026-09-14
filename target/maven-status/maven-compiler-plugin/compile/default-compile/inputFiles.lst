@@ -1,3 +1,5 @@
+D:\UPlugin\EryBuyer\src\main\java\com\erydevs\addon\JarLoader.java
+D:\UPlugin\EryBuyer\src\main\java\com\erydevs\addon\AddonDescription.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\action\CloseAction.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\listeners\InventoryChangeListener.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\action\MessageAction.java
@@ -17,10 +19,12 @@ D:\UPlugin\EryBuyer\src\main\java\com\erydevs\buyer\boosters\BoosterLevel.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\papi\PlaceholderAPIHook.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\api\BuyerAPI.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\bossbar\Bossbars.java
+D:\UPlugin\EryBuyer\src\main\java\com\erydevs\addon\AddonLoader.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\utils\head\SkullUtils.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\buyer\autobuyer\AutoBuyerManager.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\data\SQLite.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\gui\service\ItemStackService.java
+D:\UPlugin\EryBuyer\src\main\java\com\erydevs\addon\Addon.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\gui\panel\PanelLoader.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\buyer\autobuyer\task\AutoBuyerTask.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\gui\service\MenuLoaderService.java
@@ -32,6 +36,7 @@ D:\UPlugin\EryBuyer\src\main\java\com\erydevs\api\EryBuyerAPI.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\buyer\boosters\BoosterConfig.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\action\Action.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\api\impl\BuyerAPIImpl.java
+D:\UPlugin\EryBuyer\src\main\java\com\erydevs\addon\exception\AddonLoadException.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\utils\HexUtils.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\commands\AutoBuyerCommand.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\buyer\best\BestManager.java
@@ -47,6 +52,7 @@ D:\UPlugin\EryBuyer\src\main\java\com\erydevs\buyer\boosters\PlayerBooster.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\config\MessagesConfig.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\buyer\boosters\BoosterManager.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\buyer\best\BestPoolEntry.java
+D:\UPlugin\EryBuyer\src\main\java\com\erydevs\addon\AddonManager.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\action\OpenMenuAction.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\action\CommandAction.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\buyer\best\BestConfig.java
