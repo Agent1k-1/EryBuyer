@@ -1,4 +1,4 @@
-package com.erydevs.db;
+package com.erydevs.db.type;
 
 public enum DatabaseType {
     SQLITE("sqlite"),

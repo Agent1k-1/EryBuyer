@@ -2,6 +2,7 @@ package com.erydevs.config;
 
 import com.erydevs.EryBuyer;
 import com.erydevs.db.*;
+import com.erydevs.db.type.DatabaseType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
