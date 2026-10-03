@@ -14,17 +14,22 @@ public class Entry {
     public final double priceX1;
     public final double priceX64;
     public final int pointsX1;
+    public final int tokensX1;
     public final int slot;
 
     public Entry(@NotNull String id, @NotNull Material material, @Nullable String name, @Nullable List<String> lore, double priceX1, double priceX64, int slot) {
-        this(id, material, null, name, lore, priceX1, priceX64, 0, slot);
+        this(id, material, null, name, lore, priceX1, priceX64, 0, 0, slot);
     }
 
     public Entry(@NotNull String id, @NotNull Material material, @Nullable String materialData, @Nullable String name, @Nullable List<String> lore, double priceX1, double priceX64, int slot) {
-        this(id, material, materialData, name, lore, priceX1, priceX64, 0, slot);
+        this(id, material, materialData, name, lore, priceX1, priceX64, 0, 0, slot);
     }
 
     public Entry(@NotNull String id, @NotNull Material material, @Nullable String materialData, @Nullable String name, @Nullable List<String> lore, double priceX1, double priceX64, int pointsX1, int slot) {
+        this(id, material, materialData, name, lore, priceX1, priceX64, pointsX1, 0, slot);
+    }
+
+    public Entry(@NotNull String id, @NotNull Material material, @Nullable String materialData, @Nullable String name, @Nullable List<String> lore, double priceX1, double priceX64, int pointsX1, int tokensX1, int slot) {
         this.id = id;
         this.material = material;
         this.materialData = materialData;
@@ -33,6 +38,7 @@ public class Entry {
         this.priceX1 = priceX1;
         this.priceX64 = priceX64;
         this.pointsX1 = pointsX1;
+        this.tokensX1 = tokensX1;
         this.slot = slot;
     }
 }

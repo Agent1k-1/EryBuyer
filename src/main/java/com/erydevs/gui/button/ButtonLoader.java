@@ -48,7 +48,8 @@ public final class ButtonLoader {
                     readActions(cfg, path),
                     cfg.getDouble(path + ".prince-x1"),
                     cfg.getDouble(path + ".prince-x64"),
-                    cfg.getInt(path + ".points-from-the-buyer-x1")));
+                    cfg.getInt(path + ".points-from-the-buyer-x1"),
+                    cfg.getInt(path + ".tokens-from-the-buyer-x1")));
         }
     }
 

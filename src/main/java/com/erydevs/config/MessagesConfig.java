@@ -96,6 +96,16 @@ public class MessagesConfig {
     }
 
     @NotNull
+    public List<String> getMessageTokenGive() {
+        return messages.getStringList("message.token-give");
+    }
+
+    @NotNull
+    public List<String> getMessageNoTokens() {
+        return messages.getStringList("message.no-tokens");
+    }
+
+    @NotNull
     public String getPlaceholderEnableAutobuyer() {
         return messages.getString("placeholder.enable-autobuyer");
     }

@@ -1,4 +1,4 @@
-package com.erydevs.addon;
+package com.erydevs.addon.loader;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

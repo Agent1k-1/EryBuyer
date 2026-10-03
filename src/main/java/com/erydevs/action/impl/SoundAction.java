@@ -1,6 +1,7 @@
-package com.erydevs.action;
+package com.erydevs.action.impl;
 
 import com.erydevs.EryBuyer;
+import com.erydevs.action.Action;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

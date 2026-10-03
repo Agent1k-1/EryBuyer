@@ -89,11 +89,12 @@ public class BestConfig {
             double defaultPrice = section.getDouble(path + ".default-price");
             int limit = section.getInt(path + ".limit");
             int pointsX1 = section.getInt(path + ".points-from-the-buyer-x1");
+            int tokensX1 = section.getInt(path + ".tokens-from-the-buyer-x1");
 
             Material material = Material.matchMaterial(materialName);
             if (material == null) continue;
 
-            pool.put(materialName, new BestPoolEntry(materialName, material, defaultPrice, limit, pointsX1));
+            pool.put(materialName, new BestPoolEntry(materialName, material, defaultPrice, limit, pointsX1, tokensX1));
         }
     }
 

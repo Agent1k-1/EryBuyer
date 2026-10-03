@@ -19,10 +19,10 @@ panels:
       - 43
 knops-settings:
   1:
-    name: "&#E73F3FВыход"
+    name: "&#DB2339• &#E73F3FВыход &#DB2339•"
     lore:
       - ""
-      - " &c▪ &fНажмите для &#DB2339выхода"
+      - " &c▶ &fНажмите для &#DB2339выхода"
       - ""
     slot: 44
     material: SPECTRAL_ARROW
@@ -44,6 +44,7 @@ item-settings:
     prince-x1: 250.00
     prince-x64: 16000.00
     points-from-the-buyer-x1: 15
+    tokens-from-the-buyer-x1: 3
   2:
     name: "&fИзумруд"
     lore:
@@ -58,6 +59,7 @@ item-settings:
     prince-x1: 300.00
     prince-x64: 19200.00
     points-from-the-buyer-x1: 10
+    tokens-from-the-buyer-x1: 2
   3:
     name: "&fНезеритовый слиток"
     lore:
@@ -72,6 +74,7 @@ item-settings:
     prince-x1: 1500.00
     prince-x64: 96000.00
     points-from-the-buyer-x1: 20
+    tokens-from-the-buyer-x1: 4
   4:
     name: "&fЗолотой слиток"
     lore:
@@ -86,6 +89,7 @@ item-settings:
     prince-x1: 150.00
     prince-x64: 9600.00
     points-from-the-buyer-x1: 2
+    tokens-from-the-buyer-x1: 1
   5:
     name: "&fЖелезный слиток"
     lore:
@@ -100,6 +104,7 @@ item-settings:
     prince-x1: 80.00
     prince-x64: 5120.00
     points-from-the-buyer-x1: 11
+    tokens-from-the-buyer-x1: 2
   25:
     name: "&fУголь"
     lore:
@@ -114,6 +119,7 @@ item-settings:
     prince-x1: 30.00
     prince-x64: 1920.00
     points-from-the-buyer-x1: 3
+    tokens-from-the-buyer-x1: 1
   26:
     name: "&fЛазурит"
     lore:
@@ -128,6 +134,7 @@ item-settings:
     prince-x1: 60.00
     prince-x64: 3840.00
     points-from-the-buyer-x1: 4
+    tokens-from-the-buyer-x1: 1
   27:
     name: "&fРедстоун"
     lore:
@@ -142,3 +149,4 @@ item-settings:
     prince-x1: 60.00
     prince-x64: 3840.00
     points-from-the-buyer-x1: 6
+    tokens-from-the-buyer-x1: 1

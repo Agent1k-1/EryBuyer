@@ -123,6 +123,9 @@ public class InventoryListener implements Listener {
         long pointsEarned = (long) entry.pointsX1 * actualAmount;
         plugin.getBoosterManager().addPointsAndCheckLevelUp(p, booster, pointsEarned);
 
+        int tokensEarned = entry.tokensX1 * actualAmount;
+        if (tokensEarned > 0) plugin.getDataBase().addTokens(p.getUniqueId(), tokensEarned);
+
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
                 () -> plugin.getDataBase().save(booster));
 

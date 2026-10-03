@@ -89,7 +89,7 @@ public class BuyerGUI {
 
             entries.put(btn.getSlot(), new Entry(btn.getId(), btn.getMaterial(), btn.getMaterialStr(),
                     btn.getName(), btn.getLore(),
-                    btn.getPriceX1(), btn.getPriceX64(), btn.getPointsX1(), btn.getSlot()));
+                    btn.getPriceX1(), btn.getPriceX64(), btn.getPointsX1(), btn.getTokensX1(), btn.getSlot()));
         }
 
         templateByMenu.put(menuName, entries);

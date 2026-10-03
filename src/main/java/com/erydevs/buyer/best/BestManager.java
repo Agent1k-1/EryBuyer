@@ -136,7 +136,7 @@ public class BestManager {
             double customPrice = pe.getDefaultPrice() * factor;
             int slot = slots.get(i);
 
-            activeItems.put(slot, new BestItem(pe.getMaterialName(), pe.getMaterial(), pe.getDefaultPrice(), pe.getLimit(), customPrice, pe.getPointsX1(), slot));
+            activeItems.put(slot, new BestItem(pe.getMaterialName(), pe.getMaterial(), pe.getDefaultPrice(), pe.getLimit(), customPrice, pe.getPointsX1(), pe.getTokensX1(), slot));
         }
 
         rotationOffset = (rotationOffset + slotCount) % poolSize;
@@ -281,6 +281,9 @@ public class BestManager {
 
         long pointsEarned = (long) item.getPointsX1() * actual;
         plugin.getBoosterManager().addPointsAndCheckLevelUp(player, booster, pointsEarned);
+
+        int tokensEarned = item.getTokensX1() * actual;
+        if (tokensEarned > 0) plugin.getDataBase().addTokens(player.getUniqueId(), tokensEarned);
 
         plugin.getDataBase().addSoldAmount(player.getUniqueId(), item.getMaterialName(), actual);
 

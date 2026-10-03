@@ -10,13 +10,15 @@ public class BestPoolEntry {
     private final double defaultPrice;
     private final int limit;
     private final int pointsX1;
+    private final int tokensX1;
 
-    public BestPoolEntry(@NotNull String materialName, @NotNull Material material, double defaultPrice, int limit, int pointsX1) {
+    public BestPoolEntry(@NotNull String materialName, @NotNull Material material, double defaultPrice, int limit, int pointsX1, int tokensX1) {
         this.materialName = materialName;
         this.material = material;
         this.defaultPrice = defaultPrice;
         this.limit = limit;
         this.pointsX1 = pointsX1;
+        this.tokensX1 = tokensX1;
     }
 
     @NotNull
@@ -39,5 +41,9 @@ public class BestPoolEntry {
 
     public int getPointsX1() {
         return pointsX1;
+    }
+
+    public int getTokensX1() {
+        return tokensX1;
     }
 }

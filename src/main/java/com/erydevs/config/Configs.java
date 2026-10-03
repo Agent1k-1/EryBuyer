@@ -132,4 +132,13 @@ public class Configs {
     public List<String> getRegisterMenu() {
         return config.getStringList("register-menu");
     }
+
+    public boolean isBuyerShopEnabled() {
+        return config.getBoolean("buyer-settings.buyer-shop");
+    }
+
+    @NotNull
+    public List<String> getShopRegister() {
+        return config.getStringList("buyer-settings.shop-register");
+    }
 }

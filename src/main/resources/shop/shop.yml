@@ -1,0 +1,74 @@
+name: "&#E73F3F⚑ &fМагазин улучшений"
+size: 45
+panels:
+  - material: RED_STAINED_GLASS_PANE
+    name: ""
+    lore:
+      - ""
+    slots:
+      - 0
+      - 1
+      - 7
+      - 8
+      - 9
+      - 17
+      - 27
+      - 35
+      - 36
+      - 37
+      - 43
+
+items:
+  temp-money-x2:
+    slot: 22
+    material: GOLD_INGOT
+    name: "&#E73F3F×2 &fк деньгам &7(30 мин)"
+    lore:
+      - "&7Цена: &f150 жетонов"
+      - "&7Действует: &f30 минут"
+      - ""
+      - "&aНажмите чтобы купить"
+    price: 150
+    type: TEMP_MONEY_BOOST
+    value: 2.0
+    duration-minutes: 30
+    actions:
+      - "[message] &aВы купили х2 к деньгам на 30 минут"
+
+  temp-points-x2:
+    slot: 12
+    material: EMERALD
+    name: "&#E73F3F×2 &fк поинтам &7(60 мин)"
+    lore:
+      - "&7Цена: &f200 жетонов"
+      - "&7Действует: &f60 минут"
+      - ""
+      - "&aНажмите чтобы купить"
+    price: 200
+    type: TEMP_POINTS_BOOST
+    value: 2.0
+    duration-minutes: 60
+    actions:
+      - "[message] &aВы купили х2 к поинтам на 60 минут"
+
+  skip-rotation:
+    slot: 14
+    material: CLOCK
+    name: "&#E73F3F⏩ &fСброс таймера ротации"
+    lore:
+      - "&7Цена: &f100 жетонов"
+      - "&7Мгновенно обновляет предметы"
+      - "&7повышенного спроса"
+      - ""
+      - "&aНажмите чтобы купить"
+    price: 100
+    type: RESET_BEST_ROTATION
+    actions:
+      - "[message] &aРотация предметов обновлена"
+
+  close:
+    slot: 40
+    material: BARRIER
+    name: "&#E73F3FЗакрыть"
+    actions:
+      - "[close]"

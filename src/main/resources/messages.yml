@@ -22,8 +22,13 @@ message:
     - "[message] &fАдмин команды &cскупщика"
     - ""
     - "[message] &7/adbuyer reload &f- перезагрузить плагин"
+    - "[message] &7/adbuyer tokens give <ник> <количество> &fвыдать жетонов"
   config-reload:
     - "[message] &fПлагин перезагружен все конфиги сохранены"
+  token-give:
+    - "[message] &FВы выдали себе %buyer_token_amount% токен ваш баланс токенов %buyer_tokens%"
+  no-tokens:
+    - "[message] &#E73F3F✘ &fНедостаточно жетонов"
 placeholder:
   enable-autobuyer: "&#E73F3FВключен"
   disable-autobuyer: "&7Выключен"

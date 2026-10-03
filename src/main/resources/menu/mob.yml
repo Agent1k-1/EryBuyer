@@ -19,10 +19,10 @@ panels:
       - 43
 knops-settings:
   1:
-    name: "&#E73F3FВыход"
+    name: "&#DB2339• &#E73F3FВыход &#DB2339•"
     lore:
       - ""
-      - " &c▪ &fНажмите для &#DB2339выхода"
+      - " &c▶ &fНажмите для &#DB2339выхода"
       - ""
     slot: 44
     material: SPECTRAL_ARROW
@@ -44,6 +44,7 @@ item-settings:
     prince-x1: 300.00
     prince-x64: 19200.00
     points-from-the-buyer-x1: 12
+    tokens-from-the-buyer-x1: 2
   2:
     name: "&fОгненный стержень"
     lore:
@@ -58,6 +59,7 @@ item-settings:
     prince-x1: 160.00
     prince-x64: 10240.00
     points-from-the-buyer-x1: 8
+    tokens-from-the-buyer-x1: 2
   3:
     name: "&fКость"
     lore:
@@ -72,6 +74,7 @@ item-settings:
     prince-x1: 80.00
     prince-x64: 5120.00
     points-from-the-buyer-x1: 4
+    tokens-from-the-buyer-x1: 1
   4:
     name: "&fНить"
     lore:
@@ -86,6 +89,7 @@ item-settings:
     prince-x1: 80.00
     prince-x64: 5120.00
     points-from-the-buyer-x1: 4
+    tokens-from-the-buyer-x1: 1
   5:
     name: "&fЭндер-Жемчуг"
     lore:
@@ -100,6 +104,7 @@ item-settings:
     prince-x1: 160.00
     prince-x64: 10240.00
     points-from-the-buyer-x1: 8
+    tokens-from-the-buyer-x1: 2
   6:
     name: "&fМаринованный Паучий Глаз"
     lore:
@@ -114,6 +119,7 @@ item-settings:
     prince-x1: 500.00
     prince-x64: 32000.00
     points-from-the-buyer-x1: 20
+    tokens-from-the-buyer-x1: 4
   7:
     name: "&fСветокаменная Пыль"
     lore:
@@ -128,6 +134,7 @@ item-settings:
     prince-x1: 100.00
     prince-x64: 6400.00
     points-from-the-buyer-x1: 5
+    tokens-from-the-buyer-x1: 1
   8:
     name: "&fСгусток магмы"
     lore:
@@ -142,6 +149,7 @@ item-settings:
     prince-x1: 180.00
     prince-x64: 11520.00
     points-from-the-buyer-x1: 9
+    tokens-from-the-buyer-x1: 2
   9:
     name: "&fТотем"
     lore:
@@ -156,3 +164,4 @@ item-settings:
     prince-x1: 3000.00
     prince-x64: 192000.00
     points-from-the-buyer-x1: 100
+    tokens-from-the-buyer-x1: 20

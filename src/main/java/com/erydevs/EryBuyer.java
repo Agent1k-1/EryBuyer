@@ -13,8 +13,10 @@ import com.erydevs.commands.AutoBuyerCommand;
 import com.erydevs.commands.AdbuyerCommand;
 import com.erydevs.commands.tab.AdbuyerTabCompleter;
 import com.erydevs.commands.sub.ReloadCMD;
+import com.erydevs.commands.sub.GiveCMD;
 import com.erydevs.buyer.boosters.BoosterManager;
-import com.erydevs.data.SQLite;
+import com.erydevs.db.Database;
+import com.erydevs.config.dbConfig;
 import com.erydevs.listeners.InventoryListener;
 import com.erydevs.listeners.InventoryChangeListener;
 import com.erydevs.listeners.PlayerQuitListener;
@@ -26,6 +28,9 @@ import com.erydevs.papi.PlaceholderAPIHook;
 import com.erydevs.api.EryBuyerAPI;
 import com.erydevs.api.impl.BuyerAPIImpl;
 import com.erydevs.addon.AddonManager;
+import com.erydevs.shop.ShopManager;
+import com.erydevs.shop.ShopGUI;
+import com.erydevs.shop.listener.ShopClickListener;
 
 import com.erydevs.bstats.Metrics;
 
@@ -40,9 +45,11 @@ public class EryBuyer extends JavaPlugin {
     private AutoBuyerManager autoBuyerManager;
     private Bossbars bossbars;
     private BoosterManager boosterManager;
-    private SQLite SQLite;
+    private dbConfig dbConfig;
     private BestManager bestManager;
     private AddonManager addonManager;
+    private ShopManager shopManager;
+    private ShopGUI shopGUI;
 
     public void onEnable() {
         instance = this;
@@ -58,7 +65,7 @@ public class EryBuyer extends JavaPlugin {
 
         boosterManager = new BoosterManager(this);
         boosterManager.enable();
-        SQLite = new SQLite(this);
+        dbConfig = new dbConfig(this);
 
         vaultAPI = new VaultAPI(this);
         Bukkit.getConsoleSender().sendMessage(vaultAPI.getStatus());
@@ -81,6 +88,7 @@ public class EryBuyer extends JavaPlugin {
 
         AdbuyerCommand adbuyerCommand = new AdbuyerCommand(this);
         adbuyerCommand.register(new ReloadCMD(this, adbuyerCommand));
+        adbuyerCommand.register(new GiveCMD(this, adbuyerCommand));
         getCommand("adbuyer").setExecutor(adbuyerCommand);
         getCommand("adbuyer").setTabCompleter(new AdbuyerTabCompleter(adbuyerCommand));
 
@@ -95,6 +103,11 @@ public class EryBuyer extends JavaPlugin {
         addonManager = new AddonManager(this);
         addonManager.enable();
 
+        shopManager = new ShopManager(this);
+        shopManager.enable();
+        shopGUI = new ShopGUI(this);
+        getServer().getPluginManager().registerEvents(new ShopClickListener(this), this);
+
         startMenuRefreshTask();
 
         int pluginId = 31977;
@@ -107,7 +120,7 @@ public class EryBuyer extends JavaPlugin {
         if (autoBuyerManager != null) autoBuyerManager.shutdown();
         if (bossbars != null) bossbars.shutdown();
         if (bestManager != null) bestManager.shutdown();
-        if (SQLite != null) SQLite.closeConnection();
+        if (dbConfig != null) dbConfig.close();
         EryBuyerAPI.unregister();
         instance = null;
     }
@@ -167,8 +180,12 @@ public class EryBuyer extends JavaPlugin {
     }
 
     @NotNull
-    public SQLite getDataBase() {
-        return SQLite;
+    public Database getDataBase() {
+        return dbConfig.getDatabase();
+    }
+    @NotNull
+    public dbConfig getDatabaseManager() {
+        return dbConfig;
     }
 
     @NotNull
@@ -179,5 +196,15 @@ public class EryBuyer extends JavaPlugin {
     @NotNull
     public AddonManager getAddonManager() {
         return addonManager;
+    }
+
+    @NotNull
+    public ShopManager getShopManager() {
+        return shopManager;
+    }
+
+    @NotNull
+    public ShopGUI getShopGUI() {
+        return shopGUI;
     }
 }

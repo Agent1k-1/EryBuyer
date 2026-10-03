@@ -1,6 +1,7 @@
 package com.erydevs.addon;
 
 import com.erydevs.EryBuyer;
+import com.erydevs.addon.loader.AddonLoader;
 import com.erydevs.api.EryBuyerAPI;
 import org.jetbrains.annotations.NotNull;
 

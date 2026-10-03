@@ -1,6 +1,8 @@
-package com.erydevs.addon;
+package com.erydevs.addon.loader;
 
 import com.erydevs.EryBuyer;
+import com.erydevs.addon.Addon;
+import com.erydevs.addon.AddonDescription;
 import com.erydevs.addon.exception.AddonLoadException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;

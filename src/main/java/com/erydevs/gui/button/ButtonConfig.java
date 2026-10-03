@@ -20,6 +20,7 @@ public class ButtonConfig {
     private final double priceX1;
     private final double priceX64;
     private final int pointsX1;
+    private final int tokensX1;
 
     public ButtonConfig(@NotNull String id,
                         int slot,
@@ -30,7 +31,8 @@ public class ButtonConfig {
                         @Nullable List<String> actions,
                         double priceX1,
                         double priceX64,
-                        int pointsX1) {
+                        int pointsX1,
+                        int tokensX1) {
         this.id = Objects.requireNonNull(id);
         this.slot = slot;
         this.material = Objects.requireNonNull(material);
@@ -41,6 +43,7 @@ public class ButtonConfig {
         this.priceX1 = priceX1;
         this.priceX64 = priceX64;
         this.pointsX1 = pointsX1;
+        this.tokensX1 = tokensX1;
     }
 
     @NotNull
@@ -87,6 +90,10 @@ public class ButtonConfig {
 
     public int getPointsX1() {
         return pointsX1;
+    }
+
+    public int getTokensX1() {
+        return tokensX1;
     }
 
     public boolean hasAction(@NotNull String fragment) {

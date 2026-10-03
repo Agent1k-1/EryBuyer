@@ -107,6 +107,9 @@ public class AutoBuyerTask {
         long pointsEarned = (long) entry.pointsX1 * amount;
         plugin.getBoosterManager().addPointsAndCheckLevelUp(player, booster, pointsEarned);
 
+        int tokensEarned = entry.tokensX1 * amount;
+        if (tokensEarned > 0) plugin.getDataBase().addTokens(player.getUniqueId(), tokensEarned);
+
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
                 () -> plugin.getDataBase().save(booster));
 

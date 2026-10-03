@@ -34,6 +34,7 @@ public class ReloadCMD implements subcommand {
         plugin.getBestManager().reload();
         plugin.getBuyerGUI().reloadMenus();
         plugin.getAutoBuyerManager().reload();
+        plugin.getShopManager().reload();
 
         root.send(player, plugin.getMessagesConfig().getMessageConfigReload());
     }

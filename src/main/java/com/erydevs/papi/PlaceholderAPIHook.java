@@ -76,6 +76,8 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
                 return BoosterManager.formatMultiplier(boosterManager.getBoosterMultiplier(booster));
             case "points":
                 return String.valueOf(booster.getTotalPoints());
+            case "tokens":
+                return String.valueOf(plugin.getDataBase().getTokens(player.getUniqueId()));
             case "points_next_lvl":
                 if (boosterManager.isMaxLevel(booster)) return String.valueOf(booster.getTotalPoints());
                 return String.valueOf(boosterManager.getPointsRequiredForNext(booster));

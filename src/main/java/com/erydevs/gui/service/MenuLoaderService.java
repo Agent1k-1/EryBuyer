@@ -78,10 +78,11 @@ public class MenuLoaderService {
             if (pm == null || slot < 0) continue;
 
             int pointsX1 = cfg.getInt(path + ".points-from-the-buyer-x1");
+            int tokensX1 = cfg.getInt(path + ".tokens-from-the-buyer-x1");
             Entry entry = new Entry(key, pm.getMaterial(), pm.getHeadTextureBase64(),
                     cfg.getString(path + ".name"), cfg.getStringList(path + ".lore"),
                     cfg.getDouble(path + ".prince-x1"), cfg.getDouble(path + ".prince-x64"),
-                    pointsX1, slot);
+                    pointsX1, tokensX1, slot);
 
             entries.put(slot, entry);
             if (combinedSlotMap != null) {
@@ -115,10 +116,11 @@ public class MenuLoaderService {
             double priceX1 = cfg.getDouble(path + ".prince-x1");
             double priceX64 = cfg.getDouble(path + ".prince-x64");
             int pointsX1 = cfg.getInt(path + ".points-from-the-buyer-x1");
+            int tokensX1 = cfg.getInt(path + ".tokens-from-the-buyer-x1");
 
             Entry entry = new Entry(id, pm.getMaterial(), pm.getHeadTextureBase64(),
                     cfg.getString(path + ".name"), cfg.getStringList(path + ".lore"),
-                    priceX1, priceX64, pointsX1, slot);
+                    priceX1, priceX64, pointsX1, tokensX1, slot);
             entries.put(slot, entry);
 
             if (priceX1 > 0 && combinedSlotMap != null) {

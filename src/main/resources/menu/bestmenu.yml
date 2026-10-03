@@ -19,10 +19,10 @@ panels:
       - 43
 menu-settings:
   1:
-    name: "&#E73F3FВыход"
+    name: "&#DB2339• &#E73F3FВыход &#DB2339•"
     lore:
       - ""
-      - " &c▪ &fНажмите для &#DB2339выхода"
+      - " &c▶ &fНажмите для &#DB2339выхода"
       - ""
     slot: 44
     material: SPECTRAL_ARROW
@@ -69,28 +69,34 @@ tem-settings:
         default-price: 500.0
         limit: 64
         points-from-the-buyer-x1: 40
+        tokens-from-the-buyer-x1: 8
       EMERALD:
         material: EMERALD
         default-price: 400.0
         limit: 32
         points-from-the-buyer-x1: 30
+        tokens-from-the-buyer-x1: 6
       NETHER_WART:
         material: NETHER_WART
         default-price: 75.0
         limit: 159
         points-from-the-buyer-x1: 7
+        tokens-from-the-buyer-x1: 1
       SWEET_BERRIES:
         material: SWEET_BERRIES
         default-price: 30.0
         limit: 345
         points-from-the-buyer-x1: 3
+        tokens-from-the-buyer-x1: 1
       LAPIS_LAZULI:
         material: LAPIS_LAZULI
         default-price: 50.0
         limit: 315
         points-from-the-buyer-x1: 5
+        tokens-from-the-buyer-x1: 1
       COCOA_BEANS:
         material: COCOA_BEANS
         default-price: 25.0
         limit: 340
         points-from-the-buyer-x1: 3
+        tokens-from-the-buyer-x1: 1

@@ -27,7 +27,9 @@ bossbar-settings:
 buyer-settings:
   enable-best-menu: true # Включить ли предметы повышенного спроса?
   update-custom-items: 14400 # время обновления предметов повышенного спроса
-  buyer-shop: true # включен ли
+  buyer-shop: true # включен ли магазин скупщика
+  shop-register:
+    - "shop/shop.yml" # НЕ МЕНЯТЬ
 buyer-top:
   update-interval: 30 # секунд между обновлением топа игроков по поинтам
 register-menu:

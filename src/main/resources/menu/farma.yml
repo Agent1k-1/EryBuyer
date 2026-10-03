@@ -19,10 +19,10 @@ panels:
       - 43
 knops-settings:
   1:
-    name: "&#E73F3FВыход"
+    name: "&#DB2339• &#E73F3FВыход &#DB2339•"
     lore:
       - ""
-      - " &c▪ &fНажмите для &#DB2339выхода"
+      - " &c▶ &fНажмите для &#DB2339выхода"
       - ""
     slot: 44
     material: SPECTRAL_ARROW
@@ -44,6 +44,7 @@ item-settings:
     prince-x1: 80.00
     prince-x64: 5120.00
     points-from-the-buyer-x1: 3
+    tokens-from-the-buyer-x1: 1
   7:
     name: "&fТыква"
     lore:
@@ -58,6 +59,7 @@ item-settings:
     prince-x1: 160.00
     prince-x64: 10240.00
     points-from-the-buyer-x1: 5
+    tokens-from-the-buyer-x1: 1
   8:
     name: "&fАрбуз"
     lore:
@@ -72,6 +74,7 @@ item-settings:
     prince-x1: 140.00
     prince-x64: 8960.00
     points-from-the-buyer-x1: 5
+    tokens-from-the-buyer-x1: 1
   9:
     name: "&fКактус"
     lore:
@@ -86,6 +89,7 @@ item-settings:
     prince-x1: 80.00
     prince-x64: 5120.00
     points-from-the-buyer-x1: 3
+    tokens-from-the-buyer-x1: 1
   10:
     name: "&fТростник"
     lore:
@@ -100,6 +104,7 @@ item-settings:
     prince-x1: 130.00
     prince-x64: 8320.00
     points-from-the-buyer-x1: 4
+    tokens-from-the-buyer-x1: 1
   11:
     name: "&fПшеница"
     lore:
@@ -114,6 +119,7 @@ item-settings:
     prince-x1: 120.00
     prince-x64: 7680.00
     points-from-the-buyer-x1: 4
+    tokens-from-the-buyer-x1: 1
   12:
     name: "&fКартофель"
     lore:
@@ -128,6 +134,7 @@ item-settings:
     prince-x1: 130.00
     prince-x64: 8320.00
     points-from-the-buyer-x1: 4
+    tokens-from-the-buyer-x1: 1
   13:
     name: "&fСвёкла"
     lore:
@@ -142,6 +149,7 @@ item-settings:
     prince-x1: 150.00
     prince-x64: 9600.00
     points-from-the-buyer-x1: 5
+    tokens-from-the-buyer-x1: 1
   14:
     name: "&fМорковь"
     lore:
@@ -156,6 +164,7 @@ item-settings:
     prince-x1: 120.00
     prince-x64: 7680.00
     points-from-the-buyer-x1: 4
+    tokens-from-the-buyer-x1: 1
   15:
     name: "&fСладкие ягоды"
     lore:
@@ -170,3 +179,4 @@ item-settings:
     prince-x1: 30.00
     prince-x64: 1920.00
     points-from-the-buyer-x1: 1
+    tokens-from-the-buyer-x1: 1
