@@ -20,10 +20,7 @@ public class dbConfig {
         if (!file.exists()) plugin.saveResource("db.yml", false);
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         this.type = DatabaseType.fromName(config.getString("database-type.type"));
-        if (this.type == DatabaseType.YAML) {
-            this.fileName = config.getString("yaml.file");
-            this.database = new YamlDatabase(plugin, fileName);
-        } else if (this.type == DatabaseType.MYSQL) {
+        if (this.type == DatabaseType.MYSQL) {
             ConfigurationSection section = config.getConfigurationSection("mysql");
             if (section == null) section = config.createSection("mysql");
             this.fileName = section.getString("database");

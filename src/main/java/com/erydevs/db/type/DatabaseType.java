@@ -2,8 +2,7 @@ package com.erydevs.db.type;
 
 public enum DatabaseType {
     SQLITE("sqlite"),
-    MYSQL("mysql"),
-    YAML("yaml");
+    MYSQL("mysql");
 
     private final String name;
 
@@ -14,7 +13,6 @@ public enum DatabaseType {
     public static DatabaseType fromName(String name) {
         if (name == null) return SQLITE;
         String value = name.trim().toLowerCase();
-        if (value.equals(YAML.name)) return YAML;
         if (value.equals(MYSQL.name)) return MYSQL;
         return SQLITE;
     }

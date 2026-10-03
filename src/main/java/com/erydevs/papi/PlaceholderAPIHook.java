@@ -39,7 +39,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return "1.0";
+        return "v3";
     }
 
     @Override

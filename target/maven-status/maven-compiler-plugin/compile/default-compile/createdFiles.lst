@@ -26,7 +26,6 @@ com\erydevs\shop\type\ShopItemType.class
 com\erydevs\bstats\Metrics$JsonObjectBuilder.class
 com\erydevs\commands\subcommand.class
 com\erydevs\action\Action.class
-com\erydevs\db\DatabaseManager.class
 com\erydevs\db\MySQL.class
 com\erydevs\papi\Placeholders.class
 com\erydevs\bstats\Metrics$JsonObjectBuilder$JsonObject.class
@@ -37,6 +36,7 @@ com\erydevs\addon\AddonDescription.class
 com\erydevs\gui\entry\Entry.class
 com\erydevs\utils\head\SkullUtils.class
 com\erydevs\utils\inventory\InventoryUtils.class
+com\erydevs\db\type\DatabaseType.class
 com\erydevs\action\impl\MessageAction.class
 com\erydevs\bstats\Metrics$AdvancedPie.class
 com\erydevs\bossbar\Bossbars.class
@@ -52,6 +52,7 @@ com\erydevs\action\impl\SoundAction.class
 com\erydevs\commands\tab\AdbuyerTabCompleter.class
 com\erydevs\gui\service\ItemStackService.class
 com\erydevs\commands\BuyerCommand.class
+com\erydevs\config\dbConfig.class
 com\erydevs\action\impl\CloseAction.class
 com\erydevs\buyer\boosters\BoosterManager.class
 com\erydevs\buyer\autobuyer\task\AutoBuyerTask.class
@@ -78,10 +79,8 @@ com\erydevs\api\event\PlayerLevelUpEvent.class
 com\erydevs\EryBuyer.class
 com\erydevs\shop\ShopManager.class
 com\erydevs\utils\head\ParsedMaterial.class
-com\erydevs\db\DatabaseType.class
 com\erydevs\buyer\autobuyer\AutoBuyerManager.class
 com\erydevs\buyer\best\BestPoolEntry.class
 com\erydevs\commands\sub\GiveCMD.class
 com\erydevs\config\MessagesConfig.class
-com\erydevs\db\YamlDatabase.class
 com\erydevs\gui\BuyerGUI.class
