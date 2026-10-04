@@ -8,6 +8,8 @@
 
 API EryBuyer позволяет другим плагинам читать данные игроков (уровень бустера, очки, множители, автопродажа, топ) и реагировать на события продажи и повышения уровня. Также можно писать аддоны, которые EryBuyer загружает сам из папки `plugins/EryBuyer/addons/`.
 
+[![](https://jitpack.io/v/Agent1k-1/EryBuyer.svg)](https://jitpack.io/#Agent1k-1/EryBuyer)
+
 ### 1. Подключение
 
 В `plugin.yml` вашего плагина укажите зависимость, чтобы EryBuyer загрузился раньше:
@@ -17,8 +19,6 @@ depend: [EryBuyer]
 # или, если API необязательно:
 softdepend: [EryBuyer]
 ```
-
-[![](https://jitpack.io/v/Agent1k-1/EryBuyer.svg)](https://jitpack.io/#Agent1k-1/EryBuyer)
 
 для maven
 
@@ -201,6 +201,8 @@ version: 1.0
 The EryBuyer API lets other plugins read player data (booster level, points, multipliers, autobuyer state, leaderboard) and react to sell and level-up events. You can also write addons that EryBuyer loads itself from the `plugins/EryBuyer/addons/` folder.
 
 ### 1. Setup
+
+[![](https://jitpack.io/v/Agent1k-1/EryBuyer.svg)](https://jitpack.io/#Agent1k-1/EryBuyer)
 
 Declare EryBuyer in your plugin's `plugin.yml` so it loads first:
 
