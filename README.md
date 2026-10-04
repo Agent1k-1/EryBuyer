@@ -18,7 +18,7 @@ depend: [EryBuyer]
 softdepend: [EryBuyer]
 ```
 
-Добавьте EryBuyer в зависимости проекта со scope `provided`.
+[![](https://jitpack.io/v/Agent1k-1/EryBuyer.svg)](https://jitpack.io/#Agent1k-1/EryBuyer)
 
 для maven
 
