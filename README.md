@@ -20,7 +20,7 @@ softdepend: [EryBuyer]
 
 Добавьте EryBuyer в зависимости проекта со scope `provided`.
 
-Через JitPack:
+для maven
 
 ```xml
 <repository>
@@ -29,11 +29,23 @@ softdepend: [EryBuyer]
 </repository>
 
 <dependency>
-    <groupId>com.github.ВАШ_АККАУНТ</groupId>
+<groupId>com.github.Agent1k-1</groupId>
     <artifactId>EryBuyer</artifactId>
-    <version>ТЕГ_РЕЛИЗА</version>
+    <version>v3</version>
     <scope>provided</scope>
 </dependency>
+```
+
+для gradle
+
+```groovy
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    compileOnly 'com.github.Agent1k-1:EryBuyer:v3'
+}
 ```
 
 ### 2. Получение API
