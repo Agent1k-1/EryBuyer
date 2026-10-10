@@ -17,6 +17,7 @@ import com.erydevs.utils.HexUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class BuyerGUI {
     private final EryBuyer plugin;
@@ -24,11 +25,11 @@ public class BuyerGUI {
     private final MenuLoader menuLoader;
     private final MenuLoaderService menuLoaderService;
     private final ItemStackService itemStackFactory;
-    private final Map<Integer, Entry> combinedSlotMap = new HashMap<>();
-    private final Map<String, Map<Integer, Entry>> entriesByTitle = new HashMap<>();
-    private final Map<String, Map<Integer, List<String>>> actionsByTitle = new HashMap<>();
-    private final Map<String, String> menuNameByTitle = new HashMap<>();
-    private final Map<String, Map<Integer, Entry>> templateByMenu = new HashMap<>();
+    private final Map<Integer, Entry> combinedSlotMap = new ConcurrentHashMap<>();
+    private final Map<String, Map<Integer, Entry>> entriesByTitle = new ConcurrentHashMap<>();
+    private final Map<String, Map<Integer, List<String>>> actionsByTitle = new ConcurrentHashMap<>();
+    private final Map<String, String> menuNameByTitle = new ConcurrentHashMap<>();
+    private final Map<String, Map<Integer, Entry>> templateByMenu = new ConcurrentHashMap<>();
 
     public BuyerGUI(@NotNull EryBuyer plugin, @NotNull Configs configManager, @NotNull MenuLoader menuLoader) {
         this.plugin = plugin;

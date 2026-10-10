@@ -15,17 +15,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitTask;
+import com.erydevs.folia.SchedulerTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class BestManager {
@@ -34,13 +34,13 @@ public class BestManager {
     private final BestConfig bestConfig;
     private final Random random = new Random();
 
-    private final Map<Integer, BestItem> activeItems = new HashMap<>();
+    private final Map<Integer, BestItem> activeItems = new ConcurrentHashMap<>();
     private final List<String> poolOrder = new ArrayList<>();
     private int rotationOffset = 0;
     private long nextRotationAt = 0L;
     private boolean firstRotation = true;
 
-    private BukkitTask rotationTask;
+    private SchedulerTask rotationTask;
 
     public BestManager(@NotNull EryBuyer plugin) {
         this.plugin = plugin;
@@ -96,14 +96,14 @@ public class BestManager {
         return null;
     }
 
-    private void rebuildPoolOrder() {
+    private synchronized void rebuildPoolOrder() {
         poolOrder.clear();
         poolOrder.addAll(bestConfig.getPool().keySet());
     }
 
     private void startRotationTask() {
         long intervalTicks = Math.max(20L, plugin.getConfigManager().getUpdateCustomItems() * 20L);
-        rotationTask = plugin.getServer().getScheduler().runTaskTimer(plugin, this::rotate, intervalTicks, intervalTicks);
+        rotationTask = plugin.getScheduler().runGlobalTimer(this::rotate, intervalTicks, intervalTicks);
     }
 
     public long getNextRotationAt() {
@@ -115,7 +115,7 @@ public class BestManager {
         return Math.max(0L, (nextRotationAt - now) / 1000L);
     }
 
-    public void rotate() {
+    public synchronized void rotate() {
         activeItems.clear();
         plugin.getDataBase().resetAllLimits();
         nextRotationAt = System.currentTimeMillis() + plugin.getConfigManager().getUpdateCustomItems() * 1000L;
@@ -153,10 +153,12 @@ public class BestManager {
         if (template == null || template.isEmpty()) return;
 
         for (Player player : plugin.getServer().getOnlinePlayers()) {
-            List<String> lines = template.stream()
-                    .map(line -> Placeholders.apply(line, player))
-                    .collect(Collectors.toList());
-            ActionType.dispatchAll(plugin, player, lines);
+            plugin.getScheduler().runForPlayer(player, () -> {
+                List<String> lines = template.stream()
+                        .map(line -> Placeholders.apply(line, player))
+                        .collect(Collectors.toList());
+                ActionType.dispatchAll(plugin, player, lines);
+            });
         }
     }
 
@@ -287,7 +289,7 @@ public class BestManager {
 
         plugin.getDataBase().addSoldAmount(player.getUniqueId(), item.getMaterialName(), actual);
 
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> plugin.getDataBase().save(booster));
+        plugin.getScheduler().runAsync(() -> plugin.getDataBase().save(booster));
 
         Entry pseudoEntry = new Entry(item.getMaterialName(), item.getMaterial(), item.getMaterialName(), item.getMaterialName(), Collections.emptyList(), item.getCustomPrice(), item.getCustomPrice64(), item.getSlot());
         List<String> lines = plugin.getMessagesConfig().getMessageSuccessfullyBuyer().stream()
@@ -304,7 +306,7 @@ public class BestManager {
     }
 
     private void refreshOpenMenu(@NotNull Player player) {
-        plugin.getServer().getScheduler().runTask(plugin, () -> {
+        plugin.getScheduler().runForPlayer(player, () -> {
             if (!player.isOnline()) return;
             String title = player.getOpenInventory().getTitle();
             if (isBestTitle(title)) {

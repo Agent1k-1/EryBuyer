@@ -20,7 +20,7 @@ public class OpenMenuAction implements Action {
         }
 
         String finalMenuName = menuName;
-        plugin.getServer().getScheduler().runTask(plugin,
+        plugin.getScheduler().runForPlayer(player,
                 () -> player.openInventory(plugin.getBuyerGUI().createInventory(player, finalMenuName)));
     }
 
@@ -30,6 +30,6 @@ public class OpenMenuAction implements Action {
         String path = plugin.getShopManager().getFirstShopPath();
         if (path == null) return;
 
-        plugin.getServer().getScheduler().runTask(plugin, () -> plugin.getShopGUI().open(player, path));
+        plugin.getScheduler().runForPlayer(player, () -> plugin.getShopGUI().open(player, path));
     }
 }

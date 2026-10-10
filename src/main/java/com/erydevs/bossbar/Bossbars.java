@@ -21,7 +21,7 @@ public class Bossbars {
     public Bossbars(@NotNull EryBuyer plugin) {
         this.plugin = plugin;
         this.barColor = resolveColor(plugin.getConfigManager().getBossbarColor());
-        plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this::updateAll, 100, 100);
+        plugin.getScheduler().runGlobalTimer(this::updateAll, 100L, 100L);
     }
 
     public void createBossBar(@NotNull Player player) {
@@ -50,7 +50,9 @@ public class Bossbars {
         String rawText = plugin.getConfigManager().getBossbarText();
         for (Map.Entry<UUID, BossBar> e : bossbars.entrySet()) {
             Player p = plugin.getServer().getPlayer(e.getKey());
-            if (p != null && p.isOnline()) e.getValue().setTitle(Placeholders.apply(rawText, p));
+            if (p == null || !p.isOnline()) continue;
+            BossBar bar = e.getValue();
+            plugin.getScheduler().runForPlayer(p, () -> bar.setTitle(Placeholders.apply(rawText, p)));
         }
     }
 

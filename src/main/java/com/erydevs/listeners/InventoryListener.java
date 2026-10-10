@@ -126,8 +126,7 @@ public class InventoryListener implements Listener {
         int tokensEarned = entry.tokensX1 * actualAmount;
         if (tokensEarned > 0) plugin.getDataBase().addTokens(p.getUniqueId(), tokensEarned);
 
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
-                () -> plugin.getDataBase().save(booster));
+        plugin.getScheduler().runAsync(() -> plugin.getDataBase().save(booster));
 
         Bukkit.getPluginManager().callEvent(
                 new PlayerSellEvent(p, entry.material, actualAmount, totalPrice, pointsEarned));

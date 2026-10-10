@@ -75,8 +75,7 @@ public class BoosterManager {
         }
 
         if (leveled) {
-            plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
-                    () -> plugin.getDataBase().save(booster));
+            plugin.getScheduler().runAsync(() -> plugin.getDataBase().save(booster));
             Bukkit.getPluginManager().callEvent(
                     new PlayerLevelUpEvent(player, oldLevel, booster.getCurrentLevel()));
         }

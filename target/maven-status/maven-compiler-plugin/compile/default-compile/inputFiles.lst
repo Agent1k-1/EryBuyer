@@ -28,6 +28,7 @@ D:\UPlugin\EryBuyer\src\main\java\com\erydevs\shop\listener\ShopClickListener.ja
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\action\impl\SoundAction.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\buyer\autobuyer\AutoBuyerManager.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\db\MySQL.java
+D:\UPlugin\EryBuyer\src\main\java\com\erydevs\folia\SchedulerTask.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\gui\service\ItemStackService.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\shop\ShopGUI.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\addon\Addon.java
@@ -42,6 +43,8 @@ D:\UPlugin\EryBuyer\src\main\java\com\erydevs\papi\Placeholders.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\action\impl\CloseAction.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\api\EryBuyerAPI.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\buyer\boosters\BoosterConfig.java
+D:\UPlugin\EryBuyer\src\main\java\com\erydevs\folia\impl\FoliaSchedulerImpl.java
+D:\UPlugin\EryBuyer\src\main\java\com\erydevs\folia\FoliaDetector.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\action\Action.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\shop\type\ShopItemType.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\db\Database.java
@@ -52,6 +55,8 @@ D:\UPlugin\EryBuyer\src\main\java\com\erydevs\commands\AutoBuyerCommand.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\buyer\best\BestManager.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\utils\head\ParsedMaterial.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\api\event\PlayerSellEvent.java
+D:\UPlugin\EryBuyer\src\main\java\com\erydevs\folia\SchedulerFactory.java
+D:\UPlugin\EryBuyer\src\main\java\com\erydevs\folia\impl\BukkitSchedulerImpl.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\commands\sub\ReloadCMD.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\gui\button\ButtonConfig.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\commands\tab\AdbuyerTabCompleter.java
@@ -67,6 +72,7 @@ D:\UPlugin\EryBuyer\src\main\java\com\erydevs\addon\AddonManager.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\commands\sub\GiveCMD.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\buyer\best\BestConfig.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\action\impl\CommandAction.java
+D:\UPlugin\EryBuyer\src\main\java\com\erydevs\folia\Scheduler.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\shop\item\ShopItem.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\commands\AdbuyerCommand.java
 D:\UPlugin\EryBuyer\src\main\java\com\erydevs\gui\panel\PanelConfig.java

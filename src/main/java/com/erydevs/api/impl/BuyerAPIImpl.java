@@ -36,8 +36,7 @@ public class BuyerAPIImpl implements BuyerAPI {
     public void addPoints(@NotNull Player player, long amount) {
         PlayerBooster booster = plugin.getDataBase().getPlayerData(player.getUniqueId());
         plugin.getBoosterManager().addPointsAndCheckLevelUp(player, booster, amount);
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
-                () -> plugin.getDataBase().save(booster));
+        plugin.getScheduler().runAsync(() -> plugin.getDataBase().save(booster));
     }
 
     @Override

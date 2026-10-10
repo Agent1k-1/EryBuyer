@@ -9,6 +9,7 @@ com\erydevs\config\Configs.class
 com\erydevs\db\SQLite.class
 com\erydevs\bstats\Metrics$SimpleBarChart.class
 com\erydevs\addon\loader\AddonLoader.class
+com\erydevs\folia\Scheduler.class
 com\erydevs\gui\panel\PanelLoader.class
 com\erydevs\shop\item\ShopItem.class
 com\erydevs\commands\AutoBuyerCommand.class
@@ -54,13 +55,17 @@ com\erydevs\gui\service\ItemStackService.class
 com\erydevs\commands\BuyerCommand.class
 com\erydevs\config\dbConfig.class
 com\erydevs\action\impl\CloseAction.class
+com\erydevs\folia\FoliaDetector.class
 com\erydevs\buyer\boosters\BoosterManager.class
 com\erydevs\buyer\autobuyer\task\AutoBuyerTask.class
 com\erydevs\db\Database.class
 com\erydevs\api\BuyerAPI.class
 com\erydevs\bstats\Metrics$CustomChart.class
 com\erydevs\bstats\Metrics.class
+com\erydevs\folia\SchedulerTask.class
 com\erydevs\gui\click\ClickType.class
+com\erydevs\folia\impl\FoliaSchedulerImpl.class
+com\erydevs\folia\SchedulerFactory.class
 com\erydevs\bstats\Metrics$MetricsBase.class
 com\erydevs\listeners\InventoryChangeListener.class
 com\erydevs\api\impl\BuyerAPIImpl.class
@@ -81,6 +86,7 @@ com\erydevs\shop\ShopManager.class
 com\erydevs\utils\head\ParsedMaterial.class
 com\erydevs\buyer\autobuyer\AutoBuyerManager.class
 com\erydevs\buyer\best\BestPoolEntry.class
+com\erydevs\folia\impl\BukkitSchedulerImpl.class
 com\erydevs\commands\sub\GiveCMD.class
 com\erydevs\config\MessagesConfig.class
 com\erydevs\gui\BuyerGUI.class

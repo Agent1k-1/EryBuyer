@@ -12,7 +12,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
+import com.erydevs.folia.SchedulerTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,7 +30,7 @@ public class AutoBuyerTask {
     private final AutoBuyerManager manager;
     private final Set<UUID> dirty = ConcurrentHashMap.newKeySet();
 
-    private BukkitTask task;
+    private SchedulerTask task;
 
     public AutoBuyerTask(@NotNull EryBuyer plugin, @NotNull AutoBuyerManager manager) {
         this.plugin = plugin;
@@ -40,7 +40,7 @@ public class AutoBuyerTask {
     public void start() {
         if (task != null) return;
         long period = Math.max(1L, plugin.getConfigManager().getAutobuyerTime());
-        task = plugin.getServer().getScheduler().runTaskTimer(plugin, this::processDirtyPlayers, period, period);
+        task = plugin.getScheduler().runGlobalTimer(this::processDirtyPlayers, period, period);
     }
 
     public void stop() {
@@ -73,7 +73,7 @@ public class AutoBuyerTask {
             Player player = plugin.getServer().getPlayer(uuid);
             if (player == null || !player.isOnline()) continue;
 
-            processPlayer(player, entries);
+            plugin.getScheduler().runForPlayer(player, () -> processPlayer(player, entries));
         }
     }
 
@@ -110,8 +110,7 @@ public class AutoBuyerTask {
         int tokensEarned = entry.tokensX1 * amount;
         if (tokensEarned > 0) plugin.getDataBase().addTokens(player.getUniqueId(), tokensEarned);
 
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
-                () -> plugin.getDataBase().save(booster));
+        plugin.getScheduler().runAsync(() -> plugin.getDataBase().save(booster));
 
         Bukkit.getPluginManager().callEvent(
                 new PlayerSellEvent(player, entry.material, amount, totalPrice, pointsEarned));

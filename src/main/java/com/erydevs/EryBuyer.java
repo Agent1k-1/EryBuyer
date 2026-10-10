@@ -14,6 +14,9 @@ import com.erydevs.commands.AdbuyerCommand;
 import com.erydevs.commands.tab.AdbuyerTabCompleter;
 import com.erydevs.commands.sub.ReloadCMD;
 import com.erydevs.commands.sub.GiveCMD;
+import com.erydevs.folia.FoliaDetector;
+import com.erydevs.folia.Scheduler;
+import com.erydevs.folia.SchedulerFactory;
 import com.erydevs.buyer.boosters.BoosterManager;
 import com.erydevs.db.Database;
 import com.erydevs.config.dbConfig;
@@ -50,9 +53,15 @@ public class EryBuyer extends JavaPlugin {
     private AddonManager addonManager;
     private ShopManager shopManager;
     private ShopGUI shopGUI;
+    private Scheduler scheduler;
 
     public void onEnable() {
         instance = this;
+
+        scheduler = SchedulerFactory.create(this);
+        if (FoliaDetector.isFolia()) {
+            getLogger().info("Обнаружена Folia, используется региональный планировщик");
+        }
 
         configManager = new Configs(this);
         configManager.loadConfigs();
@@ -126,11 +135,16 @@ public class EryBuyer extends JavaPlugin {
     }
 
     private void startMenuRefreshTask() {
-        getServer().getScheduler().runTaskTimer(this, () -> {
+        scheduler.runGlobalTimer(() -> {
             for (org.bukkit.entity.Player player : getServer().getOnlinePlayers()) {
-                buyerGUI.refreshOpenInventory(player);
+                scheduler.runForPlayer(player, () -> buyerGUI.refreshOpenInventory(player));
             }
         }, 20L, 20L);
+    }
+
+    @NotNull
+    public Scheduler getScheduler() {
+        return scheduler;
     }
 
 

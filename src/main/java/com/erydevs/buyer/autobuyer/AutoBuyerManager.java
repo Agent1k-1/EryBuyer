@@ -24,8 +24,7 @@ public class AutoBuyerManager {
 
     private void startTopPointsUpdateTask() {
         long intervalTicks = Math.max(20L, plugin.getConfigManager().getBuyerTopUpdateInterval() * 20L);
-        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin,
-                () -> plugin.getDataBase().refreshTopPointsCache(),
+        plugin.getScheduler().runAsyncTimer(() -> plugin.getDataBase().refreshTopPointsCache(),
                 intervalTicks, intervalTicks);
     }
 

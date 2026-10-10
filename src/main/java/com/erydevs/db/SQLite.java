@@ -147,8 +147,7 @@ public class SQLite implements Database {
         int updated = current + amount;
         limitCache.put(key, updated);
 
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
-                () -> writeSoldAmount(uuid, material, updated));
+        plugin.getScheduler().runAsync(() -> writeSoldAmount(uuid, material, updated));
     }
 
     private void writeSoldAmount(@NotNull UUID uuid, @NotNull String material, int value) {
@@ -293,7 +292,7 @@ public class SQLite implements Database {
         int updated = Math.max(0, getTokens(uuid) + amount);
         tokensCache.put(uuid, updated);
 
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> writeTokens(uuid, updated));
+        plugin.getScheduler().runAsync(() -> writeTokens(uuid, updated));
     }
 
     private void writeTokens(@NotNull UUID uuid, int value) {

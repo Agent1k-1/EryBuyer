@@ -18,7 +18,7 @@ public class CommandAction implements Action {
     private void reopenMenu(@NotNull EryBuyer plugin, @NotNull Player player) {
         String title = player.getOpenInventory().getTitle();
         String menuName = plugin.getBuyerGUI().getMenuNameByTitle(title);
-        plugin.getServer().getScheduler().runTaskLater(plugin,
+        plugin.getScheduler().runForPlayerLater(player,
                 () -> player.openInventory(plugin.getBuyerGUI().createInventory(player, menuName)), 1L);
     }
 }
