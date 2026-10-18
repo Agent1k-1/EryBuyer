@@ -2,9 +2,6 @@ package com.erydevs.db;
 
 import com.erydevs.EryBuyer;
 import com.erydevs.buyer.boosters.PlayerBooster;
-import org.jetbrains.annotations.NotNull;
-import org.sqlite.SQLiteConfig;
-
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,6 +17,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.sqlite.SQLiteConfig;
 
 public class SQLite implements Database {
 
@@ -102,6 +101,7 @@ public class SQLite implements Database {
         try (Statement st = getConnection().createStatement()) {
             st.executeUpdate(create);
             st.executeUpdate(createLimits);
+            st.executeUpdate("CREATE TABLE IF NOT EXISTS " + "buyer_autobuyer_items" + " (uuid VARCHAR(36) NOT NULL, material VARCHAR(64) NOT NULL, enabled INTEGER NOT NULL, PRIMARY KEY(uuid, material))");
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Ошибка создания таблицы базы данных", e);
         }
@@ -322,6 +322,34 @@ public class SQLite implements Database {
             logger.log(Level.WARNING, "Ошибка закрытия соединения с базой данных", e);
         }
     }
+    @Override
+    public synchronized Map<String, Boolean> loadAutoBuyerSettings(UUID uuid) {
+        Map<String, Boolean> result = new java.util.HashMap<>();
+        String sql = "SELECT material, enabled FROM " + "buyer_autobuyer_items" + " WHERE uuid = ?";
+        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
+            statement.setString(1, uuid.toString());
+            try (ResultSet rows = statement.executeQuery()) {
+                while (rows.next()) result.put(rows.getString("material"), rows.getBoolean("enabled"));
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot load autobuyer settings: " + uuid, e);
+        }
+    }
+
+    @Override
+    public synchronized void saveAutoBuyerSetting(UUID uuid, String material, boolean enabled) {
+        String sql = "INSERT INTO " + "buyer_autobuyer_items" + " (uuid, material, enabled) VALUES (?, ?, ?) ON CONFLICT(uuid, material) DO UPDATE SET enabled = excluded.enabled";
+        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
+            statement.setString(1, uuid.toString());
+            statement.setString(2, material);
+            statement.setBoolean(3, enabled);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot save autobuyer settings: " + uuid, e);
+        }
+    }
+
 }
 
 

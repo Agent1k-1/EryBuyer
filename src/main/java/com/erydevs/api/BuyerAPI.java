@@ -1,5 +1,9 @@
 package com.erydevs.api;
 
+import org.bukkit.Material;
+
+import java.util.concurrent.CompletableFuture;
+
 import com.erydevs.api.addon.Addon;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -24,6 +28,16 @@ public interface BuyerAPI {
     boolean isAutobuyerEnabled(@NotNull Player player);
 
     void toggleAutobuyer(@NotNull Player player);
+
+    CompletableFuture<Void> loadAutobuyerSettings(@NotNull UUID uuid);
+
+    boolean isAutobuyerSettingsLoaded(@NotNull UUID uuid);
+
+    boolean isAutobuyerItemEnabled(@NotNull UUID uuid, @NotNull Material material);
+
+    void setAutobuyerItemEnabled(@NotNull Player player, @NotNull Material material, boolean enabled);
+
+    void openAutobuyerMenu(@NotNull Player player);
 
     @NotNull
     List<Map.Entry<String, Long>> getTopPoints();

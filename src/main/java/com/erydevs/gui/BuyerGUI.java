@@ -1,23 +1,23 @@
 package com.erydevs.gui;
 
-import com.erydevs.gui.entry.Entry;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import com.erydevs.EryBuyer;
 import com.erydevs.config.Configs;
 import com.erydevs.gui.button.ButtonConfig;
 import com.erydevs.gui.button.ButtonLoader;
+import com.erydevs.gui.entry.Entry;
 import com.erydevs.gui.loader.MenuLoader;
-import com.erydevs.gui.service.MenuLoaderService;
 import com.erydevs.gui.service.ItemStackService;
-import com.erydevs.utils.head.SkullUtils;
+import com.erydevs.gui.service.MenuLoaderService;
 import com.erydevs.utils.HexUtils;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import com.erydevs.utils.head.SkullUtils;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BuyerGUI {
     private final EryBuyer plugin;
@@ -42,6 +42,9 @@ public class BuyerGUI {
 
     @NotNull
     public Inventory createInventory(@NotNull Player player, @NotNull String menuName) {
+        if (!plugin.getAutoBuyerSettings().isLoaded(player.getUniqueId())) {
+            plugin.getAutoBuyerSettings().runForPlayer(player, () -> refreshOpenInventory(player));
+        }
         boolean isBest = plugin.getBestManager() != null && plugin.getBestManager().isBestMenu(menuName);
         if (isBest && !plugin.getBestManager().isEnabledInConfig()) {
             menuName = "menu";

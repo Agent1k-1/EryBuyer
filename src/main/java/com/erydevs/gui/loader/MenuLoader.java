@@ -1,15 +1,18 @@
 package com.erydevs.gui.loader;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.io.File;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.Map;
 
 public class MenuLoader {
 
@@ -45,6 +48,30 @@ public class MenuLoader {
             if (path == null || path.trim().isEmpty()) continue;
             File f = new File(plugin.getDataFolder(), path);
             if (!f.exists()) plugin.saveResource(path, false);
+            upgradeAutoBuyerButton(f);
+        }
+    }
+
+    private void upgradeAutoBuyerButton(File file) {
+        try {
+            YamlConfiguration cfg = new YamlConfiguration();
+            cfg.load(file);
+            ConfigurationSection buttons = cfg.getConfigurationSection("knops-settings");
+            if (buttons == null) return;
+            boolean changed = false;
+            for (String key : buttons.getKeys(false)) {
+                String path = key + ".action";
+                if (buttons.getStringList(path).equals(Arrays.asList("[command] autobuyer", "[close]"))
+                        || buttons.getStringList(path).equals(Collections.singletonList("[openautobuyer] menu"))) {
+                    buttons.set(path, Collections.singletonList("[openmenu] autobuyer"));
+                    buttons.set(key + ".material", "MAGMA_CREAM");
+                    buttons.set(key + ".name", "&b➥ Автоскупщик");
+                    changed = true;
+                }
+            }
+            if (changed) cfg.save(file);
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.WARNING, "Не удалось обновить кнопку автоскупщика", e);
         }
     }
 

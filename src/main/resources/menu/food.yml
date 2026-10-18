@@ -1,0 +1,214 @@
+name: '&#7D2626Скупщик &#B58A8A| &#E73F3FЕда'
+size: 45
+panels:
+  - material: RED_STAINED_GLASS_PANE
+    name: ' '
+    slots:
+      - 0
+      - 1
+      - 2
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 16
+      - 17
+      - 18
+      - 26
+      - 27
+      - 28
+      - 34
+      - 35
+      - 36
+      - 37
+      - 38
+      - 42
+      - 43
+      - 44
+knops-settings:
+  back:
+    name: '&#E73F3F◀ &f&fОбратно'
+    material: SPECTRAL_ARROW
+    slot: 40
+    lore: []
+    action:
+      - '[sound] BLOCK_ENDER_CHEST_CLOSE'
+      - '[openmenu] menu'
+item-settings:
+  pumpkin:
+    name: '&#E73F3F✦ &fТыква'
+    message-name: тыкв
+    lore:
+      - ''
+      - '&#E73F3F▌ &fЦены за продажу по количеству:'
+      - '&#E73F3F▌'
+      - '&#E73F3F▌ &f– 1 шт. » &#E73F3F%prince-x1% монет'
+      - '&#E73F3F▌ &f– 64 шт. » &#E73F3F%prince-x64% монет'
+      - ''
+      - '&#E73F3F▪ &fПродать &#E73F3F1 штуку &7(ЛКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3F64 штуки &7(ПКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3Fвсё &7(SHIFT + ПКМ)'
+      - ''
+      - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
+      - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
+    material: PUMPKIN
+    slot: 20
+    prince-x1: 65.0
+    prince-x64: 4160.0
+    points-from-the-buyer-x1: 5
+    tokens-from-the-buyer-x1: 1
+  melon:
+    name: '&#E73F3F✦ &fАрбуз'
+    message-name: арбузов
+    lore:
+      - ''
+      - '&#E73F3F▌ &fЦены за продажу по количеству:'
+      - '&#E73F3F▌'
+      - '&#E73F3F▌ &f– 1 шт. » &#E73F3F%prince-x1% монет'
+      - '&#E73F3F▌ &f– 64 шт. » &#E73F3F%prince-x64% монет'
+      - ''
+      - '&#E73F3F▪ &fПродать &#E73F3F1 штуку &7(ЛКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3F64 штуки &7(ПКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3Fвсё &7(SHIFT + ПКМ)'
+      - ''
+      - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
+      - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
+    material: MELON
+    slot: 21
+    prince-x1: 65.0
+    prince-x64: 4160.0
+    points-from-the-buyer-x1: 5
+    tokens-from-the-buyer-x1: 1
+  sweet_berries:
+    name: '&#E73F3F✦ &fСладкие ягоды'
+    message-name: сладких ягод
+    lore:
+      - ''
+      - '&#E73F3F▌ &fЦены за продажу по количеству:'
+      - '&#E73F3F▌'
+      - '&#E73F3F▌ &f– 1 шт. » &#E73F3F%prince-x1% монет'
+      - '&#E73F3F▌ &f– 64 шт. » &#E73F3F%prince-x64% монет'
+      - ''
+      - '&#E73F3F▪ &fПродать &#E73F3F1 штуку &7(ЛКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3F64 штуки &7(ПКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3Fвсё &7(SHIFT + ПКМ)'
+      - ''
+      - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
+      - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
+    material: SWEET_BERRIES
+    slot: 22
+    prince-x1: 25.0
+    prince-x64: 1600.0
+    points-from-the-buyer-x1: 1
+    tokens-from-the-buyer-x1: 1
+  potato:
+    name: '&#E73F3F✦ &fКартофель'
+    message-name: картофеля
+    lore:
+      - ''
+      - '&#E73F3F▌ &fЦены за продажу по количеству:'
+      - '&#E73F3F▌'
+      - '&#E73F3F▌ &f– 1 шт. » &#E73F3F%prince-x1% монет'
+      - '&#E73F3F▌ &f– 64 шт. » &#E73F3F%prince-x64% монет'
+      - ''
+      - '&#E73F3F▪ &fПродать &#E73F3F1 штуку &7(ЛКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3F64 штуки &7(ПКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3Fвсё &7(SHIFT + ПКМ)'
+      - ''
+      - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
+      - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
+    material: POTATO
+    slot: 23
+    prince-x1: 25.0
+    prince-x64: 1600.0
+    points-from-the-buyer-x1: 4
+    tokens-from-the-buyer-x1: 1
+  beetroot:
+    name: '&#E73F3F✦ &fСвёкла'
+    message-name: свёклы
+    lore:
+      - ''
+      - '&#E73F3F▌ &fЦены за продажу по количеству:'
+      - '&#E73F3F▌'
+      - '&#E73F3F▌ &f– 1 шт. » &#E73F3F%prince-x1% монет'
+      - '&#E73F3F▌ &f– 64 шт. » &#E73F3F%prince-x64% монет'
+      - ''
+      - '&#E73F3F▪ &fПродать &#E73F3F1 штуку &7(ЛКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3F64 штуки &7(ПКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3Fвсё &7(SHIFT + ПКМ)'
+      - ''
+      - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
+      - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
+    material: BEETROOT
+    slot: 24
+    prince-x1: 35.0
+    prince-x64: 2240.0
+    points-from-the-buyer-x1: 5
+    tokens-from-the-buyer-x1: 1
+  cocoa_beans:
+    name: '&#E73F3F✦ &fКакао Бобы'
+    message-name: какао-бобов
+    lore:
+      - ''
+      - '&#E73F3F▌ &fЦены за продажу по количеству:'
+      - '&#E73F3F▌'
+      - '&#E73F3F▌ &f– 1 шт. » &#E73F3F%prince-x1% монет'
+      - '&#E73F3F▌ &f– 64 шт. » &#E73F3F%prince-x64% монет'
+      - ''
+      - '&#E73F3F▪ &fПродать &#E73F3F1 штуку &7(ЛКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3F64 штуки &7(ПКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3Fвсё &7(SHIFT + ПКМ)'
+      - ''
+      - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
+      - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
+    material: COCOA_BEANS
+    slot: 30
+    prince-x1: 40.0
+    prince-x64: 2560.0
+    points-from-the-buyer-x1: 3
+    tokens-from-the-buyer-x1: 1
+  golden_apple:
+    name: '&#E73F3F✦ &fЗолотое яблоко'
+    message-name: золотых яблок
+    lore:
+      - ''
+      - '&#E73F3F▌ &fЦены за продажу по количеству:'
+      - '&#E73F3F▌'
+      - '&#E73F3F▌ &f– 1 шт. » &#E73F3F%prince-x1% монет'
+      - '&#E73F3F▌ &f– 64 шт. » &#E73F3F%prince-x64% монет'
+      - ''
+      - '&#E73F3F▪ &fПродать &#E73F3F1 штуку &7(ЛКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3F64 штуки &7(ПКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3Fвсё &7(SHIFT + ПКМ)'
+      - ''
+      - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
+      - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
+    material: GOLDEN_APPLE
+    slot: 31
+    prince-x1: 295.0
+    prince-x64: 18880.0
+    points-from-the-buyer-x1: 1
+    tokens-from-the-buyer-x1: 1
+  cake:
+    name: '&#E73F3F✦ &fТорт'
+    message-name: тортов
+    lore:
+      - ''
+      - '&#E73F3F▌ &fЦены за продажу по количеству:'
+      - '&#E73F3F▌'
+      - '&#E73F3F▌ &f– 1 шт. » &#E73F3F%prince-x1% монет'
+      - '&#E73F3F▌ &f– 64 шт. » &#E73F3F%prince-x64% монет'
+      - ''
+      - '&#E73F3F▪ &fПродать &#E73F3F1 штуку &7(ЛКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3F64 штуки &7(ПКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3Fвсё &7(SHIFT + ПКМ)'
+      - ''
+      - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
+      - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
+    material: CAKE
+    slot: 32
+    prince-x1: 145.0
+    prince-x64: 9280.0
+    points-from-the-buyer-x1: 1
+    tokens-from-the-buyer-x1: 1

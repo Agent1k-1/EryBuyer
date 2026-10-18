@@ -2,12 +2,12 @@ package com.erydevs.buyer.autobuyer;
 
 import com.erydevs.EryBuyer;
 import com.erydevs.buyer.autobuyer.task.AutoBuyerTask;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class AutoBuyerManager {
 
@@ -45,7 +45,15 @@ public class AutoBuyerManager {
 
         if (enabled) {
             autobuyers.add(uuid);
-            task.markDirty(uuid);
+            plugin.getAutoBuyerSettings().load(uuid).whenComplete((ignored, error) -> {
+                if (error != null) {
+                    plugin.getLogger().log(Level.WARNING, "Не удалось загрузить настройки автоскупщика: " + uuid, error);
+                    return;
+                }
+                if (plugin.isEnabled()) plugin.getScheduler().runForPlayer(player, () -> {
+                    if (player.isOnline() && isAutobuyerEnabled(player)) task.markDirty(uuid);
+                });
+            });
             if (plugin.getConfigManager().isBossbarEnabled() && plugin.getBossBarManager() != null) {
                 plugin.getBossBarManager().createBossBar(player);
             }

@@ -1,15 +1,18 @@
 package com.erydevs.db;
 
 import com.erydevs.buyer.boosters.PlayerBooster;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.jetbrains.annotations.NotNull;
 
 public interface Database {
 
     boolean isConnected();
+
+    Map<String, Boolean> loadAutoBuyerSettings(UUID uuid);
+
+    void saveAutoBuyerSetting(UUID uuid, String material, boolean enabled);
 
     int getSoldAmount(@NotNull UUID uuid, @NotNull String material);
 

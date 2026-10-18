@@ -1,111 +1,95 @@
-name: "&#E73F3F              Скупщик            "
+name: '&#7D2626Скупщик &#B58A8A| &#E73F3FГлавное меню'
 size: 45
 panels:
   - material: RED_STAINED_GLASS_PANE
-    name: ""
-    lore:
-      - ""
+    name: ' '
     slots:
       - 0
       - 1
+      - 2
+      - 6
       - 7
       - 8
       - 9
+      - 10
+      - 16
       - 17
+      - 18
+      - 26
       - 27
+      - 28
+      - 34
       - 35
       - 36
       - 37
+      - 38
+      - 42
       - 43
+      - 44
 knops-settings:
   1:
-    name: "&#DB2339• &#E73F3FЗакрыть &#DB2339•"
+    name: '&#E73F3F➥ &fИнформация о вас'
     lore:
-      - ""
-      - " &c▶ &fНажмите для &#DB2339выхода"
-      - ""
-    slot: 44
-    material: SPECTRAL_ARROW
-    action:
-      - "[sound] BLOCK_ENDER_CHEST_CLOSE"
-      - "[close]"
+      - ''
+      - '&#E73F3F▌ &fТекущий бустер: %buyer_booster_status%'
+      - '&#E73F3F▌ &fОсталось времени: &#E73F3F%buyer_booster_timer%'
+      - '&#E73F3F▌ &fМножитель: &#E73F3F(x%buyer_factor%)'
+      - '&#E73F3F▌ &fОчки скупщика: &#E73F3F%buyer_points% очков ✣'
+    slot: 22
+    material: BOOK
   2:
-    name: "&#DB2339• &#E73F3FИнформация о прокачке скупщика &#DB2339•"
-    lore:
-      - ""
-      - " &c▪ &fВаш уровень скупщика: &#DB2339%buyer_booster_lvl%&f/&#DB2339%buyer_booster_max_lvl%"
-      - " &c▪ &fМножитель монет: &#DB2339x%buyer_factor%"
-      - " &c▪ &fПоинты: &#E73F3F%buyer_points%&f/&#DB2339%buyer_points_next_lvl%"
-      - " &c▪ &fЖетоны: &#E73F3F%buyer_tokens%"
-      - ""
-    slot: 4
-    material: basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWViM2Y5MzJkNGM1ODJiOWY5ZjAyNjJhYTY3N2NiY2Y2NGE0MTIxNWNjYmYxODY2Y2Q3YjA2ZWJjN2UxZiJ9fX0
-  3:
-    name: "&#DB2339• &#E73F3FАвто-скупщик &#DB2339•"
-    lore:
-      - ""
-      - " &c▪ &fСтатус: %autobuyer_status%"
-      - ""
-      - " &c▶ &fНажмите для &#DB2339перехода"
-      - ""
-    slot: 40
-    material: CLOCK
+    name: '&#E73F3F➥ &fАвтоскупщик'
+    lore: []
+    slot: 19
+    material: MAGMA_CREAM
     action:
-      - "[command] autobuyer"
-      - "[close]"
+      - '[openmenu] autobuyer'
 menu-settings:
   1:
-    name: "&#DB2339• &#E73F3FРесурсы с шахты &#DB2339•"
-    lore:
-      - ""
-      - " &c▶ &fНажмите для &#DB2339перехода"
-      - ""
-    slot: 20
+    name: '&fДрагоценности'
+    lore: []
+    slot: 14
     material: DIAMOND
     action:
-      - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
-      - "[openmenu] mine"
+      - '[sound] ENTITY_EXPERIENCE_ORB_PICKUP'
+      - '[openmenu] mine'
   2:
-    name: "&#DB2339• &#E73F3FФермерство &#DB2339•"
-    lore:
-      - ""
-      - " &c▶ &fНажмите для &#DB2339перехода"
-      - ""
-    slot: 24
-    material: WHEAT
+    name: '&fФермерство'
+    lore: []
+    slot: 21
+    material: SUGAR_CANE
     action:
-      - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
-      - "[openmenu] farma"
+      - '[sound] ENTITY_EXPERIENCE_ORB_PICKUP'
+      - '[openmenu] farma'
   3:
-    name: "&#DB2339• &#E73F3FЛут с мобов &#DB2339•"
-    lore:
-      - ""
-      - " &c▶ &fНажмите для &#DB2339перехода"
-      - ""
+    name: '&fЛут с мобов'
+    lore: []
     slot: 31
-    material: ROTTEN_FLESH
+    material: GUNPOWDER
     action:
-      - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
-      - "[openmenu] mob"
+      - '[sound] ENTITY_EXPERIENCE_ORB_PICKUP'
+      - '[openmenu] mob'
   4:
-    name: "&#DB2339• &#E73F3FПовышенный спрос &#DB2339•"
-    lore:
-      - ""
-      - " &c▶ &fНажмите для &#DB2339перехода"
-      - ""
+    name: '&#C73924★ &#D45B27Повышенный спрос &#D9A929★'
+    lore: []
     slot: 13
-    material: HEART_OF_THE_SEA
+    material: FIRE_CHARGE
     action:
-      - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
-      - "[openmenu] bestmenu"
+      - '[sound] ENTITY_EXPERIENCE_ORB_PICKUP'
+      - '[openmenu] bestmenu'
   5:
-    name: "&#DB2339• &#E73F3FМагазин скупщика &#DB2339•"
-    lore:
-      - ""
-      - " &c▶ &fНажмите для &#DB2339перехода"
-      - ""
-    slot: 22
-    material: GOLDEN_APPLE
+    name: '&#E73F3F◀ &fМагазин'
+    lore: []
+    slot: 25
+    material: EMERALD
     action:
-      - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
-      - "[openmenu] shop"
+      - '[sound] ENTITY_EXPERIENCE_ORB_PICKUP'
+      - '[openmenu] shop'
+  food:
+    name: '&fЕда'
+    material: PUMPKIN
+    slot: 23
+    lore: []
+    action:
+      - '[sound] ENTITY_EXPERIENCE_ORB_PICKUP'
+      - '[openmenu] food'

@@ -3,9 +3,6 @@ package com.erydevs.db;
 import com.erydevs.EryBuyer;
 import com.erydevs.buyer.boosters.PlayerBooster;
 import com.mysql.cj.jdbc.Driver;
-import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.NotNull;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +17,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
 
 public class MySQL implements Database {
 
@@ -29,6 +28,7 @@ public class MySQL implements Database {
     private final Properties properties = new Properties();
     private final String table;
     private final String limitsTable;
+    private final String autoBuyerTable;
     private final Map<UUID, PlayerBooster> cache = new ConcurrentHashMap<>();
     private final Map<String, Integer> limitCache = new ConcurrentHashMap<>();
     private final Map<UUID, Integer> tokensCache = new ConcurrentHashMap<>();
@@ -56,6 +56,7 @@ public class MySQL implements Database {
 
         this.table = prefix + "buyer_players";
         this.limitsTable = prefix + "buyer_limits";
+        this.autoBuyerTable = prefix + "buyer_autobuyer_items";
 
         connect();
         if (isConnected()) {
@@ -108,6 +109,7 @@ public class MySQL implements Database {
         try (Statement st = getConnection().createStatement()) {
             st.executeUpdate(create);
             st.executeUpdate(createLimits);
+            st.executeUpdate("CREATE TABLE IF NOT EXISTS " + autoBuyerTable + " (uuid VARCHAR(36) NOT NULL, material VARCHAR(64) NOT NULL, enabled INTEGER NOT NULL, PRIMARY KEY(uuid, material))");
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Ошибка создания таблицы базы данных MySQL", e);
         }
@@ -338,4 +340,32 @@ public class MySQL implements Database {
             logger.log(Level.WARNING, "Ошибка закрытия соединения с базой данных MySQL", e);
         }
     }
+    @Override
+    public synchronized Map<String, Boolean> loadAutoBuyerSettings(UUID uuid) {
+        Map<String, Boolean> result = new java.util.HashMap<>();
+        String sql = "SELECT material, enabled FROM " + autoBuyerTable + " WHERE uuid = ?";
+        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
+            statement.setString(1, uuid.toString());
+            try (ResultSet rows = statement.executeQuery()) {
+                while (rows.next()) result.put(rows.getString("material"), rows.getBoolean("enabled"));
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot load autobuyer settings: " + uuid, e);
+        }
+    }
+
+    @Override
+    public synchronized void saveAutoBuyerSetting(UUID uuid, String material, boolean enabled) {
+        String sql = "INSERT INTO " + autoBuyerTable + " (uuid, material, enabled) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE enabled = VALUES(enabled)";
+        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
+            statement.setString(1, uuid.toString());
+            statement.setString(2, material);
+            statement.setBoolean(3, enabled);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot save autobuyer settings: " + uuid, e);
+        }
+    }
+
 }

@@ -1,8 +1,8 @@
 sound:
   sound_open_menu:
     sound: BLOCK_CHEST_OPEN
-    pitch: 1.0 # Высота тона звука
-    volume: 1.0 # Громкость звука
+    pitch: 1.0
+    volume: 1.0
     enabled: true
   no-item-sound:
     sound: ENTITY_VILLAGER_NO
@@ -21,20 +21,22 @@ sound:
     enabled: true
 bossbar-settings:
   bossbar: true
-  text: "&fУ вас &aвключён &cавто-скупщик"
+  text: '&fУ вас &aвключён &cавто-скупщик'
   color: RED
   autobuyer-time: 40
 buyer-settings:
-  enable-best-menu: true # Включить ли предметы повышенного спроса?
-  update-custom-items: 14400 # время обновления предметов повышенного спроса
-  buyer-shop: true # включен ли магазин скупщика
+  enable-best-menu: true
+  update-custom-items: 14400
+  buyer-shop: true
   shop-register:
-    - "shop/shop.yml" # НЕ МЕНЯТЬ
+    - shop/shop.yml
 buyer-top:
-  update-interval: 30 # секунд между обновлением топа игроков по поинтам
+  update-interval: 30
 register-menu:
-  - "menu/menu.yml"
-  - "menu/mine.yml"
-  - "menu/farma.yml"
-  - "menu/mob.yml"
-  - "menu/bestmenu.yml"
+  - menu/menu.yml
+  - menu/mine.yml
+  - menu/farma.yml
+  - menu/mob.yml
+  - menu/bestmenu.yml
+  - menu/autobuyer.yml
+  - menu/food.yml

@@ -213,8 +213,7 @@ public class BestManager {
         if (input == null) return "";
         UUID uuid = player.getUniqueId();
         int soldNow = plugin.getDataBase().getSoldAmount(uuid, item.getMaterialName());
-        String withBest = Placeholders.applyBest(input, item, soldNow);
-        return Placeholders.apply(withBest, player);
+        return Placeholders.applyBest(input, player, item, soldNow);
     }
 
     public void handleClick(@NotNull Player player, int slot, @NotNull ClickType clickType) {

@@ -8,6 +8,8 @@ import com.erydevs.gui.click.ClickType;
 import com.erydevs.gui.entry.Entry;
 import com.erydevs.papi.Placeholders;
 import com.erydevs.utils.inventory.InventoryUtils;
+import java.util.List;
+import java.util.stream.Collectors;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -16,9 +18,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class InventoryListener implements Listener {
 
@@ -35,9 +34,25 @@ public class InventoryListener implements Listener {
         e.setCancelled(true);
 
         int slot = e.getRawSlot();
-        if (slot < 0) return;
+        if (slot < 0 || slot >= e.getView().getTopInventory().getSize()) return;
         if (!(e.getWhoClicked() instanceof Player)) return;
         Player p = (Player) e.getWhoClicked();
+
+        if (e.getClick() == org.bukkit.event.inventory.ClickType.DROP) {
+            if (plugin.getBestManager() != null && plugin.getBestManager().isBestTitle(title)) return;
+            Entry entry = plugin.getBuyerGUI().getEntry(title, slot);
+            org.bukkit.Material material = entry != null && entry.priceX1 > 0 ? entry.material : null;
+            if (material != null && p.hasPermission("erybuyer.autobuyer")) {
+                plugin.getAutoBuyerSettings().runForPlayer(p, () -> {
+                    plugin.getAutoBuyerSettings().setItemEnabled(p.getUniqueId(), material,
+                            !plugin.getAutoBuyerSettings().isItemEnabled(p.getUniqueId(), material));
+                    plugin.getAutoBuyerManager().markDirty(p);
+                    plugin.getBuyerGUI().refreshOpenInventory(p);
+                });
+            }
+            return;
+        }
+        if (!e.getClick().isLeftClick() && !e.getClick().isRightClick()) return;
 
         List<String> acts = plugin.getBuyerGUI().getActions(title, slot);
         if (acts != null && !acts.isEmpty()) {
@@ -66,7 +81,7 @@ public class InventoryListener implements Listener {
         }
         if (clickType == ClickType.RIGHT) {
             int totalCount = InventoryUtils.count(p, entry.material);
-            if (totalCount == 0) {
+            if (totalCount < 64) {
                 List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()
                         .map(line -> Placeholders.apply(line, p, entry, 64))
                         .collect(Collectors.toList());
@@ -74,7 +89,6 @@ public class InventoryListener implements Listener {
                 playNoItemSound(p);
                 return;
             }
-            if (totalCount < 64) return;
             processSale(p, entry, 64, entry.priceX1);
             return;
         }
@@ -90,6 +104,11 @@ public class InventoryListener implements Listener {
             }
             processSale(p, entry, totalCount, entry.priceX1);
         }
+    }
+
+    @EventHandler
+    public void onInventoryDrag(org.bukkit.event.inventory.InventoryDragEvent event) {
+        if (plugin.getBuyerGUI().isManagedTitle(event.getView().getTitle())) event.setCancelled(true);
     }
 
     @NotNull

@@ -4,14 +4,15 @@ import com.erydevs.EryBuyer;
 import com.erydevs.api.BuyerAPI;
 import com.erydevs.api.addon.Addon;
 import com.erydevs.buyer.boosters.PlayerBooster;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class BuyerAPIImpl implements BuyerAPI {
 
@@ -59,6 +60,32 @@ public class BuyerAPIImpl implements BuyerAPI {
     @Override
     public void toggleAutobuyer(@NotNull Player player) {
         plugin.getAutoBuyerManager().toggleAutobuyer(player);
+    }
+
+    @Override
+    public CompletableFuture<Void> loadAutobuyerSettings(UUID uuid) {
+        return plugin.getAutoBuyerSettings().load(uuid);
+    }
+
+    @Override
+    public boolean isAutobuyerSettingsLoaded(UUID uuid) {
+        return plugin.getAutoBuyerSettings().isLoaded(uuid);
+    }
+
+    @Override
+    public boolean isAutobuyerItemEnabled(UUID uuid, Material material) {
+        return plugin.getAutoBuyerSettings().isItemEnabled(uuid, material);
+    }
+
+    @Override
+    public void setAutobuyerItemEnabled(Player player, Material material, boolean enabled) {
+        plugin.getAutoBuyerSettings().setItemEnabled(player.getUniqueId(), material, enabled);
+        plugin.getAutoBuyerManager().markDirty(player);
+    }
+
+    @Override
+    public void openAutobuyerMenu(Player player) {
+        plugin.getScheduler().runForPlayer(player, () -> player.openInventory(plugin.getBuyerGUI().createInventory(player, "autobuyer")));
     }
 
     @Override

@@ -1,34 +1,42 @@
 message:
   error-no-item:
-    - "[message] &#E73F3F▌ &fУ вас нет предмета &#DB2339%item_name%"
+    - '[message] &#E73F3F✦ &fУ вас недостаточно &#FF6B6B%item_name% &fдля продажи!'
   successfully-buyer:
-    - "[message] &#E73F3F▌ &fВы успешно продали &#DB2339%item_name% &fза &#DB2339$%prince%"
+    - '[message] &#E73F3F✦ &fВы продали &#FF6B6B%item_name% &fза &#FF6B6B$%prince%&f.'
   autobuyer-use:
-    - "[message] &#E73F3F▌ &fВы продали скупщику &#DB2339%item_sell% &fшт. — баланс &#DB2339$%vault_eco_balance%"
+    - '[message] &#E73F3F✦ &fПродано &#FF6B6B%item_sell% &fшт. &8• &fБаланс: &#FF6B6B$%vault_eco_balance%'
   autobuyer-status:
-    - "[message] &#E73F3F▌ &fАвто-скупщик: %autobuyer_status%"
+    - '[message] &#E73F3F✦ &fАвтоскупщик: %autobuyer_status%'
   error-permission:
-    - "[message] &#E73F3F▌ &fУ вас недостаточно прав"
+    - '[message] &#E73F3F✦ &fУ вас &#FF6B6Bнедостаточно прав &fдля этого действия.'
   new-booster:
-    - "[message] &#E73F3F▌ &fВы достигли &#DB2339нового уровня скупщика"
-    - "[message] &#E73F3F▌ &fТеперь вам доступен бустер &#DB2339x%buyer_new_booster%"
+    - '[message] &#E73F3F✦ &fВы достигли &#FF6B6Bнового уровня скупщика&f!'
+    - '[message] &#E73F3F✦ &fТеперь вам доступен бустер &#FF6B6B×%buyer_new_booster%&f.'
   less-than-64-items:
-    - "[message] &#E73F3F▌ &fВы не можете сдать 64 предмета — до лимита осталось &#DB2339менее 64 штук"
+    - '[message] &#E73F3F✦ &fНельзя продать &#FF6B6B64 предмета&f: до лимита осталось &#FF6B6Bменьше 64 штук&f.'
   limit-completed:
-    - "[message] &#E73F3F▌ &fВы уже &#DB2339достигли лимита &fна сдачу данного предмета"
+    - '[message] &#E73F3F✦ &fВы достигли &#FF6B6Bлимита продажи &fэтого предмета.'
   update-best-item:
-    - "[message] &#E73F3F▌ &fПредметы &#DB2339повышенного спроса &fбыли &#E73F3Fобновлены"
+    - '[message] &#E73F3F✦ &fПредметы &#FF6B6Bповышенного спроса &fобновлены.'
   admin-buyer:
-    - "[message] &fАдмин команды &cскупщика"
-    - ""
-    - "[message] &7/adbuyer reload &f- перезагрузить плагин"
-    - "[message] &7/adbuyer tokens give <ник> <количество> &fвыдать жетонов"
+    - ''
+    - '[message] &#E73F3F✦ &fАдмин-команды &#FF6B6Bскупщика'
+    - ''
+    - '[message] &#E73F3F▸ &#FF6B6B/adbuyer reload &8— &fперезагрузить плагин'
+    - '[message] &#E73F3F▸ &#FF6B6B/adbuyer tokens give &7<ник> <количество> &8— &fвыдать жетоны'
+    - ''
   config-reload:
-    - "[message] &fПлагин перезагружен все конфиги сохранены"
+    - '[message] &#E73F3F✦ &fНастройки скупщика &#FF6B6Bперезагружены&f.'
   token-give:
-    - "[message] &FВы выдали себе %buyer_token_amount% токен ваш баланс токенов %buyer_tokens%"
+    - '[message] &#E73F3F✦ &fВам начислено &#FF6B6B%buyer_token_amount% &fжетонов. Баланс: &#FF6B6B%buyer_tokens%&f.'
   no-tokens:
-    - "[message] &#E73F3F✘ &fНедостаточно жетонов"
+    - '[message] &#E73F3F✦ &fУ вас недостаточно &#FF6B6Bжетонов &fдля покупки!'
+  booster-buy:
+    - '[message] &#E73F3F✦ &fВы купили бустер &#FF6B6B%buyer_booster_name%&f.'
+  error-booster-buy:
+    - '[message] &#E73F3F✦ &fЭтот бустер &#FF6B6Bуже активен&f. Дождитесь окончания его действия.'
 placeholder:
-  enable-autobuyer: "&#E73F3FВключен"
-  disable-autobuyer: "&7Выключен"
+  enable-autobuyer: '&#FF8A80✔ &f[Включено]'
+  disable-autobuyer: '&#B52B3D✘ &7[Выключено]'
+  enable-item-autobuyer: '&#FF8A80✔ &f[Включено]'
+  disable-item-autobuyer: '&#B52B3D✘ &7[Выключено]'

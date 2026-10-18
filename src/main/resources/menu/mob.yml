@@ -1,167 +1,214 @@
-name: "&#E73F3F             Лут с мобов            "
+name: '&#7D2626Скупщик &#B58A8A| &#E73F3FЛут с мобов'
 size: 45
 panels:
   - material: RED_STAINED_GLASS_PANE
-    name: ""
-    lore:
-      - ""
+    name: ' '
     slots:
       - 0
       - 1
+      - 2
+      - 6
       - 7
       - 8
       - 9
+      - 10
+      - 16
       - 17
+      - 18
+      - 26
       - 27
+      - 28
+      - 34
       - 35
       - 36
       - 37
+      - 38
+      - 42
       - 43
+      - 44
 knops-settings:
-  1:
-    name: "&#DB2339• &#E73F3FВыход &#DB2339•"
-    lore:
-      - ""
-      - " &c▶ &fНажмите для &#DB2339выхода"
-      - ""
-    slot: 44
+  back:
+    name: '&#E73F3F◀ &f&fОбратно'
     material: SPECTRAL_ARROW
+    slot: 40
+    lore: []
     action:
-      - "[sound] BLOCK_ENDER_CHEST_CLOSE"
-      - "[openmenu] menu"
+      - '[sound] BLOCK_ENDER_CHEST_CLOSE'
+      - '[openmenu] menu'
 item-settings:
-  1:
-    name: "&fПорох"
+  gunpowder:
+    name: '&#E73F3F✦ &fПорох'
+    message-name: пороха
     lore:
-      - ""
-      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
-      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
-      - ""
-      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
-      - ""
+      - ''
+      - '&#E73F3F▌ &fЦены за продажу по количеству:'
+      - '&#E73F3F▌'
+      - '&#E73F3F▌ &f– 1 шт. » &#E73F3F%prince-x1% монет'
+      - '&#E73F3F▌ &f– 64 шт. » &#E73F3F%prince-x64% монет'
+      - ''
+      - '&#E73F3F▪ &fПродать &#E73F3F1 штуку &7(ЛКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3F64 штуки &7(ПКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3Fвсё &7(SHIFT + ПКМ)'
+      - ''
+      - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
+      - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
     material: GUNPOWDER
-    slot: 24
-    prince-x1: 300.00
-    prince-x64: 19200.00
+    slot: 20
+    prince-x1: 155.0
+    prince-x64: 9920.0
     points-from-the-buyer-x1: 12
     tokens-from-the-buyer-x1: 2
-  2:
-    name: "&fОгненный стержень"
+  blaze_rod:
+    name: '&#E73F3F✦ &fОгненный стержень'
+    message-name: огненных стержней
     lore:
-      - ""
-      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
-      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
-      - ""
-      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
-      - ""
+      - ''
+      - '&#E73F3F▌ &fЦены за продажу по количеству:'
+      - '&#E73F3F▌'
+      - '&#E73F3F▌ &f– 1 шт. » &#E73F3F%prince-x1% монет'
+      - '&#E73F3F▌ &f– 64 шт. » &#E73F3F%prince-x64% монет'
+      - ''
+      - '&#E73F3F▪ &fПродать &#E73F3F1 штуку &7(ЛКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3F64 штуки &7(ПКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3Fвсё &7(SHIFT + ПКМ)'
+      - ''
+      - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
+      - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
     material: BLAZE_ROD
     slot: 21
-    prince-x1: 160.00
-    prince-x64: 10240.00
+    prince-x1: 155.0
+    prince-x64: 9920.0
     points-from-the-buyer-x1: 8
     tokens-from-the-buyer-x1: 2
-  3:
-    name: "&fКость"
+  bone:
+    name: '&#E73F3F✦ &fКости'
+    message-name: костей
     lore:
-      - ""
-      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
-      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
-      - ""
-      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
-      - ""
+      - ''
+      - '&#E73F3F▌ &fЦены за продажу по количеству:'
+      - '&#E73F3F▌'
+      - '&#E73F3F▌ &f– 1 шт. » &#E73F3F%prince-x1% монет'
+      - '&#E73F3F▌ &f– 64 шт. » &#E73F3F%prince-x64% монет'
+      - ''
+      - '&#E73F3F▪ &fПродать &#E73F3F1 штуку &7(ЛКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3F64 штуки &7(ПКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3Fвсё &7(SHIFT + ПКМ)'
+      - ''
+      - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
+      - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
     material: BONE
     slot: 22
-    prince-x1: 80.00
-    prince-x64: 5120.00
+    prince-x1: 125.0
+    prince-x64: 8000.0
     points-from-the-buyer-x1: 4
     tokens-from-the-buyer-x1: 1
-  4:
-    name: "&fНить"
+  string:
+    name: '&#E73F3F✦ &fНить'
+    message-name: нитей
     lore:
-      - ""
-      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
-      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
-      - ""
-      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
-      - ""
+      - ''
+      - '&#E73F3F▌ &fЦены за продажу по количеству:'
+      - '&#E73F3F▌'
+      - '&#E73F3F▌ &f– 1 шт. » &#E73F3F%prince-x1% монет'
+      - '&#E73F3F▌ &f– 64 шт. » &#E73F3F%prince-x64% монет'
+      - ''
+      - '&#E73F3F▪ &fПродать &#E73F3F1 штуку &7(ЛКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3F64 штуки &7(ПКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3Fвсё &7(SHIFT + ПКМ)'
+      - ''
+      - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
+      - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
     material: STRING
     slot: 23
-    prince-x1: 80.00
-    prince-x64: 5120.00
+    prince-x1: 125.0
+    prince-x64: 8000.0
     points-from-the-buyer-x1: 4
     tokens-from-the-buyer-x1: 1
-  5:
-    name: "&fЭндер-Жемчуг"
+  magma_cream:
+    name: '&#E73F3F✦ &fСгусток магмы'
+    message-name: сгустков магмы
     lore:
-      - ""
-      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
-      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
-      - ""
-      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
-      - ""
-    material: ENDER_PEARL
-    slot: 13
-    prince-x1: 160.00
-    prince-x64: 10240.00
-    points-from-the-buyer-x1: 8
-    tokens-from-the-buyer-x1: 2
-  6:
-    name: "&fМаринованный Паучий Глаз"
-    lore:
-      - ""
-      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
-      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
-      - ""
-      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
-      - ""
-    material: FERMENTED_SPIDER_EYE
-    slot: 30
-    prince-x1: 500.00
-    prince-x64: 32000.00
-    points-from-the-buyer-x1: 20
-    tokens-from-the-buyer-x1: 4
-  7:
-    name: "&fСветокаменная Пыль"
-    lore:
-      - ""
-      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
-      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
-      - ""
-      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
-      - ""
-    material: GLOWSTONE_DUST
-    slot: 31
-    prince-x1: 100.00
-    prince-x64: 6400.00
-    points-from-the-buyer-x1: 5
-    tokens-from-the-buyer-x1: 1
-  8:
-    name: "&fСгусток магмы"
-    lore:
-      - ""
-      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
-      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
-      - ""
-      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
-      - ""
+      - ''
+      - '&#E73F3F▌ &fЦены за продажу по количеству:'
+      - '&#E73F3F▌'
+      - '&#E73F3F▌ &f– 1 шт. » &#E73F3F%prince-x1% монет'
+      - '&#E73F3F▌ &f– 64 шт. » &#E73F3F%prince-x64% монет'
+      - ''
+      - '&#E73F3F▪ &fПродать &#E73F3F1 штуку &7(ЛКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3F64 штуки &7(ПКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3Fвсё &7(SHIFT + ПКМ)'
+      - ''
+      - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
+      - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
     material: MAGMA_CREAM
-    slot: 32
-    prince-x1: 180.00
-    prince-x64: 11520.00
+    slot: 24
+    prince-x1: 125.0
+    prince-x64: 8000.0
     points-from-the-buyer-x1: 9
     tokens-from-the-buyer-x1: 2
-  9:
-    name: "&fТотем"
+  ender_pearl:
+    name: '&#E73F3F✦ &fЭндер Пёрл'
+    message-name: эндер-пёрлов
     lore:
-      - ""
-      - " &c▪ &fЦена за &#E98980x1: &#DB2339$%prince-x1% &7(ЛКМ)"
-      - " &c▪ &fЦена за &#E98980x64: &#DB2339$%prince-x64% &7(ПКМ)"
-      - ""
-      - " &c▪ &fПродать &#E98980всё &7(СКМ) &7(Shift+ПКМ)"
-      - ""
-    material: TOTEM_OF_UNDYING
-    slot: 20
-    prince-x1: 3000.00
-    prince-x64: 192000.00
-    points-from-the-buyer-x1: 100
-    tokens-from-the-buyer-x1: 20
+      - ''
+      - '&#E73F3F▌ &fЦены за продажу по количеству:'
+      - '&#E73F3F▌'
+      - '&#E73F3F▌ &f– 1 шт. » &#E73F3F%prince-x1% монет'
+      - '&#E73F3F▌ &f– 64 шт. » &#E73F3F%prince-x64% монет'
+      - ''
+      - '&#E73F3F▪ &fПродать &#E73F3F1 штуку &7(ЛКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3F64 штуки &7(ПКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3Fвсё &7(SHIFT + ПКМ)'
+      - ''
+      - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
+      - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
+    material: ENDER_PEARL
+    slot: 30
+    prince-x1: 125.0
+    prince-x64: 8000.0
+    points-from-the-buyer-x1: 8
+    tokens-from-the-buyer-x1: 2
+  glowstone_dust:
+    name: '&#E73F3F✦ &fСветопыль'
+    message-name: светопыли
+    lore:
+      - ''
+      - '&#E73F3F▌ &fЦены за продажу по количеству:'
+      - '&#E73F3F▌'
+      - '&#E73F3F▌ &f– 1 шт. » &#E73F3F%prince-x1% монет'
+      - '&#E73F3F▌ &f– 64 шт. » &#E73F3F%prince-x64% монет'
+      - ''
+      - '&#E73F3F▪ &fПродать &#E73F3F1 штуку &7(ЛКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3F64 штуки &7(ПКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3Fвсё &7(SHIFT + ПКМ)'
+      - ''
+      - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
+      - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
+    material: GLOWSTONE_DUST
+    slot: 31
+    prince-x1: 100.0
+    prince-x64: 6400.0
+    points-from-the-buyer-x1: 5
+    tokens-from-the-buyer-x1: 1
+  fermented_spider_eye:
+    name: '&#E73F3F✦ &fМаринованный паучий глаз'
+    message-name: маринованных паучьих глаз
+    lore:
+      - ''
+      - '&#E73F3F▌ &fЦены за продажу по количеству:'
+      - '&#E73F3F▌'
+      - '&#E73F3F▌ &f– 1 шт. » &#E73F3F%prince-x1% монет'
+      - '&#E73F3F▌ &f– 64 шт. » &#E73F3F%prince-x64% монет'
+      - ''
+      - '&#E73F3F▪ &fПродать &#E73F3F1 штуку &7(ЛКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3F64 штуки &7(ПКМ)'
+      - '&#E73F3F▪ &fПродать &#E73F3Fвсё &7(SHIFT + ПКМ)'
+      - ''
+      - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
+      - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
+    material: FERMENTED_SPIDER_EYE
+    slot: 32
+    prince-x1: 185.0
+    prince-x64: 11840.0
+    points-from-the-buyer-x1: 20
+    tokens-from-the-buyer-x1: 4

@@ -1,0 +1,58 @@
+name: '&#7D2626Скупщик &#B58A8A| &#E73F3FАвтоскупщик'
+size: 45
+panels:
+  - material: RED_STAINED_GLASS_PANE
+    name: ' '
+    slots:
+      - 0
+      - 1
+      - 2
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 16
+      - 17
+      - 18
+      - 26
+      - 27
+      - 28
+      - 34
+      - 35
+      - 36
+      - 37
+      - 38
+      - 42
+      - 43
+      - 44
+knops-settings:
+  enable-all:
+    name: '&f➥ Включить &fВсе предметы &#B58A8A(ЛКМ)'
+    material: LIME_DYE
+    slot: 20
+    action:
+      - '[autobuyeritems] enable'
+  toggle:
+    name: '&f✦ Переключить &fАвто-Скупку &#B58A8A(ЛКМ)'
+    material: CLOCK
+    slot: 22
+    lore:
+      - ''
+      - '&fСтатус: %autobuyer_status%'
+    action:
+      - '[toggleautobuyer]'
+  disable-all:
+    name: '&#C92E40➥ Выключить &fВсе предметы &#B58A8A(ЛКМ)'
+    material: RED_DYE
+    slot: 24
+    action:
+      - '[autobuyeritems] disable'
+  back:
+    name: '&#E73F3F◀ &f&fОбратно'
+    lore: []
+    slot: 40
+    material: SPECTRAL_ARROW
+    action:
+      - '[sound] BLOCK_ENDER_CHEST_CLOSE'
+      - '[openmenu] menu'

@@ -66,6 +66,12 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
                 return plugin.getAutoBuyerManager().isAutobuyerEnabled(player) ?
                         plugin.getMessagesConfig().getPlaceholderEnableAutobuyer() :
                         plugin.getMessagesConfig().getPlaceholderDisableAutobuyer();
+            case "booster_status":
+                return Placeholders.getBoosterStatus(plugin, player, booster);
+            case "booster_timer":
+                return Placeholders.getBoosterTimer(plugin, player.getUniqueId());
+            case "booster_name":
+                return Placeholders.apply("%buyer_booster_name%", player);
             case "booster_lvl":
                 return String.valueOf(booster.getCurrentLevel());
             case "booster_max_lvl":

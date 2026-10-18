@@ -1,10 +1,9 @@
 package com.erydevs.config;
 
+import java.util.List;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class Configs {
 
@@ -18,11 +17,33 @@ public class Configs {
     public void loadConfigs() {
         plugin.saveDefaultConfig();
         config = plugin.getConfig();
+        migrateMenuConfig();
+    }
+
+    private void migrateMenuConfig() {
+        boolean changed = false;
+        if (config.contains("autobuyer-settings", true)) {
+            config.set("autobuyer-settings", null);
+            changed = true;
+        }
+        List<String> menus = new java.util.ArrayList<>(config.getStringList("register-menu"));
+        if (!menus.contains("menu/autobuyer.yml")) {
+            menus.add("menu/autobuyer.yml");
+            config.set("register-menu", menus);
+            changed = true;
+        }
+        if (!menus.contains("menu/food.yml")) {
+            menus.add("menu/food.yml");
+            config.set("register-menu", menus);
+            changed = true;
+        }
+        if (changed) plugin.saveConfig();
     }
 
     public void reloadConfig() {
         plugin.reloadConfig();
         config = plugin.getConfig();
+        migrateMenuConfig();
     }
 
     @NotNull

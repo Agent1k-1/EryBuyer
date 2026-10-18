@@ -2,14 +2,15 @@ package com.erydevs.action;
 
 import com.erydevs.EryBuyer;
 import com.erydevs.action.impl.*;
+import java.util.List;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 public enum ActionType {
 
+    AUTOBUYERITEMS("[autobuyeritems]", new AutoBuyerItemsAction()),
+    TOGGLEAUTOBUYER("[toggleautobuyer]", new ToggleAutoBuyerAction()),
     CLOSE("[close]", new CloseAction()),
     COMMAND("[command]", new CommandAction()),
     OPENMENU("[openmenu]", new OpenMenuAction()),

@@ -41,6 +41,19 @@ public class MessagesConfig {
     }
 
     @NotNull
+    public List<String> getMessageErrorBoosterBuy() {
+        if (!messages.contains("message.error-booster-buy")) {
+            return java.util.Collections.singletonList("[message] &fВы уже купили данный бустер подождите когда он истечет");
+        }
+        return messages.getStringList("message.error-booster-buy");
+    }
+
+    @NotNull
+    public List<String> getMessageBoosterBuy() {
+        return messages.getStringList("message.booster-buy");
+    }
+
+    @NotNull
     public List<String> getMessageNoItem() {
         return messages.getStringList("message.error-no-item");
     }
@@ -114,4 +127,14 @@ public class MessagesConfig {
     public String getPlaceholderDisableAutobuyer() {
         return messages.getString("placeholder.disable-autobuyer");
     }
+    @NotNull
+    public String getPlaceholderEnableItemAutobuyer() {
+        return messages.getString("placeholder.enable-item-autobuyer", "&a✔ [Включено]");
+    }
+
+    @NotNull
+    public String getPlaceholderDisableItemAutobuyer() {
+        return messages.getString("placeholder.disable-item-autobuyer", "&c✘ [Выключено]");
+    }
+
 }

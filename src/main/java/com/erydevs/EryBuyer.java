@@ -1,41 +1,41 @@
 package com.erydevs;
 
+import com.erydevs.addon.AddonManager;
+import com.erydevs.api.EryBuyerAPI;
+import com.erydevs.api.impl.BuyerAPIImpl;
+import com.erydevs.bossbar.Bossbars;
+import com.erydevs.bstats.Metrics;
+import com.erydevs.buyer.autobuyer.AutoBuyerManager;
+import com.erydevs.buyer.autobuyer.AutoBuyerSettingsManager;
+import com.erydevs.buyer.best.BestManager;
+import com.erydevs.buyer.boosters.BoosterManager;
+import com.erydevs.commands.AdbuyerCommand;
+import com.erydevs.commands.AutoBuyerCommand;
+import com.erydevs.commands.BuyerCommand;
+import com.erydevs.commands.sub.GiveCMD;
+import com.erydevs.commands.sub.ReloadCMD;
+import com.erydevs.commands.tab.AdbuyerTabCompleter;
+import com.erydevs.config.Configs;
+import com.erydevs.config.MessagesConfig;
+import com.erydevs.config.dbConfig;
+import com.erydevs.db.Database;
+import com.erydevs.economy.VaultAPI;
+import com.erydevs.folia.FoliaDetector;
+import com.erydevs.folia.Scheduler;
+import com.erydevs.folia.SchedulerFactory;
+import com.erydevs.gui.BuyerGUI;
+import com.erydevs.gui.loader.MenuLoader;
+import com.erydevs.listeners.InventoryChangeListener;
+import com.erydevs.listeners.InventoryListener;
+import com.erydevs.listeners.PlayerQuitListener;
+import com.erydevs.papi.PlaceholderAPIHook;
+import com.erydevs.shop.ShopGUI;
+import com.erydevs.shop.ShopManager;
+import com.erydevs.shop.listener.ShopClickListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.erydevs.config.Configs;
-import com.erydevs.config.MessagesConfig;
-import com.erydevs.gui.BuyerGUI;
-import com.erydevs.gui.loader.MenuLoader;
-import com.erydevs.commands.BuyerCommand;
-import com.erydevs.commands.AutoBuyerCommand;
-import com.erydevs.commands.AdbuyerCommand;
-import com.erydevs.commands.tab.AdbuyerTabCompleter;
-import com.erydevs.commands.sub.ReloadCMD;
-import com.erydevs.commands.sub.GiveCMD;
-import com.erydevs.folia.FoliaDetector;
-import com.erydevs.folia.Scheduler;
-import com.erydevs.folia.SchedulerFactory;
-import com.erydevs.buyer.boosters.BoosterManager;
-import com.erydevs.db.Database;
-import com.erydevs.config.dbConfig;
-import com.erydevs.listeners.InventoryListener;
-import com.erydevs.listeners.InventoryChangeListener;
-import com.erydevs.listeners.PlayerQuitListener;
-import com.erydevs.economy.VaultAPI;
-import com.erydevs.buyer.autobuyer.AutoBuyerManager;
-import com.erydevs.buyer.best.BestManager;
-import com.erydevs.bossbar.Bossbars;
-import com.erydevs.papi.PlaceholderAPIHook;
-import com.erydevs.api.EryBuyerAPI;
-import com.erydevs.api.impl.BuyerAPIImpl;
-import com.erydevs.addon.AddonManager;
-import com.erydevs.shop.ShopManager;
-import com.erydevs.shop.ShopGUI;
-import com.erydevs.shop.listener.ShopClickListener;
-
-import com.erydevs.bstats.Metrics;
 
 public class EryBuyer extends JavaPlugin {
 
@@ -46,6 +46,7 @@ public class EryBuyer extends JavaPlugin {
     private MenuLoader menuLoader;
     private BuyerGUI buyerGUI;
     private AutoBuyerManager autoBuyerManager;
+    private AutoBuyerSettingsManager autoBuyerSettings;
     private Bossbars bossbars;
     private BoosterManager boosterManager;
     private dbConfig dbConfig;
@@ -88,6 +89,7 @@ public class EryBuyer extends JavaPlugin {
 
         buyerGUI = new BuyerGUI(this, configManager, menuLoader);
         bossbars = new Bossbars(this);
+        autoBuyerSettings = new AutoBuyerSettingsManager(this);
         autoBuyerManager = new AutoBuyerManager(this);
 
         EryBuyerAPI.register(new BuyerAPIImpl(this));
@@ -129,6 +131,7 @@ public class EryBuyer extends JavaPlugin {
         if (autoBuyerManager != null) autoBuyerManager.shutdown();
         if (bossbars != null) bossbars.shutdown();
         if (bestManager != null) bestManager.shutdown();
+        if (autoBuyerSettings != null) autoBuyerSettings.close();
         if (dbConfig != null) dbConfig.close();
         EryBuyerAPI.unregister();
         instance = null;
@@ -137,7 +140,9 @@ public class EryBuyer extends JavaPlugin {
     private void startMenuRefreshTask() {
         scheduler.runGlobalTimer(() -> {
             for (org.bukkit.entity.Player player : getServer().getOnlinePlayers()) {
-                scheduler.runForPlayer(player, () -> buyerGUI.refreshOpenInventory(player));
+                scheduler.runForPlayer(player, () -> {
+                    buyerGUI.refreshOpenInventory(player);
+                });
             }
         }, 20L, 20L);
     }
@@ -179,6 +184,10 @@ public class EryBuyer extends JavaPlugin {
     }
 
     @NotNull
+    public AutoBuyerSettingsManager getAutoBuyerSettings() {
+        return autoBuyerSettings;
+    }
+
     public AutoBuyerManager getAutoBuyerManager() {
         return autoBuyerManager;
     }

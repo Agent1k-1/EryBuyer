@@ -5,17 +5,10 @@ import com.erydevs.action.ActionType;
 import com.erydevs.api.event.PlayerSellEvent;
 import com.erydevs.buyer.autobuyer.AutoBuyerManager;
 import com.erydevs.buyer.boosters.PlayerBooster;
+import com.erydevs.folia.SchedulerTask;
 import com.erydevs.gui.entry.Entry;
 import com.erydevs.papi.Placeholders;
 import com.erydevs.utils.inventory.InventoryUtils;
-import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
-import com.erydevs.folia.SchedulerTask;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -23,6 +16,12 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class AutoBuyerTask {
 
@@ -78,8 +77,16 @@ public class AutoBuyerTask {
     }
 
     private void processPlayer(@NotNull Player player, @NotNull Collection<Entry> entries) {
+        if (!manager.isAutobuyerEnabled(player)) return;
+        if (!plugin.getAutoBuyerSettings().isLoaded(player.getUniqueId())) {
+            plugin.getAutoBuyerSettings().load(player.getUniqueId()).whenComplete((ignored, error) -> {
+                if (error == null && plugin.isEnabled()) markDirty(player.getUniqueId());
+            });
+            return;
+        }
         for (Entry entry : entries) {
             if (!isSellable(entry)) continue;
+            if (!plugin.getAutoBuyerSettings().isItemEnabled(player.getUniqueId(), entry.material)) continue;
 
             int amount = InventoryUtils.remove(player, entry.material, InventoryUtils.count(player, entry.material));
             if (amount == 0) continue;

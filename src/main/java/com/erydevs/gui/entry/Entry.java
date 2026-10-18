@@ -10,6 +10,7 @@ public class Entry {
     public final Material material;
     public final String materialData;
     public final String name;
+    public final String messageName;
     public final List<String> lore;
     public final double priceX1;
     public final double priceX64;
@@ -30,10 +31,15 @@ public class Entry {
     }
 
     public Entry(@NotNull String id, @NotNull Material material, @Nullable String materialData, @Nullable String name, @Nullable List<String> lore, double priceX1, double priceX64, int pointsX1, int tokensX1, int slot) {
+        this(id, material, materialData, name, lore, priceX1, priceX64, pointsX1, tokensX1, slot, null);
+    }
+
+    public Entry(@NotNull String id, @NotNull Material material, @Nullable String materialData, @Nullable String name, @Nullable List<String> lore, double priceX1, double priceX64, int pointsX1, int tokensX1, int slot, @Nullable String messageName) {
         this.id = id;
         this.material = material;
         this.materialData = materialData;
         this.name = name;
+        this.messageName = messageName;
         this.lore = lore;
         this.priceX1 = priceX1;
         this.priceX64 = priceX64;

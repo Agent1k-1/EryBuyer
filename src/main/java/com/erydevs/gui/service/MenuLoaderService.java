@@ -82,7 +82,7 @@ public class MenuLoaderService {
             Entry entry = new Entry(key, pm.getMaterial(), pm.getHeadTextureBase64(),
                     cfg.getString(path + ".name"), cfg.getStringList(path + ".lore"),
                     cfg.getDouble(path + ".prince-x1"), cfg.getDouble(path + ".prince-x64"),
-                    pointsX1, tokensX1, slot);
+                    pointsX1, tokensX1, slot, cfg.getString(path + ".message-name"));
 
             entries.put(slot, entry);
             if (combinedSlotMap != null) {
