@@ -31,6 +31,7 @@ import com.erydevs.listeners.PlayerQuitListener;
 import com.erydevs.papi.PlaceholderAPIHook;
 import com.erydevs.shop.ShopGUI;
 import com.erydevs.shop.ShopManager;
+import com.erydevs.update.UpdateChecker;
 import com.erydevs.shop.listener.ShopClickListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -124,6 +125,7 @@ public class EryBuyer extends JavaPlugin {
         int pluginId = 31977;
         Metrics metrics = new Metrics(this, pluginId);
         metrics.addCustomChart(new Metrics.SimplePie("chart_id", () -> "My value"));
+        new UpdateChecker(this).check();
     }
 
     public void onDisable() {

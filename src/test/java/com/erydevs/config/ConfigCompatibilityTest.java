@@ -49,6 +49,17 @@ public class ConfigCompatibilityTest {
         assertEquals("&c✘ [Выключено]", messages.getPlaceholderDisableItemAutobuyer());
     }
 
+    @Test
+    public void olderConfigGetsUpdateCheckSwitch() {
+        JavaPlugin plugin = mock(JavaPlugin.class);
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(new File("src/main/resources/config.yml"));
+        config.set("check-updates", null);
+        when(plugin.getConfig()).thenReturn(config);
+        new Configs(plugin).loadConfigs();
+        assertTrue(config.getBoolean("check-updates"));
+        verify(plugin).saveConfig();
+    }
+
     private MessagesConfig messages(YamlConfiguration config) throws Exception {
         MessagesConfig result = new MessagesConfig(mock(JavaPlugin.class));
         Field field = MessagesConfig.class.getDeclaredField("messages");

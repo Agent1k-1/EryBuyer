@@ -1,3 +1,4 @@
+check-updates: true
 sound:
   sound_open_menu:
     sound: BLOCK_CHEST_OPEN

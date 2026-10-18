@@ -22,6 +22,10 @@ public class Configs {
 
     private void migrateMenuConfig() {
         boolean changed = false;
+        if (!config.contains("check-updates", true)) {
+            config.set("check-updates", true);
+            changed = true;
+        }
         if (config.contains("autobuyer-settings", true)) {
             config.set("autobuyer-settings", null);
             changed = true;
