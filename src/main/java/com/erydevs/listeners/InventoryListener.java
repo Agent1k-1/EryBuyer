@@ -29,8 +29,8 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(@NotNull InventoryClickEvent e) {
-        String title = e.getView().getTitle();
-        if (!plugin.getBuyerGUI().isManagedTitle(title)) return;
+        String menuId = plugin.getBuyerGUI().getMenuId(e.getView().getTopInventory());
+        if (menuId == null) return;
         e.setCancelled(true);
 
         int slot = e.getRawSlot();
@@ -39,8 +39,8 @@ public class InventoryListener implements Listener {
         Player p = (Player) e.getWhoClicked();
 
         if (e.getClick() == org.bukkit.event.inventory.ClickType.DROP) {
-            if (plugin.getBestManager() != null && plugin.getBestManager().isBestTitle(title)) return;
-            Entry entry = plugin.getBuyerGUI().getEntry(title, slot);
+            if (plugin.getBestManager() != null && plugin.getBestManager().isBestMenu(menuId)) return;
+            Entry entry = plugin.getBuyerGUI().getEntry(menuId, slot);
             org.bukkit.Material material = entry != null && entry.priceX1 > 0 ? entry.material : null;
             if (material != null && p.hasPermission("erybuyer.autobuyer")) {
                 plugin.getAutoBuyerSettings().runForPlayer(p, () -> {
@@ -54,13 +54,13 @@ public class InventoryListener implements Listener {
         }
         if (!e.getClick().isLeftClick() && !e.getClick().isRightClick()) return;
 
-        List<String> acts = plugin.getBuyerGUI().getActions(title, slot);
+        List<String> acts = plugin.getBuyerGUI().getActions(menuId, slot);
         if (acts != null && !acts.isEmpty()) {
             ActionType.dispatchAll(plugin, p,acts);
             return;
         }
 
-        boolean bestTitle = plugin.getBestManager() != null && plugin.getBestManager().isBestTitle(title);
+        boolean bestTitle = plugin.getBestManager() != null && plugin.getBestManager().isBestMenu(menuId);
         if (bestTitle && plugin.getBestManager().getActiveBySlot(slot) != null) {
             if (plugin.getAutoBuyerManager().isAutobuyerEnabled(p)) return;
             ClickType bestClick = resolveClickType(e);
@@ -70,7 +70,7 @@ public class InventoryListener implements Listener {
 
         if (plugin.getAutoBuyerManager().isAutobuyerEnabled(p)) return;
 
-        Entry entry = plugin.getBuyerGUI().getEntry(title, slot);
+        Entry entry = plugin.getBuyerGUI().getEntry(menuId, slot);
         if (entry == null || entry.priceX1 <= 0) return;
 
         ClickType clickType = resolveClickType(e);
@@ -108,7 +108,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onInventoryDrag(org.bukkit.event.inventory.InventoryDragEvent event) {
-        if (plugin.getBuyerGUI().isManagedTitle(event.getView().getTitle())) event.setCancelled(true);
+        if (plugin.getBuyerGUI().getMenuId(event.getView().getTopInventory()) != null) event.setCancelled(true);
     }
 
     @NotNull

@@ -1,6 +1,7 @@
 package com.erydevs.gui;
 
 import com.erydevs.EryBuyer;
+import com.erydevs.gui.holder.MenuHolder;
 import com.erydevs.config.Configs;
 import com.erydevs.gui.button.ButtonConfig;
 import com.erydevs.gui.button.ButtonLoader;
@@ -26,16 +27,15 @@ public class BuyerGUI {
     private final MenuLoaderService menuLoaderService;
     private final ItemStackService itemStackFactory;
     private final Map<Integer, Entry> combinedSlotMap = new ConcurrentHashMap<>();
-    private final Map<String, Map<Integer, Entry>> entriesByTitle = new ConcurrentHashMap<>();
-    private final Map<String, Map<Integer, List<String>>> actionsByTitle = new ConcurrentHashMap<>();
-    private final Map<String, String> menuNameByTitle = new ConcurrentHashMap<>();
+    private final Map<String, Map<Integer, Entry>> entriesByMenu = new ConcurrentHashMap<>();
+    private final Map<String, Map<Integer, List<String>>> actionsByMenu = new ConcurrentHashMap<>();
     private final Map<String, Map<Integer, Entry>> templateByMenu = new ConcurrentHashMap<>();
 
     public BuyerGUI(@NotNull EryBuyer plugin, @NotNull Configs configManager, @NotNull MenuLoader menuLoader) {
         this.plugin = plugin;
         this.configManager = configManager;
         this.menuLoader = menuLoader;
-        this.menuLoaderService = new MenuLoaderService(plugin, combinedSlotMap, entriesByTitle, actionsByTitle, menuNameByTitle);
+        this.menuLoaderService = new MenuLoaderService(plugin, combinedSlotMap, entriesByMenu, actionsByMenu);
         this.itemStackFactory = new ItemStackService(plugin);
         this.menuLoaderService.loadAllMenus();
     }
@@ -54,12 +54,14 @@ public class BuyerGUI {
         FileConfiguration cfg = menuLoader.getMenuConfig(menuName);
         String title = HexUtils.colorize(cfg.getString("name", menuName));
         int size = cfg.getInt("size");
-        Inventory inv = Bukkit.createInventory(null, size, title);
+        MenuHolder holder = new MenuHolder(menuName);
+        Inventory inv = Bukkit.createInventory(holder, size, title);
+        holder.bind(inv);
 
         itemStackFactory.addPanels(inv, cfg, size);
 
         Map<Integer, Entry> entries = getTemplate(cfg, menuName, size, isBest);
-        entriesByTitle.put(title, entries);
+        entriesByMenu.put(menuName, entries);
 
         for (Entry it : entries.values()) {
             if (it.slot < size) inv.setItem(it.slot, itemStackFactory.createItemStack(it, player));
@@ -106,8 +108,8 @@ public class BuyerGUI {
     }
 
     @Nullable
-    public Entry getEntry(@NotNull String title, int slot) {
-        Map<Integer, Entry> m = entriesByTitle.get(title);
+    public Entry getEntry(@NotNull String menuId, int slot) {
+        Map<Integer, Entry> m = entriesByMenu.get(menuId);
         return m != null ? m.get(slot) : null;
     }
 
@@ -119,7 +121,7 @@ public class BuyerGUI {
     @NotNull
     public Collection<Entry> getAllEntries() {
         List<Entry> out = new ArrayList<>();
-        for (Map<Integer, Entry> m : entriesByTitle.values()) {
+        for (Map<Integer, Entry> m : entriesByMenu.values()) {
             out.addAll(m.values());
         }
         return out;
@@ -130,25 +132,23 @@ public class BuyerGUI {
         return combinedSlotMap.values();
     }
 
-    public boolean isManagedTitle(@NotNull String title) {
-        return entriesByTitle.containsKey(title);
+    @Nullable
+    public String getMenuId(@NotNull Inventory inventory) {
+        if (!(inventory.getHolder() instanceof MenuHolder)) return null;
+        return ((MenuHolder) inventory.getHolder()).getMenuId();
     }
 
     @Nullable
-    public List<String> getActions(@NotNull String title, int slot) {
-        Map<Integer, List<String>> m = actionsByTitle.get(title);
-        return m != null ? m.get(slot) : null;
-    }
-
-    @NotNull
-    public String getMenuNameByTitle(@NotNull String title) {
-        return menuNameByTitle.getOrDefault(title, "menu");
+    public List<String> getActions(@NotNull String menuId, int slot) {
+        Map<Integer, List<String>> actions = actionsByMenu.get(menuId);
+        return actions != null ? actions.get(slot) : null;
     }
 
     public void refreshOpenInventory(@NotNull Player player) {
-        String title = player.getOpenInventory().getTitle();
+        String menuName = getMenuId(player.getOpenInventory().getTopInventory());
+        if (menuName == null) return;
 
-        Map<Integer, Entry> entries = entriesByTitle.get(title);
+        Map<Integer, Entry> entries = entriesByMenu.get(menuName);
         if (entries == null) return;
 
         Inventory inv = player.getOpenInventory().getTopInventory();
@@ -158,7 +158,6 @@ public class BuyerGUI {
             if (it.slot < size) inv.setItem(it.slot, itemStackFactory.createItemStack(it, player));
         }
 
-        String menuName = getMenuNameByTitle(title);
         if (plugin.getBestManager() != null && plugin.getBestManager().isBestMenu(menuName)) {
             plugin.getBestManager().populate(inv, player);
         }
@@ -167,9 +166,8 @@ public class BuyerGUI {
     public void reloadMenus() {
         menuLoader.reload();
         combinedSlotMap.clear();
-        entriesByTitle.clear();
-        actionsByTitle.clear();
-        menuNameByTitle.clear();
+        entriesByMenu.clear();
+        actionsByMenu.clear();
         templateByMenu.clear();
         menuLoaderService.loadAllMenus();
         SkullUtils.clearCache();

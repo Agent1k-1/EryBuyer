@@ -59,6 +59,12 @@ public class AutoBuyerTask {
     }
 
     private void processDirtyPlayers() {
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
+            if (manager.isAutobuyerEnabled(player)) {
+                dirty.add(player.getUniqueId());
+            }
+        }
+
         if (dirty.isEmpty()) return;
 
         Collection<Entry> entries = plugin.getBuyerGUI().getBuyableEntries();
@@ -72,7 +78,9 @@ public class AutoBuyerTask {
             Player player = plugin.getServer().getPlayer(uuid);
             if (player == null || !player.isOnline()) continue;
 
-            plugin.getScheduler().runForPlayer(player, () -> processPlayer(player, entries));
+            plugin.getScheduler().runForPlayer(player, () -> {
+                if (player.isOnline()) processPlayer(player, entries);
+            });
         }
     }
 

@@ -59,11 +59,11 @@ public class AutoBuyerMenuClickTest {
         settings.load(player.getUniqueId()).get(5, TimeUnit.SECONDS);
         gui = mock(BuyerGUI.class);
         when(plugin.getBuyerGUI()).thenReturn(gui);
-        when(gui.isManagedTitle("Farm")).thenReturn(true);
-        when(gui.getEntry("Farm", 20)).thenReturn(new Entry("sugar", Material.SUGAR_CANE, null,
+        when(gui.getEntry("farma", 20)).thenReturn(new Entry("sugar", Material.SUGAR_CANE, null,
                 "Sugar", Collections.emptyList(), 90, 5760, 1, 1, 20));
         Inventory inventory = mock(Inventory.class);
         when(inventory.getSize()).thenReturn(45);
+        when(gui.getMenuId(inventory)).thenReturn("farma");
         InventoryView view = mock(InventoryView.class);
         when(view.getTitle()).thenReturn("Farm");
         when(view.getTopInventory()).thenReturn(inventory);
@@ -77,6 +77,32 @@ public class AutoBuyerMenuClickTest {
     @After
     public void close() {
         settings.close();
+    }
+
+    @Test
+    public void sameTitleMenusUseTheirOwnEntries() {
+        Inventory otherInventory = mock(Inventory.class);
+        when(otherInventory.getSize()).thenReturn(45);
+        when(gui.getMenuId(otherInventory)).thenReturn("mine");
+        when(gui.getEntry("mine", 20)).thenReturn(new Entry("diamond", Material.DIAMOND, null,
+                "Diamond", Collections.emptyList(), 325, 20800, 15, 3, 20));
+        when(event.getClick()).thenReturn(ClickType.DROP);
+        listener.onInventoryClick(event);
+        when(event.getView().getTopInventory()).thenReturn(otherInventory);
+        listener.onInventoryClick(event);
+        assertFalse(settings.isItemEnabled(player.getUniqueId(), Material.SUGAR_CANE));
+        assertFalse(settings.isItemEnabled(player.getUniqueId(), Material.DIAMOND));
+        verify(gui).getEntry("farma", 20);
+        verify(gui).getEntry("mine", 20);
+    }
+
+    @Test
+    public void unrelatedInventoryWithSameTitleIsIgnored() {
+        when(gui.getMenuId(event.getView().getTopInventory())).thenReturn(null);
+        when(event.getClick()).thenReturn(ClickType.DROP);
+        listener.onInventoryClick(event);
+        verify(event, never()).setCancelled(true);
+        assertTrue(settings.isItemEnabled(player.getUniqueId(), Material.SUGAR_CANE));
     }
 
     @Test
@@ -113,13 +139,13 @@ public class AutoBuyerMenuClickTest {
         when(event.getRawSlot()).thenReturn(65);
         listener.onInventoryClick(event);
         assertTrue(settings.isItemEnabled(player.getUniqueId(), Material.SUGAR_CANE));
-        verify(gui, never()).getEntry("Farm", 65);
+        verify(gui, never()).getEntry("farma", 65);
     }
     @Test
     public void qInBestMenuNeverTogglesOrSells() {
         com.erydevs.buyer.best.BestManager best = mock(com.erydevs.buyer.best.BestManager.class);
         when(plugin.getBestManager()).thenReturn(best);
-        when(best.isBestTitle("Farm")).thenReturn(true);
+        when(best.isBestMenu("farma")).thenReturn(true);
         when(event.getClick()).thenReturn(ClickType.DROP);
         listener.onInventoryClick(event);
         assertTrue(settings.isItemEnabled(player.getUniqueId(), Material.SUGAR_CANE));

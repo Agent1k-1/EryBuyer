@@ -307,8 +307,8 @@ public class BestManager {
     private void refreshOpenMenu(@NotNull Player player) {
         plugin.getScheduler().runForPlayer(player, () -> {
             if (!player.isOnline()) return;
-            String title = player.getOpenInventory().getTitle();
-            if (isBestTitle(title)) {
+            String menuId = plugin.getBuyerGUI().getMenuId(player.getOpenInventory().getTopInventory());
+            if (menuId != null && isBestMenu(menuId)) {
                 populate(player.getOpenInventory().getTopInventory(), player);
             }
         });

@@ -39,6 +39,7 @@ public class AutoBuyerTaskTest {
         serverField.setAccessible(true);
         serverField.set(plugin, server);
         when(server.getPlayer(uuid)).thenReturn(player);
+        doReturn(Collections.singletonList(player)).when(server).getOnlinePlayers();
         Configs configs = mock(Configs.class);
         when(configs.getConfig()).thenReturn(new org.bukkit.configuration.file.YamlConfiguration());
         when(plugin.getConfigManager()).thenReturn(configs);
@@ -67,6 +68,17 @@ public class AutoBuyerTaskTest {
     @After
     public void cleanup() {
         settings.close();
+    }
+
+    @Test
+    public void inventoryAddedWithoutPickupEventIsChecked() throws Exception {
+        settings.load(player.getUniqueId()).get(5, java.util.concurrent.TimeUnit.SECONDS);
+        settings.setItemEnabled(player.getUniqueId(), Material.DIAMOND, true);
+        org.bukkit.inventory.PlayerInventory inventory = mock(org.bukkit.inventory.PlayerInventory.class);
+        when(player.getInventory()).thenReturn(inventory);
+        when(inventory.getContents()).thenReturn(new org.bukkit.inventory.ItemStack[0]);
+        tick.get().run();
+        verify(inventory, atLeastOnce()).getContents();
     }
 
     @Test

@@ -7,7 +7,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.erydevs.EryBuyer;
-import com.erydevs.utils.HexUtils;
 import com.erydevs.gui.entry.Entry;
 
 import java.io.File;
@@ -19,20 +18,17 @@ import java.util.Map;
 public class MenuLoaderService {
     private final EryBuyer plugin;
     private final Map<Integer, Entry> combinedSlotMap;
-    private final Map<String, Map<Integer, Entry>> entriesByTitle;
-    private final Map<String, Map<Integer, List<String>>> actionsByTitle;
-    private final Map<String, String> menuNameByTitle;
+    private final Map<String, Map<Integer, Entry>> entriesByMenu;
+    private final Map<String, Map<Integer, List<String>>> actionsByMenu;
 
     public MenuLoaderService(@NotNull EryBuyer plugin,
                              @NotNull Map<Integer, Entry> combinedSlotMap,
-                             @NotNull Map<String, Map<Integer, Entry>> entriesByTitle,
-                             @NotNull Map<String, Map<Integer, List<String>>> actionsByTitle,
-                             @NotNull Map<String, String> menuNameByTitle) {
+                             @NotNull Map<String, Map<Integer, Entry>> entriesByMenu,
+                             @NotNull Map<String, Map<Integer, List<String>>> actionsByMenu) {
         this.plugin = plugin;
         this.combinedSlotMap = combinedSlotMap;
-        this.entriesByTitle = entriesByTitle;
-        this.actionsByTitle = actionsByTitle;
-        this.menuNameByTitle = menuNameByTitle;
+        this.entriesByMenu = entriesByMenu;
+        this.actionsByMenu = actionsByMenu;
     }
 
     public void loadAllMenus() {
@@ -49,8 +45,6 @@ public class MenuLoaderService {
     private void loadMenu(@NotNull File f) {
         FileConfiguration cfg = YamlConfiguration.loadConfiguration(f);
         String menuName = f.getName().replace(".yml", "");
-        String title = HexUtils.colorize(cfg.getString("name", menuName));
-        menuNameByTitle.put(title, menuName);
 
         Map<Integer, Entry> entries = new HashMap<>();
         Map<Integer, List<String>> actions = new HashMap<>();
@@ -62,8 +56,8 @@ public class MenuLoaderService {
         loadMenuSettings(cfg, entries, actions);
         loadKnopsSettings(cfg, entries, actions);
 
-        entriesByTitle.put(title, entries);
-        actionsByTitle.put(title, actions);
+        entriesByMenu.put(menuName, entries);
+        actionsByMenu.put(menuName, actions);
     }
 
     @NotNull
