@@ -96,7 +96,7 @@ public class AutoBuyerTask {
             if (!isSellable(entry)) continue;
             if (!plugin.getAutoBuyerSettings().isItemEnabled(player.getUniqueId(), entry.material)) continue;
 
-            int amount = InventoryUtils.remove(player, entry.material, InventoryUtils.count(player, entry.material));
+            int amount = InventoryUtils.remove(player, entry, InventoryUtils.count(player, entry));
             if (amount == 0) continue;
 
             sell(player, entry, amount);

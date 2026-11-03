@@ -76,7 +76,7 @@ public class MenuLoaderService {
             Entry entry = new Entry(key, pm.getMaterial(), pm.getHeadTextureBase64(),
                     cfg.getString(path + ".name"), cfg.getStringList(path + ".lore"),
                     cfg.getDouble(path + ".prince-x1"), cfg.getDouble(path + ".prince-x64"),
-                    pointsX1, tokensX1, slot, cfg.getString(path + ".message-name"));
+                    pointsX1, tokensX1, slot, cfg.getString(path + ".message-name"), readCustomModelData(cfg, path));
 
             entries.put(slot, entry);
             if (combinedSlotMap != null) {
@@ -114,7 +114,7 @@ public class MenuLoaderService {
 
             Entry entry = new Entry(id, pm.getMaterial(), pm.getHeadTextureBase64(),
                     cfg.getString(path + ".name"), cfg.getStringList(path + ".lore"),
-                    priceX1, priceX64, pointsX1, tokensX1, slot);
+                    priceX1, priceX64, pointsX1, tokensX1, slot, null, readCustomModelData(cfg, path));
             entries.put(slot, entry);
 
             if (priceX1 > 0 && combinedSlotMap != null) {
@@ -128,5 +128,9 @@ public class MenuLoaderService {
             if (single != null) acts = Arrays.asList(single);
         }
         if (acts != null && !acts.isEmpty()) actions.put(slot, acts);
+    }
+    private static Integer readCustomModelData(FileConfiguration cfg, String path) {
+        return cfg.isInt(path + ".custom-model-data")
+                ? cfg.getInt(path + ".custom-model-data") : null;
     }
 }

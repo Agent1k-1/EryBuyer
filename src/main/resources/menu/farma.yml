@@ -2,6 +2,7 @@ name: '&#7D2626Скупщик &#B58A8A| &#E73F3FФермерство'
 size: 45
 panels:
   - material: RED_STAINED_GLASS_PANE
+    custom-model-data: 0
     name: ' '
     slots:
       - 0
@@ -30,6 +31,7 @@ knops-settings:
   back:
     name: '&#E73F3F◀ &f&fОбратно'
     material: SPECTRAL_ARROW
+    custom-model-data: 0
     slot: 40
     lore: []
     action:
@@ -53,6 +55,7 @@ item-settings:
       - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
       - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
     material: SUGAR_CANE
+    custom-model-data: 0
     slot: 20
     prince-x1: 90.0
     prince-x64: 5760.0
@@ -75,6 +78,7 @@ item-settings:
       - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
       - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
     material: CARROT
+    custom-model-data: 0
     slot: 21
     prince-x1: 40.0
     prince-x64: 2560.0
@@ -97,6 +101,7 @@ item-settings:
       - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
       - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
     material: NETHER_WART
+    custom-model-data: 0
     slot: 22
     prince-x1: 110.0
     prince-x64: 7040.0
@@ -119,6 +124,7 @@ item-settings:
       - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
       - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
     material: CACTUS
+    custom-model-data: 0
     slot: 23
     prince-x1: 110.0
     prince-x64: 7040.0
@@ -141,6 +147,7 @@ item-settings:
       - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
       - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
     material: BAMBOO
+    custom-model-data: 0
     slot: 24
     prince-x1: 65.0
     prince-x64: 4160.0
@@ -163,6 +170,7 @@ item-settings:
       - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
       - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
     material: CHORUS_FRUIT
+    custom-model-data: 0
     slot: 30
     prince-x1: 110.0
     prince-x64: 7040.0
@@ -185,6 +193,7 @@ item-settings:
       - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
       - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
     material: KELP
+    custom-model-data: 0
     slot: 31
     prince-x1: 75.0
     prince-x64: 4800.0
@@ -207,6 +216,7 @@ item-settings:
       - '&#E73F3F▪ &fСтатус авто продажи: %autobuyer_item_status%'
       - '&#E73F3F➥ &fПереключить авто продажу &7(Q)'
     material: WHEAT
+    custom-model-data: 0
     slot: 32
     prince-x1: 25.0
     prince-x64: 1600.0

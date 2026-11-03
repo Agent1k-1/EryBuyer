@@ -33,6 +33,7 @@ public class ItemStackService {
 
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
+            if (entry.customModelData != null) meta.setCustomModelData(entry.customModelData);
             meta.setDisplayName(Placeholders.apply(entry.name, player, entry, 1));
 
             List<String> lore = entry.lore == null ? Collections.emptyList() : entry.lore;

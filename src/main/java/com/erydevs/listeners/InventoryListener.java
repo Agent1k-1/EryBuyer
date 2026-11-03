@@ -80,7 +80,7 @@ public class InventoryListener implements Listener {
             return;
         }
         if (clickType == ClickType.RIGHT) {
-            int totalCount = InventoryUtils.count(p, entry.material);
+            int totalCount = InventoryUtils.count(p, entry);
             if (totalCount < 64) {
                 List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()
                         .map(line -> Placeholders.apply(line, p, entry, 64))
@@ -93,7 +93,7 @@ public class InventoryListener implements Listener {
             return;
         }
         if (clickType == ClickType.SHIFT_LEFT || clickType == ClickType.SHIFT_RIGHT) {
-            int totalCount = InventoryUtils.count(p, entry.material);
+            int totalCount = InventoryUtils.count(p, entry);
             if (totalCount == 0) {
                 List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()
                         .map(line -> Placeholders.apply(line, p, entry, totalCount))
@@ -120,7 +120,7 @@ public class InventoryListener implements Listener {
     }
 
     private void processSale(@NotNull Player p, @NotNull Entry entry, int requestedAmount, double unitPrice) {
-        int actualAmount = InventoryUtils.remove(p, entry.material, requestedAmount);
+        int actualAmount = InventoryUtils.remove(p, entry, requestedAmount);
 
         if (actualAmount == 0) {
             List<String> lines = plugin.getMessagesConfig().getMessageNoItem().stream()

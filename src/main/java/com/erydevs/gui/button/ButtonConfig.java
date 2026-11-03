@@ -10,6 +10,7 @@ import java.util.Objects;
 
 public class ButtonConfig {
 
+    private final Integer customModelData;
     private final String id;
     private final int slot;
     private final Material material;
@@ -33,6 +34,16 @@ public class ButtonConfig {
                         double priceX64,
                         int pointsX1,
                         int tokensX1) {
+        this(id, slot, material, materialStr, name, lore, actions,
+                priceX1, priceX64, pointsX1, tokensX1, null);
+    }
+
+    public ButtonConfig(@NotNull String id, int slot, @NotNull Material material,
+                        @Nullable String materialStr, @Nullable String name,
+                        @Nullable List<String> lore, @Nullable List<String> actions,
+                        double priceX1, double priceX64, int pointsX1, int tokensX1,
+                        @Nullable Integer customModelData) {
+        this.customModelData = customModelData == null || customModelData == 0 ? null : customModelData;
         this.id = Objects.requireNonNull(id);
         this.slot = slot;
         this.material = Objects.requireNonNull(material);
@@ -44,6 +55,11 @@ public class ButtonConfig {
         this.priceX64 = priceX64;
         this.pointsX1 = pointsX1;
         this.tokensX1 = tokensX1;
+    }
+
+    @Nullable
+    public Integer getCustomModelData() {
+        return customModelData;
     }
 
     @NotNull

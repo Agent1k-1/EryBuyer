@@ -49,7 +49,8 @@ public final class ButtonLoader {
                     cfg.getDouble(path + ".prince-x1"),
                     cfg.getDouble(path + ".prince-x64"),
                     cfg.getInt(path + ".points-from-the-buyer-x1"),
-                    cfg.getInt(path + ".tokens-from-the-buyer-x1")));
+                    cfg.getInt(path + ".tokens-from-the-buyer-x1"),
+                    cfg.isInt(path + ".custom-model-data") ? cfg.getInt(path + ".custom-model-data") : null));
         }
     }
 

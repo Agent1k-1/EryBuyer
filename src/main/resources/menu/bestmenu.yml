@@ -2,6 +2,7 @@ name: '&8Скупщик &7| &#C73924★ &#D45B27Повышенный спрос 
 size: 45
 panels:
   - material: RED_STAINED_GLASS_PANE
+    custom-model-data: 0
     name: ' '
     slots:
       - 0
@@ -32,12 +33,14 @@ menu-settings:
     lore: []
     slot: 40
     material: SPECTRAL_ARROW
+    custom-model-data: 0
     action:
       - '[sound] BLOCK_ENDER_CHEST_CLOSE'
       - '[openmenu] menu'
   2:
     name: '&#E73F3F➥ &fОбновление спроса'
     material: PAPER
+    custom-model-data: 0
     slot: 4
     lore:
       - ''
@@ -66,36 +69,42 @@ tem-settings:
     available-materials:
       DIAMOND:
         material: DIAMOND
+        custom-model-data: 0
         default-price: 500.0
         limit: 64
         points-from-the-buyer-x1: 40
         tokens-from-the-buyer-x1: 8
       EMERALD:
         material: EMERALD
+        custom-model-data: 0
         default-price: 400.0
         limit: 32
         points-from-the-buyer-x1: 30
         tokens-from-the-buyer-x1: 6
       NETHER_WART:
         material: NETHER_WART
+        custom-model-data: 0
         default-price: 75.0
         limit: 159
         points-from-the-buyer-x1: 7
         tokens-from-the-buyer-x1: 1
       SWEET_BERRIES:
         material: SWEET_BERRIES
+        custom-model-data: 0
         default-price: 30.0
         limit: 345
         points-from-the-buyer-x1: 3
         tokens-from-the-buyer-x1: 1
       LAPIS_LAZULI:
         material: LAPIS_LAZULI
+        custom-model-data: 0
         default-price: 50.0
         limit: 315
         points-from-the-buyer-x1: 5
         tokens-from-the-buyer-x1: 1
       COCOA_BEANS:
         material: COCOA_BEANS
+        custom-model-data: 0
         default-price: 25.0
         limit: 340
         points-from-the-buyer-x1: 3
