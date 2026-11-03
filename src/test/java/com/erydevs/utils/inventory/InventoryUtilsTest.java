@@ -46,7 +46,9 @@ public class InventoryUtilsTest {
         Player player = mock(Player.class);
         PlayerInventory inventory = mock(PlayerInventory.class);
         when(player.getInventory()).thenReturn(inventory);
-        when(inventory.getContents()).thenReturn(new ItemStack[]{stack(null, 3), stack(0, 4)});
+        ItemStack plain = stack(null, 3);
+        ItemStack zeroModel = stack(0, 4);
+        when(inventory.getContents()).thenReturn(new ItemStack[]{plain, zeroModel});
         assertEquals(7, InventoryUtils.count(player, entry(0)));
     }
 
